@@ -1,3 +1,23 @@
+# Ignore environment files
 .env
-.idea
-__pycache__
+.env_example
+
+# Ignore IDE files
+.idea/
+.idea/shelf/
+.idea/workspace.xml
+.idea/httpRequests/
+.idea/dataSources/
+.idea/dataSources.local.xml
+
+# Ignore Python cache
+__pycache__/
+*.pyc
+*.pyo
+
+# Ignore virtual environment
+.venv/
+
+# Ignore specific directories
+faces/
+
