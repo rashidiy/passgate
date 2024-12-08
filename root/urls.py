@@ -17,7 +17,10 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 
+from app1 import views
+
 urlpatterns = [
+    path('admin/orders-data/', views.get_orders_data, name='orders_data'),
     path('admin/', admin.site.urls),
     path('', include("app1.urls")),
 ]

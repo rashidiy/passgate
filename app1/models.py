@@ -1,12 +1,19 @@
+from django.core.exceptions import ValidationError
 from django.db import models
 
 
 class Employee(models.Model):
+    def validate_image_size(value):
+        max_size_kb = 200
+        if value.size > max_size_kb * 1024:
+            raise ValidationError(f"Rasm hajmi {max_size_kb} KB dan oshmasligi kerak.")
+
     name = models.CharField(max_length=100)
     face_image = models.ImageField(
         upload_to='faces/',
         max_length=200,
-        help_text="No larger than 200 KB. JPG, JPEG, PNG allowed."
+        help_text="No larger than 200 KB. JPG, JPEG, PNG allowed.",
+        validators=[validate_image_size]
     )
 
     def __str__(self):
