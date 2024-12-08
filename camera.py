@@ -9,7 +9,6 @@ import xml.etree.ElementTree as ET
 import time
 from requests import Response
 from requests.auth import HTTPDigestAuth
-import threading
 
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 load_dotenv()
@@ -200,54 +199,39 @@ def switch_cam(onoff: bool):
 
 def check_face(timeout=10):
     url = f"http://{os.getenv('CAM_IP')}/ISAPI/Event/notification/alertStream"
-    result = {'face_result': None}
 
-    def fetch_face():
-        try:
-            with requests.get(url, auth=HTTPDigestAuth(os.getenv("CAM_USER"), os.getenv("CAM_PASS")),
-                              stream=True, timeout=timeout) as response:
-                if response.status_code == 200:
-                    buffer = ""
-                    start_time = time.time()
-                    for line in response.iter_lines():
-                        if time.time() - start_time > timeout:
-                            result['face_result'] = 'timeout'
-                            break
-                        if line:
-                            decoded_line = line.decode('utf-8')
-                            if decoded_line.startswith("--MIME_boundary") or decoded_line.startswith(
-                                    "Content-Type") or decoded_line.startswith("Content-Length"):
-                                continue
-                            buffer += decoded_line.strip()
-                            if buffer.count('{') == buffer.count('}'):
-                                try:
-                                    event_data = json.loads(buffer)["AccessControllerEvent"]
-                                    print(event_data)
+    try:
+        with requests.get(url, auth=HTTPDigestAuth(os.getenv("CAM_USER"), os.getenv("CAM_PASS")),
+                          stream=True, timeout=timeout) as response:
+            if response.status_code == 200:
+                buffer = ""
+                # start_time = time.time()
+                # if time.time() - start_time > timeout:
+                #     return 'timeout'
+                for line in response.iter_lines():
+                    if line:
+                        decoded_line = line.decode('utf-8')
+                        if decoded_line.startswith("--MIME_boundary") or decoded_line.startswith(
+                                "Content-Type") or decoded_line.startswith("Content-Length"):
+                            continue
+                        buffer += decoded_line.strip()
+                        if buffer.count('{') == buffer.count('}'):
+                            try:
+                                event_data = json.loads(buffer)["AccessControllerEvent"]
+                                print(event_data)
 
-                                    if event_data["currentVerifyMode"] == "face":
-                                        if event_data.get("name"):
-                                            result['face_result'] = event_data["employeeNoString"]
-                                        else:
-                                            result['face_result'] = 'unknown'
-                                        break
-                                    buffer = ""
-                                except json.JSONDecodeError as e:
-                                    buffer = ""
-                                    result['face_result'] = "error"
-                                    break
-                else:
-                    result['face_result'] = "error"
-        except Exception:
-            result['face_result'] = 'error'
-
-    fetch_thread = threading.Thread(target=fetch_face)
-    fetch_thread.start()
-    fetch_thread.join(timeout)
-
-    if fetch_thread.is_alive():
-        result['face_result'] = 'timeout'
-
-    return result['face_result']
+                                if event_data["currentVerifyMode"] == "face":
+                                    if event_data.get("name"):
+                                        return event_data["employeeNoString"]
+                                    else:
+                                        return 'unknown'
+                                buffer = ""
+                            except json.JSONDecodeError:
+                                return "error"
+            else:
+                return "error"
+    except Exception:
+        return 'error'
 
 
 def get_token():

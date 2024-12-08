@@ -1,6 +1,31 @@
 #!/usr/bin/env python
 import os
 import sys
+from pathlib import Path
+from dotenv import load_dotenv
+
+# # Debug uchun
+# def print_env_details():
+#     env_path = Path(__file__).resolve().parent / '.env'
+#     print(f"1. .env file path: {env_path}")
+#     print(f"2. .env exists: {os.path.exists(env_path)}")
+#
+#     # .env faylini to'g'ridan-to'g'ri o'qish
+#     if os.path.exists(env_path):
+#         with open(env_path, 'r') as f:
+#             print("3. .env content:")
+#             print(f.read())
+#
+#     # Environment o'zgaruvchilarini tekshirish
+#     print("\n4. Environment variables:")
+#     print(f"CAM_IP (before load_dotenv): {os.getenv('CAM_IP')}")
+#
+#     # .env ni yuklash
+#     load_dotenv(env_path)
+#     print(f"CAM_IP (after load_dotenv): {os.getenv('CAM_IP')}")
+#
+# print_env_details()
+
 
 from camera import switch_cam
 
@@ -17,7 +42,6 @@ def main():
             "forget to activate a virtual environment?"
         ) from exc
     execute_from_command_line(sys.argv)
-
 
 if __name__ == '__main__':
     switch_cam(False)

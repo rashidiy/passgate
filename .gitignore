@@ -1,6 +1,5 @@
 # Ignore environment files
 .env
-.env_example
 
 # Ignore IDE files
 .idea/
@@ -17,6 +16,7 @@ __pycache__/
 
 # Ignore virtual environment
 .venv/
+venv/
 
 # Ignore specific directories
 faces/
