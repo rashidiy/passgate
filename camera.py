@@ -40,12 +40,12 @@ class Capabilities:
 
 
 class WebLogin:
-    HOST = "http://" + os.getenv("CAM_IP")
+    HOST = f"http://{os.getenv('CAM_IP')}/ISAPI/"
     session = requests.Session()
 
     @classmethod
     def get_capabilities(cls, username) -> Capabilities:
-        url = f"{cls.HOST}/ISAPI/Security/sessionLogin/capabilities"
+        url = f"{cls.HOST}Security/sessionLogin/capabilities"
         response = cls.session.get(url, params={'username': username})
         if response.status_code == 200:
             return Capabilities(response)
@@ -84,7 +84,7 @@ class WebLogin:
 
     @classmethod
     def _login(cls, username, password) -> Response:
-        url = f"{cls.HOST}/ISAPI/Security/sessionLogin"
+        url = f"{cls.HOST}Security/sessionLogin"
         caps = cls.get_capabilities(username)
         encoded_password = cls.encode_password(
             password, caps.challenge, username, caps.salt,
@@ -141,6 +141,21 @@ class WebLogin:
         }
         response = requests.request("PUT", url, headers=headers, data=data, files=files)
         return response
+
+    @classmethod
+    def user_set_rfid(cls, employee_id, rfid, cookie, sessiontag):
+        url = f"http://{os.getenv('CAM_IP')}/ISAPI/AccessControl/CardInfo/Record?format=json"
+        headers = {
+            "Cookie": cookie,
+            "SessionTag": sessiontag
+        }
+        payload = '{"CardInfo":{"employeeNo":"%s","cardNo":"%s","cardType":"normalCard"}}' % (employee_id, rfid)
+        response = requests.request("POST", url, headers=headers, data=payload, verify=False)
+        return response
+
+
+if __name__ == '__main__':
+    print(WebLogin.web_session_and_tag('admin', 'placeholder_password'))
 
 
 def switch_cam(onoff: bool):
@@ -199,39 +214,84 @@ def switch_cam(onoff: bool):
 
 def check_face(timeout=10):
     url = f"http://{os.getenv('CAM_IP')}/ISAPI/Event/notification/alertStream"
-
+    start_time = time.time()
     try:
         with requests.get(url, auth=HTTPDigestAuth(os.getenv("CAM_USER"), os.getenv("CAM_PASS")),
                           stream=True, timeout=timeout) as response:
             if response.status_code == 200:
                 buffer = ""
-                # start_time = time.time()
-                # if time.time() - start_time > timeout:
-                #     return 'timeout'
                 for line in response.iter_lines():
+                    # Timeout tekshirish
+                    if time.time() - start_time > timeout:
+                        return 'timeout'
+
                     if line:
-                        decoded_line = line.decode('utf-8')
-                        if decoded_line.startswith("--MIME_boundary") or decoded_line.startswith(
-                                "Content-Type") or decoded_line.startswith("Content-Length"):
+                        decoded_line = line.decode('utf-8').strip()
+                        # Keraksiz header qatorlarini o‘tib ketish
+                        if decoded_line.startswith("--MIME_boundary") or decoded_line.startswith("Content-Type") or decoded_line.startswith("Content-Length"):
                             continue
-                        buffer += decoded_line.strip()
+
+                        buffer += decoded_line
                         if buffer.count('{') == buffer.count('}'):
                             try:
-                                event_data = json.loads(buffer)["AccessControllerEvent"]
-                                print(event_data)
+                                event_data = json.loads(buffer).get("AccessControllerEvent", {})
+                                buffer = ""
 
-                                if event_data["currentVerifyMode"] == "face":
+                                # Agar currentEvent false bo‘lsa, demak real hodisa emas
+                                # Shu sababli keyingi hodisani kutish davom ettiriladi
+                                if not event_data.get("currentEvent", False):
+                                    continue77
+
+                                # Agar currentEvent true bo‘lsa, demak real event keldi
+                                if event_data["currentVerifyMode"] == "cardOrFace":
                                     if event_data.get("name"):
                                         return event_data["employeeNoString"]
                                     else:
                                         return 'unknown'
-                                buffer = ""
                             except json.JSONDecodeError:
                                 return "error"
             else:
                 return "error"
     except Exception:
         return 'error'
+
+
+# def check_face(timeout=10):
+#     url = f"http://{os.getenv('CAM_IP')}/ISAPI/Event/notification/alertStream"
+#
+#     try:
+#         with requests.get(url, auth=HTTPDigestAuth(os.getenv("CAM_USER"), os.getenv("CAM_PASS")),
+#                           stream=True, timeout=timeout) as response:
+#             if response.status_code == 200:
+#                 buffer = ""
+#                 start_time = time.time()
+#                 if time.time() - start_time > timeout:
+#                     return 'timeout'
+#                 for line in response.iter_lines():
+#                     if line:
+#                         decoded_line = line.decode('utf-8')
+#                         if decoded_line.startswith("--MIME_boundary") or decoded_line.startswith(
+#                                 "Content-Type") or decoded_line.startswith("Content-Length"):
+#                             continue
+#                         buffer += decoded_line.strip()
+#                         if buffer.count('{') == buffer.count('}'):
+#                             try:
+#                                 event_data = json.loads(buffer)["AccessControllerEvent"]
+#                                 print(event_data)
+#                                 if not event_data["currentEvent"]:
+#                                     return check_face()
+#                                 if event_data["currentVerifyMode"] == "cardOrFace":
+#                                     if event_data.get("name"):
+#                                         return event_data["employeeNoString"]
+#                                     else:
+#                                         return 'unknown'
+#                                 buffer = ""
+#                             except json.JSONDecodeError:
+#                                 return "error"
+#             else:
+#                 return "error"
+#     except Exception:
+#         return 'error'
 
 
 def get_token():
@@ -256,7 +316,7 @@ def get_token():
     return json.loads(response.text)['Token']['value']
 
 
-def create_user(id_, name, photo):
+def create_user(id_, name, photo, rfid):
     add_person_url = f"http://{os.getenv('CAM_IP')}/ISAPI/AccessControl/UserInfo/Record?format=json"
 
     payload = {
@@ -298,6 +358,7 @@ def create_user(id_, name, photo):
     if response.status_code == 200:
         cookie, session_tag = WebLogin.web_session_and_tag(os.getenv("CAM_USER"), os.getenv("CAM_PASS")).values()
         WebLogin.user_set_photo(id_, photo.path, cookie, session_tag)
+        WebLogin.user_set_rfid(id_, rfid, cookie, session_tag)
         return "added"
     else:
         return "failed"
