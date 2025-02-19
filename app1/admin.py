@@ -1,9 +1,10 @@
 from django.contrib import admin
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponse
+from django.template.response import TemplateResponse
 from django.utils.html import format_html
 
 from camera import create_user, delete_user
-from .models import Employee, Order
+from .models import Employee, Order, UserType
 
 
 @admin.register(Employee)
@@ -30,19 +31,33 @@ class EmployeeAdmin(admin.ModelAdmin):
     def save_model(self, request, obj, form, change):
         obj.save()
         if not change:
-            print(create_user(obj.id, obj.name, obj.face_image))
+            print(create_user(obj.id, obj.name, obj.face_image, obj.rfid))
+
+
+@admin.register(UserType)
+class UserTypeAdmin(admin.ModelAdmin):
+    list_display = ['name']
 
 
 @admin.register(Order)
 class OrderAdmin(admin.ModelAdmin):
-    list_display = ['employee', 'food_size', 'time']
+    list_display = ['employee', 'food_size', 'time', 'get_user_type']
     search_fields = ['employee', 'food_size']
-    change_list_template = 'custom_admin/orders.html'
+
+    def get_user_type(self, obj):
+        return obj.employee.user_type.name if obj.employee else None
+
+    get_user_type.short_description = 'User Type'
 
     def changelist_view(self, request, extra_context=None):
-        response = super().changelist_view(request, extra_context)
         if request.headers.get('x-requested-with') == 'XMLHttpRequest':
+            # Sahifani render qilib, faqat kerakli qismni qaytarish
+            response = TemplateResponse(request, self.change_list_template, self.get_extra_context(request))
             response.render()
-            result_list_html = response.content.decode('utf-8')
+            content = response.content.decode('utf-8')
+            start = content.find('<div id="result_list">')
+            end = content.find('</div>', start) + len('</div>')
+            result_list_html = content[start:end]
             return JsonResponse({'html': result_list_html})
-        return response
+
+        return super().changelist_view(request, extra_context)
