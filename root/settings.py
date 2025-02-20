@@ -81,7 +81,7 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'uz'
 
 TIME_ZONE = 'Asia/Tashkent'
 
@@ -89,9 +89,42 @@ USE_I18N = True
 
 USE_TZ = True
 
-
 STATIC_URL = 'static/'
 STATIC_ROOT = BASE_DIR / 'static'
 
-
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+JAZZMIN_SETTINGS = {
+    # Main branding
+    "site_title": "SKUD beta (0.0.12)",
+    "site_header": "SamyySoft",
+    "site_brand": "SamyySoft",
+    "welcome_sign": "Welcome to the SamyySoft Admin Portal",
+    "copyright": "OOO \"SamyySoft\"",
+
+    # Models & search
+    "search_model": "app1.Employee",
+
+    # Top menu links (with external and internal links)
+    "topmenu_links": [
+        {"name": "Home", "url": "admin:index", "permissions": ["auth.view_user"]},
+    ],
+
+    "show_sidebar": True,
+    "navigation_expanded": True,
+    "hide_apps": [],
+    "hide_models": [],
+    "order_with_respect_to": ["auth", "app1"],
+    "icons": {
+        "auth.Group": "fas fa-users",
+        "auth.User": "fas fa-user",
+        "app1.Employee": "fas fa-user-tie",
+        "app1.Order": "fas fa-box",
+        "app1.UserType": "fas fa-th-list",
+    },
+    "default_icon_parents": "fas fa-folder-open",
+    "default_icon_children": "fas fa-file-alt",
+    "custom_link_icons": {
+        "app1": "fas fa-beer",
+    },
+}

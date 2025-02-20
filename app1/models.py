@@ -4,11 +4,14 @@ from django.db.models import PROTECT
 
 
 class UserType(models.Model):
-    name = models.CharField(max_length=100)
+    name = models.CharField("Ism", max_length=100)
 
     def __str__(self):
         return self.name
 
+    class Meta:
+        verbose_name = "Guruh"
+        verbose_name_plural = "Guruhlar"
 
 class Employee(models.Model):
     def validate_image_size(value):
@@ -16,9 +19,9 @@ class Employee(models.Model):
         if value.size > max_size_kb * 1024:
             raise ValidationError(f"Rasm hajmi {max_size_kb} KB dan oshmasligi kerak.")
 
-    rfid = models.CharField(max_length=20)
-    name = models.CharField(max_length=100)
-    face_image = models.ImageField(
+    rfid = models.CharField("Karta raqami", max_length=20)
+    name = models.CharField("Xodimning ismi", max_length=100)
+    face_image = models.ImageField("FaceId uchun rasm",
         upload_to='faces/',
         max_length=200,
         help_text="No larger than 200 KB. JPG, JPEG, PNG allowed.",
@@ -30,6 +33,10 @@ class Employee(models.Model):
 
     def __str__(self):
         return self.name
+
+    class Meta:
+        verbose_name = "Xodim "
+        verbose_name_plural = "Xodimlar"
     # DEPARTMENT_CHOICES = [
     #     ("Company", "Company"),
     #     ("Admin", "Admin. Dept."),
@@ -78,11 +85,15 @@ class Order(models.Model):
     ]
     employee = models.ForeignKey(Employee, on_delete=models.SET_NULL,
                                  null=True)  # TODO on_delete'ning logikasini o'ylash
-    name = models.CharField(max_length=225)
-    food_size = models.CharField(max_length=3, choices=FOOD_SIZE_CHOICES)
-    time = models.DateTimeField(auto_now_add=True)
+    name = models.CharField("Ism", max_length=225)
+    food_size = models.CharField("Ovqat hajmi", max_length=3, choices=FOOD_SIZE_CHOICES)
+    time = models.DateTimeField("Vaqt", auto_now_add=True)
 
     def save(self, force_insert=..., force_update=..., using=..., update_fields=...):
         if not self.name:
             self.name = self.employee.name
         super().save(force_insert, force_update, using, update_fields)
+
+    class Meta:
+        verbose_name = "Buyurtma"
+        verbose_name_plural = "Buyurtmalar"
