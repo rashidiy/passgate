@@ -78,5 +78,11 @@ class Order(models.Model):
     ]
     employee = models.ForeignKey(Employee, on_delete=models.SET_NULL,
                                  null=True)  # TODO on_delete'ning logikasini o'ylash
+    name = models.CharField(max_length=225)
     food_size = models.CharField(max_length=3, choices=FOOD_SIZE_CHOICES)
     time = models.DateTimeField(auto_now_add=True)
+
+    def save(self, force_insert=..., force_update=..., using=..., update_fields=...):
+        if not self.name:
+            self.name = self.employee.name
+        super().save(force_insert, force_update, using, update_fields)

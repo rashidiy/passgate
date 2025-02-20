@@ -240,7 +240,7 @@ def check_face(timeout=10):
                                 # Agar currentEvent false bo‘lsa, demak real hodisa emas
                                 # Shu sababli keyingi hodisani kutish davom ettiriladi
                                 if not event_data.get("currentEvent", False):
-                                    continue77
+                                    continue
 
                                 # Agar currentEvent true bo‘lsa, demak real event keldi
                                 if event_data["currentVerifyMode"] == "cardOrFace":
@@ -363,6 +363,39 @@ def create_user(id_, name, photo, rfid):
     else:
         return "failed"
 
+def update_user(id_, name, photo = None, rfid =None):
+    url = f"http://{os.getenv('CAM_IP')}/ISAPI/AccessControl/UserInfo/Modify?format=json"
+
+    payload = {
+        "UserInfo": {
+            "employeeNo": str(id_),
+            "name": name,
+            "userType": "normal",
+        }
+    }
+    headers = {
+        "Accept": "application/json, text/plain, */*",
+        "Content-Type": "application/json;charset=UTF-8",
+        "Connection": "keep-alive",
+        "Origin": f"https://{os.getenv('CAM_IP')}",  # Replace with actual origin if different
+        "User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36",
+    }
+
+    response = requests.put(
+        url,
+        json=payload,
+        headers=headers,
+        auth=HTTPDigestAuth(os.getenv("CAM_USER"), os.getenv("CAM_PASS"))
+    )
+
+    if response.status_code == 200:
+        if photo:
+            cookie, session_tag = WebLogin.web_session_and_tag(os.getenv("CAM_USER"), os.getenv("CAM_PASS")).values()
+            print(WebLogin.user_set_photo(id_, photo.path, cookie, session_tag))
+        # WebLogin.user_set_rfid(id_, rfid, cookie, session_tag)
+        return "added"
+    else:
+        return "failed"
 
 def delete_user(ids):
     delete_user_url = f"https://{os.getenv('CAM_IP')}/ISAPI/AccessControl/UserInfo/Delete?format=json"
