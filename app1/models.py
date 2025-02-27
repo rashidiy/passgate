@@ -1,3 +1,5 @@
+from typing import Iterable
+
 from django.core.exceptions import ValidationError
 from django.db import models
 from django.db.models import PROTECT
@@ -13,6 +15,7 @@ class UserType(models.Model):
         verbose_name = "Guruh"
         verbose_name_plural = "Guruhlar"
 
+
 class Employee(models.Model):
     def validate_image_size(value):
         max_size_kb = 200
@@ -22,12 +25,12 @@ class Employee(models.Model):
     rfid = models.CharField("Karta raqami", max_length=20)
     name = models.CharField("Xodimning ismi", max_length=100)
     face_image = models.ImageField("FaceId uchun rasm",
-        upload_to='faces/',
-        max_length=200,
-        help_text="No larger than 200 KB. JPG, JPEG, PNG allowed.",
-        validators=[validate_image_size],
-        default='app1/static/img.png'
-    )
+                                   upload_to='faces/',
+                                   max_length=200,
+                                   help_text="No larger than 200 KB. JPG, JPEG, PNG allowed.",
+                                   validators=[validate_image_size],
+                                   default='app1/static/img.png'
+                                   )
 
     user_type = models.ForeignKey(to=UserType, on_delete=PROTECT)
 
@@ -89,10 +92,10 @@ class Order(models.Model):
     food_size = models.CharField("Ovqat hajmi", max_length=3, choices=FOOD_SIZE_CHOICES)
     time = models.DateTimeField("Vaqt", auto_now_add=True)
 
-    def save(self, force_insert=..., force_update=..., using=..., update_fields=...):
+    def save(self, *args, **kwargs):
         if not self.name:
             self.name = self.employee.name
-        super().save(force_insert, force_update, using, update_fields)
+        super().save(*args, **kwargs)
 
     class Meta:
         verbose_name = "Buyurtma"

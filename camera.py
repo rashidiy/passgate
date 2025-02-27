@@ -1,6 +1,8 @@
 import json
 import os
 from datetime import datetime
+from time import sleep
+
 from dotenv import load_dotenv
 import urllib3
 import hashlib
@@ -155,7 +157,7 @@ class WebLogin:
 
 
 if __name__ == '__main__':
-    print(WebLogin.web_session_and_tag('admin', 'placeholder_password'))
+    print(WebLogin.web_session_and_tag(os.getenv('CAM_USER'), os.getenv('CAM_PASS')))
 
 
 def switch_cam(onoff: bool):
@@ -210,51 +212,122 @@ def switch_cam(onoff: bool):
         headers=headers,
         verify=False
     )
+    return response
+
+
+def send_acs_request(data) -> Response:
+    return requests.post(
+        f"http://{os.getenv("CAM_IP")}/ISAPI/AccessControl/AcsEvent?format=json",
+        headers={"Content-Type": "application/json"},
+        data=json.dumps(data),
+        auth=HTTPDigestAuth(os.getenv("CAM_USER"), os.getenv("CAM_PASS")),
+        timeout=10
+    )
+
+
+def get_total_matches(response: Response) -> int:
+    return response.json().get("AcsEvent").get("totalMatches")
+
+
+def get_last_search_total() -> int:
+    data = {
+        "AcsEventCond": {
+            "searchID": "0",
+            "searchResultPosition": 92,
+            "maxResults": 24,
+            "major": 5,
+            "minor": 0
+        }
+    }
+    rsp = send_acs_request(data)
+    return get_total_matches(rsp)
+
+
+last_search_total = get_last_search_total()
 
 
 def check_face(timeout=10):
-    url = f"http://{os.getenv('CAM_IP')}/ISAPI/Event/notification/alertStream"
+    global last_search_total
+
     start_time = time.time()
     try:
-        with requests.get(url, auth=HTTPDigestAuth(os.getenv("CAM_USER"), os.getenv("CAM_PASS")),
-                          stream=True, timeout=timeout) as response:
-            if response.status_code == 200:
-                buffer = ""
-                for line in response.iter_lines():
-                    # Timeout tekshirish
-                    if time.time() - start_time > timeout:
-                        return 'timeout'
+        payload = {
+            "AcsEventCond": {
+                "searchID": "0",
+                "searchResultPosition": last_search_total,
+                "maxResults": 24,
+                "major": 5,
+                "minor": 0
+            }
+        }
+        while (total_matches := get_total_matches(resp := send_acs_request(payload))) <= last_search_total:
+            if time.time() - start_time > timeout:
+                return 'timeout'
+            sleep(1)
+        json_response = resp.json()
+        info_list = json_response.get("AcsEvent").get("InfoList")
+        if info_list:
+            i = 1
+            while True:
+                info = info_list[-i]
+                minor = info.get("minor")
+                if minor in [76]:
+                    return 'unknown'
+                if minor in [75]:
+                    break
+                i += 1
 
-                    if line:
-                        decoded_line = line.decode('utf-8').strip()
-                        # Keraksiz header qatorlarini o‘tib ketish
-                        if decoded_line.startswith("--MIME_boundary") or decoded_line.startswith("Content-Type") or decoded_line.startswith("Content-Length"):
-                            continue
-
-                        buffer += decoded_line
-                        if buffer.count('{') == buffer.count('}'):
-                            try:
-                                event_data = json.loads(buffer).get("AccessControllerEvent", {})
-                                buffer = ""
-
-                                # Agar currentEvent false bo‘lsa, demak real hodisa emas
-                                # Shu sababli keyingi hodisani kutish davom ettiriladi
-                                if not event_data.get("currentEvent", False):
-                                    continue
-
-                                # Agar currentEvent true bo‘lsa, demak real event keldi
-                                if event_data["currentVerifyMode"] == "cardOrFace":
-                                    if event_data.get("name"):
-                                        return event_data["employeeNoString"]
-                                    else:
-                                        return 'unknown'
-                            except json.JSONDecodeError:
-                                return "error"
-            else:
-                return "error"
+            last_search_total = total_matches
+            return info.get("employeeNoString")
     except Exception:
         return 'error'
+    return 'error'
 
+
+#
+# def check_face(timeout=10):
+#     url = f"http://{os.getenv('CAM_IP')}/ISAPI/Event/notification/alertStream"
+#     start_time = time.time()
+#     try:
+#         with requests.get(url, auth=HTTPDigestAuth(os.getenv("CAM_USER"), os.getenv("CAM_PASS")),
+#                           stream=True, timeout=timeout) as response:
+#             if response.status_code == 200:
+#                 buffer = ""
+#                 for line in response.iter_lines():
+#                     # Timeout tekshirish
+#                     if time.time() - start_time > timeout:
+#                         return 'timeout'
+#
+#                     if line:
+#                         decoded_line = line.decode('utf-8', errors="ignore").strip()
+#                         # Keraksiz header qatorlarini o‘tib ketish
+#                         if decoded_line.startswith("--MIME_boundary") or decoded_line.startswith("Content-Type") or decoded_line.startswith("Content-Length"):
+#                             continue
+#
+#                         buffer += decoded_line
+#                         if buffer.count('{') == buffer.count('}'):
+#                             try:
+#                                 event_data = json.loads(buffer).get("AccessControllerEvent", {})
+#                                 buffer = ""
+#
+#                                 # Agar currentEvent false bo‘lsa, demak real hodisa emas
+#                                 # Shu sababli keyingi hodisani kutish davom ettiriladi
+#                                 if not event_data.get("currentEvent", False):
+#                                     continue
+#
+#                                 # Agar currentEvent true bo‘lsa, demak real event keldi
+#                                 if event_data["currentVerifyMode"] == "cardOrFace":
+#                                     if event_data.get("name"):
+#                                         return event_data["employeeNoString"]
+#                                     else:
+#                                         return 'unknown'
+#                             except json.JSONDecodeError:
+#                                 return "error"
+#             else:
+#                 return "error"
+#     except Exception:
+#         return 'error'
+#
 
 # def check_face(timeout=10):
 #     url = f"http://{os.getenv('CAM_IP')}/ISAPI/Event/notification/alertStream"
@@ -363,7 +436,8 @@ def create_user(id_, name, photo, rfid):
     else:
         return "failed"
 
-def update_user(id_, name, photo = None, rfid =None):
+
+def update_user(id_, name, photo=None, rfid=None):
     url = f"http://{os.getenv('CAM_IP')}/ISAPI/AccessControl/UserInfo/Modify?format=json"
 
     payload = {
@@ -396,6 +470,7 @@ def update_user(id_, name, photo = None, rfid =None):
         return "added"
     else:
         return "failed"
+
 
 def delete_user(ids):
     delete_user_url = f"https://{os.getenv('CAM_IP')}/ISAPI/AccessControl/UserInfo/Delete?format=json"
