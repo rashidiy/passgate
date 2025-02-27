@@ -228,7 +228,10 @@ def send_acs_request(path, data) -> Response:
 def get_total_matches(response: Response) -> int:
     return response.json().get("AcsEvent").get("totalMatches")
 
+
 PATH = '/ISAPI/AccessControl/AcsEvent'
+
+
 def get_last_search_total() -> int:
     data = {
         "AcsEventCond": {
@@ -246,6 +249,13 @@ def get_last_search_total() -> int:
 last_search_total = get_last_search_total()
 
 
+def validate_minor(event_list):
+    for event in event_list:
+        if event.get('minor') in [75, 76, 1, 9]:
+            return True
+    return False
+
+
 def check_face(timeout=10):
     global last_search_total
 
@@ -260,30 +270,30 @@ def check_face(timeout=10):
                 "minor": 0
             }
         }
-        while (total_matches := get_total_matches(resp := send_acs_request(PATH, data))) == last_search_total:
+        while True:
+            resp = send_acs_request(PATH, data)
+            total_matches = get_total_matches(resp)
+
             if time.time() - start_time > timeout:
                 return 'timeout'
-            sleep(1)
-        print(last_search_total)
-        json_response = resp.json()
-        info_list = json_response.get("AcsEvent").get("InfoList")
-        if info_list:
-            i = 1
-            while True:
-                info = info_list[-i]
-                minor = info.get("minor")
-                if minor in [76, 9]:
-                    last_search_total = total_matches
-                    return 'unknown'
-                if minor in [75, 1]:
-                    break
-                i += 1
 
-            last_search_total = total_matches
-            return info.get("employeeNoString")
+            if total_matches != last_search_total:
+                json_response = resp.json()
+                info_list = json_response.get("AcsEvent").get("InfoList")
+                if info_list:
+                    i = 1
+                    while i < len(info_list):
+                        info = info_list[-i]
+                        minor = info.get("minor")
+                        if minor in [76, 9]:
+                            return 'unknown'
+                        if minor in [75, 1]:
+                            last_search_total = total_matches - 1
+                            return info.get("employeeNoString")
+                        i += 1
+            sleep(1)
     except Exception:
         return 'error'
-    return 'error'
 
 
 #
