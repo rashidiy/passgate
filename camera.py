@@ -278,6 +278,7 @@ def check_face(timeout=10):
                 return 'timeout'
 
             if total_matches != last_search_total:
+                last_search_total = total_matches - 1
                 json_response = resp.json()
                 info_list = json_response.get("AcsEvent").get("InfoList")
                 if info_list:
@@ -288,7 +289,6 @@ def check_face(timeout=10):
                         if minor in [76, 9]:
                             return 'unknown'
                         if minor in [75, 1]:
-                            last_search_total = total_matches - 1
                             return info.get("employeeNoString")
                         i += 1
             sleep(1)
