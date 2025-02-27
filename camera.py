@@ -215,9 +215,9 @@ def switch_cam(onoff: bool):
     return response
 
 
-def send_acs_request(data) -> Response:
+def send_acs_request(path, data) -> Response:
     return requests.post(
-        f"http://{os.getenv("CAM_IP")}/ISAPI/AccessControl/AcsEvent?format=json",
+        f"http://{os.getenv("CAM_IP")}{path}?format=json",
         headers={"Content-Type": "application/json"},
         data=json.dumps(data),
         auth=HTTPDigestAuth(os.getenv("CAM_USER"), os.getenv("CAM_PASS")),
@@ -228,7 +228,7 @@ def send_acs_request(data) -> Response:
 def get_total_matches(response: Response) -> int:
     return response.json().get("AcsEvent").get("totalMatches")
 
-
+PATH = '/ISAPI/AccessControl/AcsEvent'
 def get_last_search_total() -> int:
     data = {
         "AcsEventCond": {
@@ -239,7 +239,7 @@ def get_last_search_total() -> int:
             "minor": 0
         }
     }
-    rsp = send_acs_request(data)
+    rsp = send_acs_request(PATH, data)
     return get_total_matches(rsp)
 
 
@@ -251,7 +251,7 @@ def check_face(timeout=10):
 
     start_time = time.time()
     try:
-        payload = {
+        data = {
             "AcsEventCond": {
                 "searchID": "0",
                 "searchResultPosition": last_search_total,
@@ -260,10 +260,11 @@ def check_face(timeout=10):
                 "minor": 0
             }
         }
-        while (total_matches := get_total_matches(resp := send_acs_request(payload))) <= last_search_total:
+        while (total_matches := get_total_matches(resp := send_acs_request(PATH, data))) == last_search_total:
             if time.time() - start_time > timeout:
                 return 'timeout'
             sleep(1)
+        print(last_search_total)
         json_response = resp.json()
         info_list = json_response.get("AcsEvent").get("InfoList")
         if info_list:
@@ -271,9 +272,10 @@ def check_face(timeout=10):
             while True:
                 info = info_list[-i]
                 minor = info.get("minor")
-                if minor in [76]:
+                if minor in [76, 9]:
+                    last_search_total = total_matches
                     return 'unknown'
-                if minor in [75]:
+                if minor in [75, 1]:
                     break
                 i += 1
 
