@@ -1,8 +1,7 @@
-from typing import Iterable
-
 from django.core.exceptions import ValidationError
 from django.db import models
 from django.db.models import PROTECT
+from django.utils.timezone import localtime
 
 
 class UserType(models.Model):
@@ -81,22 +80,43 @@ class Employee(models.Model):
 
 
 class Order(models.Model):
-    FOOD_SIZE_CHOICES = [
-        ("0.5", "Kichik"),
-        ("1.0", "O'rta"),
-        ("1.5", "Katta"),
-    ]
-    employee = models.ForeignKey(Employee, on_delete=models.SET_NULL,
-                                 null=True)  # TODO on_delete'ning logikasini o'ylash
+    class FoodSizeChoice(models.TextChoices):
+        SMALL = "0.5", "Kichik"
+        MEDIUM = "1.0", "O'rta"
+        BIG = "1.5", "Katta"
+
+    employee = models.ForeignKey(Employee, on_delete=models.SET_NULL, null=True,
+                                 related_name='orders')  # TODO on_delete'ning logikasini o'ylash
     name = models.CharField("Ism", max_length=225)
-    food_size = models.CharField("Ovqat hajmi", max_length=3, choices=FOOD_SIZE_CHOICES)
-    time = models.DateTimeField("Vaqt", auto_now_add=True)
+    food_size = models.CharField("Ovqat hajmi", max_length=3, choices=FoodSizeChoice.choices)
+    is_cancelled = models.BooleanField("Bekor qilingami", default=False)
+    created_at = models.DateTimeField("Yaratilgan Vaqt", auto_now_add=True)
+    updated_at = models.DateTimeField("O'zgartirilgan Vaqt", auto_now=True)
 
     def save(self, *args, **kwargs):
         if not self.name:
             self.name = self.employee.name
         super().save(*args, **kwargs)
 
+    @staticmethod
+    def format_time(time):
+        months_uz = {
+            "January": "Yanvar", "February": "Fevral", "March": "Mart",
+            "April": "Aprel", "May": "May", "June": "Iyun",
+            "July": "Iyul", "August": "Avgust", "September": "Sentabr",
+            "October": "Oktabr", "November": "Noyabr", "December": "Dekabr"
+        }
+        created_at = localtime(time)
+        formatted_time = created_at.strftime("%d-%B, %Y-yil %H:%M")
+
+        for en, uz in months_uz.items():
+            formatted_time = formatted_time.replace(en, uz)
+
+        return formatted_time
+
     class Meta:
         verbose_name = "Buyurtma"
         verbose_name_plural = "Buyurtmalar"
+        permissions = [
+            ("can_cancel_orders", "Can cancel orders"),
+        ]

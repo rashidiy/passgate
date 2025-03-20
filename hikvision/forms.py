@@ -1,6 +1,6 @@
 from django import forms
 
-from app1.models import Order
+from hikvision.models import Order
 
 
 class OrderForm(forms.Form):

@@ -1,5 +1,18 @@
 {% extends 'admin/change_list.html' %}
 {% load i18n admin_urls static admin_list jazzmin %}
+{% block extrastyle %}
+    <style>
+        .warning {
+            background-color: #af505a !important;
+            transition: 1s ease-in;
+        }
+
+        .warning td {
+            color: white;
+        }
+    </style>
+    {{ block.super }}
+{% endblock %}
 {% block result_list %}
     <div class="change-list-actions row pb-3">
         <div class="col-12">
@@ -11,43 +24,64 @@
     <div id="result_list">
         {% result_list cl %}
     </div>
+
     <script>
         document.addEventListener("DOMContentLoaded", function () {
-            const refreshInterval = 5000; // Har 5 soniyada yangilash
-            const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+            let lastTimestamp = new Date().toISOString();
 
-            async function fetchOrders() {
-                try {
-                    const response = await fetch(window.location.href, {
-                        headers: {
-                            'X-Requested-With': 'XMLHttpRequest',
-                            'X-CSRFToken': csrftoken
+            function fetchOrders() {
+                fetch(`/orders/all/?timestamp=${encodeURIComponent(lastTimestamp)}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            lastTimestamp = data.timestamp;
+                            updateTable(data.result);
+                        } else {
+                            console.error("Error:", data.message);
                         }
-                    });
-                    if (!response.ok) {
-                        console.error("Failed to fetch orders:", response.statusText);
-                        return;
-                    }
-
-                    // Javobni olish va yangilanishni amalga oshirish
-                    const resultListHtml = await response.text();
-                    const currentResultList = document.querySelector('#result_list');
-                    if (currentResultList) {
-                        const parser = new DOMParser();
-                        const doc = parser.parseFromString(resultListHtml, 'text/html');
-                        const newResultList = doc.querySelector('#result_list');
-                        if (newResultList) {
-                            currentResultList.innerHTML = newResultList.innerHTML;
-                        }
-                    }
-                } catch (error) {
-                    console.error("Error fetching orders:", error);
-                }
+                    })
+                    .catch(error => console.error("Request failed:", error));
             }
 
-            // Har 5 soniyada yangilash
-            setInterval(fetchOrders, refreshInterval);
-        });
+            function updateTable(orders) {
+                let tableBody = document.querySelector("#result_list tbody");
 
+                orders.forEach(order => {
+                    let checkbox = document.querySelector(`input[type="checkbox"][value="${order.id}"]`);
+                    let existingRow = checkbox ? checkbox.closest("tr") : null;
+                    console.log(existingRow);
+
+                    if (order.is_created) {
+                        let newRow = document.createElement("tr");
+                        newRow.innerHTML = `
+                            <td class="action-checkbox"><input type="checkbox" name="_selected_action" value="${order.id}" class="action-select" aria-label="Select this object for an action - Order object (${order.id})"></td>
+                            <th class="field-employee nowrap"><a href="/admin/hikvision/order/${order.id}/change/">${order.employee_name}</a></th>
+                            <td class="field-name">${order.employee_name}</td>
+                            <td class="field-food_size">${order.food_size}</td>
+                            <td class="field-is_cancelled"><img src="/static/admin/img/icon-${order.is_cancelled ? 'yes' : 'no'}.svg" alt="${order.is_cancelled}"></td>
+                            <td class="field-created_at nowrap">${order.created_at}</td>
+                            <td class="field-updated_at nowrap">${order.updated_at}</td>
+                            <td class="field-get_user_type">${order.user_type}</td>
+                        `;
+                        tableBody.prepend(newRow);
+                    } else if (existingRow) {
+                        existingRow.classList.add('warning');
+                        existingRow.innerHTML = `
+                            <td class="action-checkbox"><input type="checkbox" name="_selected_action" value="${order.id}" class="action-select" aria-label="Select this object for an action - Order object (${order.id})"></td>
+                            <th class="field-employee nowrap"><a href="/admin/hikvision/order/${order.id}/change/">${order.employee_name}</a></th>
+                            <td class="field-name">${order.employee_name}</td>
+                            <td class="field-food_size">${order.food_size}</td>
+                            <td class="field-is_cancelled"><img src="/static/admin/img/icon-${order.is_cancelled ? 'yes' : 'no'}.svg" alt="${order.is_cancelled}"></td>
+                            <td class="field-created_at nowrap">${order.created_at}</td>
+                            <td class="field-updated_at nowrap">${order.updated_at}</td>
+                            <td class="field-get_user_type">${order.user_type}</td>
+                        `;
+                        setTimeout(() => existingRow.classList.remove('warning'), 100000);
+                    }
+                });
+            }
+
+            setInterval(fetchOrders, 1000);
+        });
     </script>
 {% endblock %}

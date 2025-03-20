@@ -25,7 +25,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'app1.apps.App1Config',
+
+    'rest_framework',
+    'hikvision',
 ]
 
 MIDDLEWARE = [
@@ -128,3 +130,21 @@ JAZZMIN_SETTINGS = {
         "app1": "fas fa-beer",
     },
 }
+
+REST_FRAMEWORK = {
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.AllowAny'
+    ],
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.SessionAuthentication',
+        'rest_framework.authentication.TokenAuthentication',
+    ],
+}
+
+REDIS_HOST = 'localhost'
+REDIS_PORT = 6379
+REDIS_DB = 0
+REDIS_PASSWORD = None
+
+CANCEL_RESTRICT_BEGIN = "19:30"
+CANCEL_RESTRICT_END = "7:00"

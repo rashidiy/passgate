@@ -4,7 +4,7 @@ from django.http import JsonResponse, HttpResponse
 from django.template.response import TemplateResponse
 from django.utils.html import format_html
 
-from camera import create_user, delete_user, update_user
+from hikvision.plugins.DS_K1T671MF.camera import create_user, delete_user, update_user
 from .models import Employee, Order, UserType
 
 
@@ -78,23 +78,17 @@ export_to_excel.short_description = "Export Selected Orders to Excel"
 
 @admin.register(Order)
 class OrderAdmin(admin.ModelAdmin):
-    list_display = ['employee', 'name', 'food_size', 'time', 'get_user_type']
+    list_display = ['employee', 'name', 'food_size', 'is_cancelled', 'created_at', 'updated_at', 'get_user_type']
     search_fields = ['employee', 'name', 'food_size']
     actions = [export_to_excel]
+    change_list_template = 'custom_admin/orders.html'
 
     def get_user_type(self, obj):
         return obj.employee.user_type.name if obj.employee else None
 
     get_user_type.short_description = 'User Type'
 
-    def changelist_view(self, request, extra_context=None):
-        if request.headers.get('x-requested-with') == 'XMLHttpRequest':
-            # Render and return only the required part for AJAX requests
-            response = TemplateResponse(request, self.change_list_template, self.get_extra_context(request))
-            response.render()
-            content = response.content.decode('utf-8')
-            start = content.find('<div id="result_list">')
-            end = content.find('</div>', start) + len('</div>')
-            result_list_html = content[start:end]
-            return JsonResponse({'html': result_list_html})
-        return super().changelist_view(request, extra_context)
+    def get_readonly_fields(self, request, obj=None):
+        if request.user.has_perm('hikvision.can_cancel_orders'):
+            return ('created_at', 'updated_at')
+        return ('created_at', 'updated_at', 'is_cancelled')

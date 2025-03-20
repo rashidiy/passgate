@@ -1,7 +1,6 @@
 from django.apps import AppConfig
 
 
-class App1Config(AppConfig):
+class HikvisionConfig(AppConfig):
     default_auto_field = 'django.db.models.BigAutoField'
-    name = 'app1'
-
+    name = 'hikvision'

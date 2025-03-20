@@ -1,8 +1,6 @@
 #!/usr/bin/env python
 import os
 import sys
-from pathlib import Path
-from dotenv import load_dotenv
 
 # # Debug uchun
 # def print_env_details():
@@ -27,7 +25,7 @@ from dotenv import load_dotenv
 # print_env_details()
 
 
-from camera import switch_cam
+from hikvision.plugins.DS_K1T671MF.camera import switch_cam
 
 
 def main():
