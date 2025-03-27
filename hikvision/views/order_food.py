@@ -12,6 +12,9 @@ class OrderFoodApi(APIView):
         if not food_size:
             return Response({"success": False, "message": "missing food_size"}, status.HTTP_400_BAD_REQUEST)
 
+        if food_size not in ['0.5', '1.0', '1.5']:
+            return Response({"success": False, "message": "invalid food_size"}, status.HTTP_400_BAD_REQUEST)
+
         face_result = get_face_result()
 
         if isinstance(face_result, Response):

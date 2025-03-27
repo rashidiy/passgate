@@ -29,7 +29,6 @@ class OrderList(APIView):
             return Response({"success": False, "message": "Bad request"}, status=status.HTTP_400_BAD_REQUEST)
         result = []
         for order in Order.objects.filter(updated_at__gt=timestamp):
-            # for order in [Order.objects.first()]:
             result.append({
                 "id": order.id,
                 "employee_name": order.employee.name,
@@ -40,7 +39,6 @@ class OrderList(APIView):
                 "user_type": order.employee.user_type.name,
                 "is_created": (order.updated_at - order.created_at).total_seconds() < 5
             })
-            print((order.updated_at - order.created_at).total_seconds())
         return Response({
             "success": True,
             "timestamp": now_.isoformat(),

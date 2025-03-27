@@ -28,7 +28,9 @@ class GenerateToken(APIView):
             return Response({'success': False, 'message': message})
         token = ''.join([choice(string.ascii_letters + string.digits) for _ in range(32)])
         redis.set(f'token:{token}', employee.id, 180)
-        return Response({'success': True, 'token': token})
+        return Response({
+            'success': True, 'token': token, 'employee_name': employee.name, 'employee_profile': employee.face_image
+        })
 
 
 class GetRecentOrderList(APIView):
@@ -61,6 +63,7 @@ class GetRecentOrderList(APIView):
                     "id": order.id,
                     "name": order.name,
                     "is_cancelled": order.is_cancelled,
+                    "food_size": order.food_size,
                     "created_at": timezone.localtime(order.created_at, timezone=utc_plus_5)
                 } for order in orders
             ]
