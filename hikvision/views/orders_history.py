@@ -29,7 +29,7 @@ class GenerateToken(APIView):
         token = ''.join([choice(string.ascii_letters + string.digits) for _ in range(32)])
         redis.set(f'token:{token}', employee.id, 180)
         return Response({
-            'success': True, 'token': token, 'employee_name': employee.name, 'employee_profile': employee.face_image
+            'success': True, 'token': token, 'employee_name': employee.name, 'employee_profile': employee.face_image.url
         })
 
 
