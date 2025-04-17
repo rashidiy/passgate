@@ -82,7 +82,7 @@ class Employee(models.Model):
 class Order(models.Model):
     class FoodSizeChoice(models.TextChoices):
         SMALL = "0.5", "Kichik"
-        MEDIUM = "1.0", "O'rta"
+        MEDIUM = "1", "O'rta"
         BIG = "1.5", "Katta"
 
     employee = models.ForeignKey(Employee, on_delete=models.SET_NULL, null=True,
