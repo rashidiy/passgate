@@ -12,14 +12,6 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 
-JAZZMIN_SETTINGS = {
-    "topmenu_links": [
-        {"name": "Home", "url": "admin:index"},
-        {"name": "Employees", "model": "app1.Employee"},
-        {"name": "Orders", "model": "app1.Order"},
-    ]
-}
-
 INSTALLED_APPS = [
     'jazzmin',
     'django.contrib.admin',
@@ -28,9 +20,6 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-
-    'rest_framework',
-    'hikvision',
 ]
 
 MIDDLEWARE = [
@@ -97,57 +86,7 @@ USE_TZ = True
 STATIC_URL = 'static/'
 STATIC_ROOT = BASE_DIR / 'static'
 
+MEDIA_URL = 'media/'
+MEDIA_ROOT = BASE_DIR / 'media'
+
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-
-JAZZMIN_SETTINGS = {
-    # Main branding
-    "site_title": "SKUD beta (0.0.12)",
-    "site_header": "SamyySoft",
-    "site_brand": "SamyySoft",
-    "welcome_sign": "Welcome to the SamyySoft Admin Portal",
-    "copyright": "OOO \"SamyySoft\"",
-
-    # Models & search
-    "search_model": "app1.Employee",
-
-    # Top menu links (with external and internal links)
-    "topmenu_links": [
-        {"name": "Home", "url": "admin:index", "permissions": ["auth.view_user"]},
-    ],
-
-    "show_sidebar": True,
-    "navigation_expanded": True,
-    "hide_apps": [],
-    "hide_models": [],
-    "order_with_respect_to": ["auth", "app1"],
-    "icons": {
-        "auth.Group": "fas fa-users",
-        "auth.User": "fas fa-user",
-        "app1.Employee": "fas fa-user-tie",
-        "app1.Order": "fas fa-box",
-        "app1.UserType": "fas fa-th-list",
-    },
-    "default_icon_parents": "fas fa-folder-open",
-    "default_icon_children": "fas fa-file-alt",
-    "custom_link_icons": {
-        "app1": "fas fa-beer",
-    },
-}
-
-REST_FRAMEWORK = {
-    'DEFAULT_PERMISSION_CLASSES': [
-        'rest_framework.permissions.AllowAny'
-    ],
-    'DEFAULT_AUTHENTICATION_CLASSES': [
-        'rest_framework.authentication.SessionAuthentication',
-        'rest_framework.authentication.TokenAuthentication',
-    ],
-}
-
-REDIS_HOST = 'localhost'
-REDIS_PORT = 6379
-REDIS_DB = 0
-REDIS_PASSWORD = None
-
-CANCEL_RESTRICT_BEGIN = "19:30"
-CANCEL_RESTRICT_END = "7:00"
