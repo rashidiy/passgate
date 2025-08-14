@@ -1,4 +1,5 @@
 import os
+import sys
 from pathlib import Path
 
 from dotenv import load_dotenv
@@ -6,8 +7,11 @@ from dotenv import load_dotenv
 load_dotenv()
 
 BASE_DIR = Path(__file__).resolve().parent.parent
+sys.path.append(os.path.join(BASE_DIR, 'apps'))
 
 SECRET_KEY = os.getenv("SECRET_KEY")
+SALT_KEY = os.getenv("SALT_KEY").split(',')
+
 DEBUG = True
 
 ALLOWED_HOSTS = ['*']
@@ -20,6 +24,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
+    # apps
+    'devices'
 ]
 
 MIDDLEWARE = [
