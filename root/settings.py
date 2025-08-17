@@ -4,6 +4,8 @@ from pathlib import Path
 
 from dotenv import load_dotenv
 
+from .jz_settings import *
+
 load_dotenv()
 
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -26,7 +28,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     # apps
-    'devices'
+    'devices',
+    'users'
 ]
 
 MIDDLEWARE = [
@@ -44,8 +47,7 @@ ROOT_URLCONF = 'root.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': ['templates']
-        ,
+        'DIRS': [BASE_DIR / 'templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [

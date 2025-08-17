@@ -3,7 +3,7 @@ from django.db import models
 from django.utils.translation import gettext_lazy as _
 from encrypted_fields import EncryptedTextField
 
-from devices.plugins.DS_K1T671MF import DS_K1T671MF
+from devices.plugins.hikvision.DS_K1T671MF import DS_K1T671MF
 
 
 class Device(models.Model):
@@ -16,7 +16,8 @@ class Device(models.Model):
 
     name = models.CharField(max_length=100)
     type = models.CharField(max_length=100, choices=DeviceTypes.choices, default=DeviceTypes.ACCESS)
-    model = models.CharField(max_length=100, choices=DeviceModels.choices, default=DeviceModels.DS_K1T671MF, editable=False)
+    model = models.CharField(max_length=100, choices=DeviceModels.choices, default=DeviceModels.DS_K1T671MF,
+                             editable=False)
     ip_address = models.GenericIPAddressField(_('IP'))
     port = models.IntegerField()
     username = models.CharField(max_length=100)
@@ -33,7 +34,8 @@ class Device(models.Model):
     def _get_old_values(self):
         if not (self.__old_pwd_placeholder and self.__old_username):
             old_values = Device.objects.filter(pk=self.pk).values_list('password_placeholder', 'username').first()
-            self.__old_pwd_placeholder, self.__old_username = old_values
+            if old_values:
+                self.__old_pwd_placeholder, self.__old_username = old_values
 
     def check_model_type(self):
         device = DS_K1T671MF(self.ip_address, self.port, self.username, self.password_placeholder)
@@ -57,4 +59,3 @@ class Device(models.Model):
         elif self.__old_username != self.username:
             self.check_model_type()
         return super().clean()
-
