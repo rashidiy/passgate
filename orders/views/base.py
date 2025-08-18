@@ -1,6 +1,6 @@
 from rest_framework.response import Response
 
-from hikvision.plugins.DS_K1T671MF.camera import switch_cam, check_face
+from orders.plugins.DS_K1T671MF.camera import switch_cam, check_face
 
 
 def get_face_result():

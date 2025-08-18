@@ -2,8 +2,8 @@ from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from hikvision.models import Employee, Order
-from hikvision.views.base import get_face_result
+from orders.models import Employee, Order
+from orders.views.base import get_face_result
 
 
 class OrderFoodApi(APIView):

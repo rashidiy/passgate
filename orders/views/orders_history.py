@@ -8,9 +8,9 @@ from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from hikvision.models import Employee, Order
-from hikvision.utils.redis_manager import RedisManager
-from hikvision.views.base import get_face_result
+from orders.models import Employee, Order
+from orders.utils.redis_manager import RedisManager
+from orders.views.base import get_face_result
 from root import settings
 
 redis = RedisManager()

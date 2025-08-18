@@ -1,7 +1,7 @@
 from django.views.generic.edit import FormView
 from django.urls import reverse_lazy
 from .forms import OrderForm
-from hikvision.plugins.DS_K1T671MF.camera import check_face, switch_cam
+from hik.plugins.DS_K1T671MF.camera import check_face, switch_cam
 from .models import Employee, Order
 from django.http import JsonResponse
 

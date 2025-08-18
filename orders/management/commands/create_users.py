@@ -1,7 +1,7 @@
 from django.core.management import BaseCommand
 
-from hikvision.models import Employee
-from hikvision.plugins.DS_K1T671MF.camera import send_acs_request
+from orders.models import Employee
+from orders.plugins.DS_K1T671MF.camera import send_acs_request
 
 
 # class Command(BaseCommand):

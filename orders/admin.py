@@ -4,7 +4,7 @@ from django.http import JsonResponse, HttpResponse
 from django.template.response import TemplateResponse
 from django.utils.html import format_html
 
-from hikvision.plugins.DS_K1T671MF.camera import create_user, delete_user, update_user
+from orders.plugins.DS_K1T671MF.camera import create_user, delete_user, update_user
 from .models import Employee, Order, UserType
 
 
@@ -89,6 +89,6 @@ class OrderAdmin(admin.ModelAdmin):
     get_user_type.short_description = 'User Type'
 
     def get_readonly_fields(self, request, obj=None):
-        if request.user.has_perm('hikvision.can_cancel_orders'):
+        if request.user.has_perm('hik.can_cancel_orders'):
             return ('created_at', 'updated_at')
         return ('created_at', 'updated_at', 'is_cancelled')

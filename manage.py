@@ -25,7 +25,7 @@ import sys
 # print_env_details()
 
 
-from hikvision.plugins.DS_K1T671MF.camera import switch_cam
+from orders.plugins.DS_K1T671MF.camera import switch_cam
 
 
 def main():

@@ -55,7 +55,7 @@
                         let newRow = document.createElement("tr");
                         newRow.innerHTML = `
                             <td class="action-checkbox"><input type="checkbox" name="_selected_action" value="${order.id}" class="action-select" aria-label="Select this object for an action - Order object (${order.id})"></td>
-                            <th class="field-employee nowrap"><a href="/admin/hikvision/order/${order.id}/change/">${order.employee_name}</a></th>
+                            <th class="field-employee nowrap"><a href="/admin/hik/order/${order.id}/change/">${order.employee_name}</a></th>
                             <td class="field-name">${order.employee_name}</td>
                             <td class="field-food_size">${order.food_size}</td>
                             <td class="field-is_cancelled"><img src="/static/admin/img/icon-${order.is_cancelled ? 'yes' : 'no'}.svg" alt="${order.is_cancelled}"></td>
@@ -68,7 +68,7 @@
                         existingRow.classList.add('warning');
                         existingRow.innerHTML = `
                             <td class="action-checkbox"><input type="checkbox" name="_selected_action" value="${order.id}" class="action-select" aria-label="Select this object for an action - Order object (${order.id})"></td>
-                            <th class="field-employee nowrap"><a href="/admin/hikvision/order/${order.id}/change/">${order.employee_name}</a></th>
+                            <th class="field-employee nowrap"><a href="/admin/hik/order/${order.id}/change/">${order.employee_name}</a></th>
                             <td class="field-name">${order.employee_name}</td>
                             <td class="field-food_size">${order.food_size}</td>
                             <td class="field-is_cancelled"><img src="/static/admin/img/icon-${order.is_cancelled ? 'yes' : 'no'}.svg" alt="${order.is_cancelled}"></td>
