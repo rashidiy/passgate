@@ -26,6 +26,11 @@ class UserAdmin(AtomicAdminModelOverride):
 
     @admin.display(description=_('Image'))
     def image_tag(self, obj):
+        if obj.image:
+            image_url = obj.image.url
+        else:
+            image_url = '/static/users/img.png'
+
         return format_html('<img src="{}" style="max-width: 150px; max-height: 100px; border-radius: 10px;'
                            ' box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.08);'
-                           ' border: 1px solid #ddd; padding: 3px;" />'.format(obj.image.url))
+                           ' border: 1px solid #ddd; padding: 3px;" />'.format(image_url))

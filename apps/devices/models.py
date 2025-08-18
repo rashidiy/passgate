@@ -27,6 +27,13 @@ class Device(models.Model):
     __old_username = None
     __old_pwd_placeholder = None
 
+    def __str__(self):
+        return '[%s] %s' % (Device.DeviceTypes(self.type).label, self.name)
+
+    class Meta:
+        verbose_name = _('Device')
+        verbose_name_plural = _('Devices')
+
     @property
     def password(self):
         return self.encrypted_password or self.password_placeholder
@@ -38,6 +45,9 @@ class Device(models.Model):
                 self.__old_pwd_placeholder, self.__old_username = old_values
 
     def check_model_type(self):
+        if self.type == Device.DeviceTypes.ORDER and Device.objects.filter(type=Device.DeviceTypes.ORDER).exists():
+            raise ValidationError(_('You cannot create order Device more than one. Contact administrator.'))
+
         device = DS_K1T671MF(self.ip_address, self.port, self.username, self.password_placeholder)
         try:
             device.check_model_match()

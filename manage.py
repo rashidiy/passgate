@@ -4,7 +4,10 @@ import sys
 
 sys.path.append('apps')
 
-from orders.plugins.DS_K1T671MF import switch_cam
+
+def switch_cam():
+    from devices.plugins import OrderManager
+    OrderManager.switch_cam(False)
 
 
 def main():
@@ -22,5 +25,5 @@ def main():
 
 
 if __name__ == '__main__':
-    switch_cam(False)
     main()
+    switch_cam()

@@ -24,7 +24,7 @@ class User(models.Model):
 
     name = models.CharField(_('Name'), max_length=100)
     gender = models.CharField(max_length=7, choices=Genders.choices, default=Genders.MALE)
-    image = models.ImageField(upload_to='users', null=True, blank=True, validators=[validate_image_size])
+    image = models.ImageField(upload_to='users/', null=True, blank=True, validators=[validate_image_size])
     ex_data = models.TextField(editable=False)
 
     @property
@@ -43,15 +43,18 @@ class User(models.Model):
     def save(self, *args, **kwargs):
         if self.data != self.old_data:
             self.ex_data = json.dumps(self.data)
+            super().save(*args, **kwargs)
             if self.pk:
                 for access_point in self.access_points.all():
                     access_point_post_save(User, access_point, False)
-            super().save(*args, **kwargs)
+
+    def __str__(self):
+        return self.name
 
 
 class Card(models.Model):
     card_no = models.CharField(max_length=20, unique=True)
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='cards')
 
     def get_cards_count(self):
         return Card.objects.filter(user=self.user).count()
@@ -100,6 +103,11 @@ def access_point_post_save(sender, instance: AccessPoint, created: bool, **kwarg
 
     if created:
         camera.create_user(instance)
+        for card in instance.user.cards.all():
+            try:
+                camera.add_card(card)
+            except ValidationError:
+                continue
     else:
         camera.update_user(instance)
 

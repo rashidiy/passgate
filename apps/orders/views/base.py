@@ -1,12 +1,12 @@
 from rest_framework.response import Response
 
-from orders.plugins.DS_K1T671MF.camera import switch_cam, check_face
+from devices.plugins import OrderManager
 
 
 def get_face_result():
-    switch_cam(True)
-    face_result = check_face(timeout=10)
-    switch_cam(False)
+    OrderManager.switch_cam(True)
+    face_result = OrderManager.check_face(timeout=10)
+    OrderManager.switch_cam(False)
     if face_result == 'unknown':
         error_message = 'Yuz ro\'yxatga olinmagan.'
         return Response({'success': False, 'message': error_message})

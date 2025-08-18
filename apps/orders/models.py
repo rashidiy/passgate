@@ -44,7 +44,7 @@ class Order(models.Model):
         formatted_time = created_at.strftime("%d-%B, %Y year %H:%M")
 
         for en, uz in months_uz.items():
-            formatted_time = formatted_time.replace(en, uz)
+            formatted_time = formatted_time.replace(en, str(uz))
 
         return formatted_time
 

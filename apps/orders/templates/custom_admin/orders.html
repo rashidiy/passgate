@@ -61,7 +61,6 @@
                             <td class="field-is_cancelled"><img src="/static/admin/img/icon-${order.is_cancelled ? 'yes' : 'no'}.svg" alt="${order.is_cancelled}"></td>
                             <td class="field-created_at nowrap">${order.created_at}</td>
                             <td class="field-updated_at nowrap">${order.updated_at}</td>
-                            <td class="field-get_user_type">${order.user_type}</td>
                         `;
                         tableBody.prepend(newRow);
                     } else if (existingRow) {
@@ -74,7 +73,6 @@
                             <td class="field-is_cancelled"><img src="/static/admin/img/icon-${order.is_cancelled ? 'yes' : 'no'}.svg" alt="${order.is_cancelled}"></td>
                             <td class="field-created_at nowrap">${order.created_at}</td>
                             <td class="field-updated_at nowrap">${order.updated_at}</td>
-                            <td class="field-get_user_type">${order.user_type}</td>
                         `;
                         setTimeout(() => existingRow.classList.remove('warning'), 100000);
                     }

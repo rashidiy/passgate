@@ -29,7 +29,7 @@ class GenerateToken(APIView):
         token = ''.join([choice(string.ascii_letters + string.digits) for _ in range(32)])
         redis.set(f'token:{token}', employee.id, 180)
         return Response({
-            'success': True, 'token': token, 'employee_name': employee.name, 'employee_profile': employee.face_image.url
+            'success': True, 'token': token, 'employee_name': employee.name, 'employee_profile': employee.image.url
         })
 
 
@@ -40,12 +40,12 @@ class GetRecentOrderList(APIView):
         if len(token) != 32:
             return Response({'success': False, "message": "Invalid \"token\""}, status.HTTP_400_BAD_REQUEST)
 
-        employee_id = redis.get(f'token:{token}')
+        user_id = redis.get(f'token:{token}')
 
-        if not employee_id:
+        if not user_id:
             return Response({'success': False, "message": "Token expired"}, status.HTTP_403_FORBIDDEN)
         try:
-            employee = User.objects.get(id=employee_id)
+            employee = User.objects.get(id=user_id)
         except User.DoesNotExist:
             message = 'Shaxs tizimga kiritilmagan'
             return Response({'success': False, 'message': message}, status.HTTP_503_SERVICE_UNAVAILABLE)
@@ -79,8 +79,8 @@ class CancelOrder(APIView):
         if not (order_id := request.GET.get('order_id')):
             return Response({'success': False, "message": "Missing \"order_id\""}, status=status.HTTP_400_BAD_REQUEST)
 
-        employee_id = redis.get(f'token:{token}')
-        if not employee_id:
+        user_id = redis.get(f'token:{token}')
+        if not user_id:
             return Response({'success': False, "message": "Invalid or expired token"},
                             status=status.HTTP_401_UNAUTHORIZED)
 
@@ -103,7 +103,7 @@ class CancelOrder(APIView):
 
         try:
             distance = timezone.now() - timedelta(minutes=10)
-            order = Order.objects.get(id=order_id, employee_id=employee_id)
+            order = Order.objects.get(id=order_id, user_id=user_id)
             if order.created_at < distance:
                 message = 'Buyurtmani bekor qilish muddati tugagan. Iltimos administratorga murojaat qiling!'
                 return Response({'success': False, 'message': message}, status=status.HTTP_403_FORBIDDEN)

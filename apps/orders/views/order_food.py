@@ -22,11 +22,11 @@ class OrderFoodApi(APIView):
 
         if face_result:
             try:
-                employee = User.objects.get(id=face_result)
+                user = User.objects.get(id=face_result)
             except User.DoesNotExist:
                 message = 'Shaxs tizimga kiritilmagan'
                 return Response({'success': False, 'message': message})
-            Order.objects.create(employee=employee, food_size=food_size)
+            Order.objects.create(user=user, food_size=food_size)
 
             success_message = 'Buyurtma qabul qilindi!'
             return Response({'success': True, 'message': success_message})
