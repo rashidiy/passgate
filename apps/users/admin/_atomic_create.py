@@ -13,24 +13,10 @@ from django.db import router, transaction
 from django.forms.formsets import all_valid
 from django.utils.translation import gettext as _
 
-from users.models import User, Card, AccessPoint
 
-
-class CardInline(admin.TabularInline):
-    model = Card
-    extra = 1
-    max_num = 5
-
-
-class AccessPointInline(admin.StackedInline):
-    model = AccessPoint
-    extra = 1
-
-
-@admin.register(User)
-class UserAdmin(admin.ModelAdmin):
-    list_display = 'pk', 'name'
-    inlines = [CardInline, AccessPointInline]
+class AtomicAdminModelOverride(admin.ModelAdmin):
+    class Meta:
+        abstract = True
 
     def _changeform_view(self, request, object_id, form_url, extra_context):
         to_field = request.POST.get(TO_FIELD_VAR, request.GET.get(TO_FIELD_VAR))
@@ -95,11 +81,10 @@ class UserAdmin(admin.ModelAdmin):
                         self.log_change(request, new_object, change_message)
                         return self.response_change(request, new_object)
                 except ValidationError as e:
-                    transaction.set_rollback(True)
                     msgs = getattr(e, "messages", None) or [str(e)]
                     for msg in msgs:
                         if msg == 'SubpicAnalysisModelingError':
-                            form.add_error('image', msg)
+                            form.add_error('image', _('Unable to detect face from image or invalid image.'))
                         else:
                             form.add_error(None, msg)
                     form_validated = False

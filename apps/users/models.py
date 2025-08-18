@@ -37,7 +37,9 @@ class User(models.Model):
     def save(self, *args, **kwargs):
         if self.data != self.old_data:
             self.ex_data = json.dumps(self.data)
-            print('save')
+            if self.pk:
+                for access_point in self.access_points.all():
+                    access_point_post_save(User, access_point, False)
             super().save(*args, **kwargs)
 
 
@@ -100,3 +102,13 @@ def access_point_post_delete(sender, instance: AccessPoint, **kwargs):
     DS_K1T671MF(
         instance.device.ip_address, instance.device.port, instance.device.username, instance.device.password
     ).delete_user(instance)
+
+
+@receiver(post_save, sender=Card)
+def card_post_save(sender, instance: Card, created: bool, **kwargs):
+    from devices.plugins import DS_K1T671MF
+    for access_point in instance.user.access_points.all():
+        DS_K1T671MF(
+            access_point.device.ip_address, access_point.device.port,
+            access_point.device.username, access_point.device.password
+        )

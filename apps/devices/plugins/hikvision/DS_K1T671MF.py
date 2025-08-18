@@ -6,7 +6,7 @@ from django.core.exceptions import ValidationError
 from django.utils.translation import gettext_lazy as _
 from requests import request, ConnectTimeout
 
-from users.models import AccessPoint
+from users.models import AccessPoint, Card
 from .base import HikvisionWebLogin
 
 
@@ -29,9 +29,8 @@ class DS_K1T671MF(HikvisionWebLogin):  # noqa
                 return True
         response.raise_for_status()
 
-    def _record_user_data(self, access_device: AccessPoint):
+    def _record_user_data(self, method, path, access_device: AccessPoint):
         print('user_data')
-        path = '/ISAPI/AccessControl/UserInfo/Record'
         params = {'format': 'json'}
         data = {
             "UserInfo": {
@@ -53,7 +52,7 @@ class DS_K1T671MF(HikvisionWebLogin):  # noqa
             }
         }
         try:
-            response = request('POST', self.url(path), params=params, json=data, auth=self.auth, timeout=5)
+            response = request(method, self.url(path), params=params, json=data, auth=self.auth, timeout=5)
         except ConnectTimeout:
             raise ValidationError(_('Unable to connect to device with given IP and Port'))
         match response.status_code:
@@ -61,7 +60,7 @@ class DS_K1T671MF(HikvisionWebLogin):  # noqa
                 raise ValidationError(_("Wrong username or password."))
             case 400:
                 if response_json := response.json():
-                    raise ValidationError(_(response_json.get('subStatusCode')))
+                    raise ValidationError(response_json.get('subStatusCode'))
             case 200:
                 return True
         response.raise_for_status()
@@ -73,28 +72,31 @@ class DS_K1T671MF(HikvisionWebLogin):  # noqa
         data = {"faceLibType": "blackFD", "FDID": "1", "FPID": "user%s" % access_device.user.id}
         file_type = guess_type(access_device.user.image.path)
         file_name = access_device.user.image.name.split('/')[-1]
-        files = {
-            "FaceDataRecord": ("metadata.json", json.dumps(data), "application/json"),
-            "img": (file_name, access_device.user.image.file.file, f"image/{file_type}"),
-        }
-        try:
-            response = request('PUT', self.url(path), params=params, data=data, files=files, auth=self.auth)
-        except ConnectTimeout:
-            raise ValidationError(_('Unable to connect to device with given IP and Port'))
+        with open(access_device.user.image.path, 'rb') as image_file:
+            files = {
+                "FaceDataRecord": ("metadata.json", json.dumps(data), "application/json"),
+                "img": (file_name, image_file, f"image/{file_type}"),
+            }
+            try:
+                response = request('PUT', self.url(path), params=params, data=data, files=files, auth=self.auth)
+            except ConnectTimeout:
+                raise ValidationError(_('Unable to connect to device with given IP and Port'))
 
         match response.status_code:
             case 401:
                 raise ValidationError(_("Wrong username or password."))
             case 400:
                 if response_json := response.json():
-                    raise ValidationError(_(response_json.get('subStatusCode')))
+                    print(files)
+                    print(response_json)
+                    raise ValidationError(response_json.get('subStatusCode'))
             case 200:
                 return True
         response.raise_for_status()
 
     def create_user(self, access_device: AccessPoint):
         try:
-            self._record_user_data(access_device)
+            self._record_user_data('POST', '/ISAPI/AccessControl/UserInfo/Record', access_device)
             if access_device.user.image:
                 self._setup_face_id(access_device)
         except ValidationError as e:
@@ -102,7 +104,9 @@ class DS_K1T671MF(HikvisionWebLogin):  # noqa
             raise e
 
     def update_user(self, access_device: AccessPoint):
-        ...
+        self._record_user_data('PUT', '/ISAPI/AccessControl/UserInfo/Modify', access_device)
+        if access_device.user.image:
+            self._setup_face_id(access_device)
 
     def delete_user(self, access_device: AccessPoint):
         print('delete')
@@ -119,7 +123,13 @@ class DS_K1T671MF(HikvisionWebLogin):  # noqa
                 raise ValidationError(_("Wrong username or password."))
             case 400:
                 if response_json := response.json():
-                    raise ValidationError(_(response_json.get('subStatusCode')))
+                    raise ValidationError(response_json.get('subStatusCode'))
             case 200:
                 return True
         response.raise_for_status()
+
+    def add_card(self, card: Card, access_device: AccessPoint):
+        ...
+
+    def remove_card(self, card: Card, access_device: AccessPoint):
+        ...
