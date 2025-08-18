@@ -128,8 +128,40 @@ class DS_K1T671MF(HikvisionWebLogin):  # noqa
                 return True
         response.raise_for_status()
 
-    def add_card(self, card: Card, access_device: AccessPoint):
-        ...
+    def add_card(self, card: Card):
+        path = '/ISAPI/AccessControl/CardInfo/Record'
+        params = {'format': 'json'}
+        data = {"CardInfo": {"employeeNo": "user%s" % card.user_id, "cardNo": card.card_no, "cardType": "normalCard"}}
+        try:
+            response = request('POST', self.url(path), params=params, json=data, auth=self.auth)
+        except ConnectTimeout:
+            raise ValidationError(_('Unable to connect to device with given IP and Port'))
 
-    def remove_card(self, card: Card, access_device: AccessPoint):
-        ...
+        match response.status_code:
+            case 401:
+                raise ValidationError(_("Wrong username or password."))
+            case 400:
+                if response_json := response.json():
+                    raise ValidationError(response_json.get('subStatusCode'))
+            case 200:
+                return True
+        response.raise_for_status()
+
+    def remove_card(self, card: Card):
+        path = '/ISAPI/AccessControl/CardInfo/Delete'
+        params = {'format': 'json'}
+        data = {"CardInfoDelCond": {"CardNoList": [{"cardNo": card.card_no}]}}
+        try:
+            response = request('PUT', self.url(path), params=params, json=data, auth=self.auth)
+        except ConnectTimeout:
+            raise ValidationError(_('Unable to connect to device with given IP and Port'))
+
+        match response.status_code:
+            case 401:
+                raise ValidationError(_("Wrong username or password."))
+            case 400:
+                if response_json := response.json():
+                    raise ValidationError(response_json.get('subStatusCode'))
+            case 200:
+                return True
+        response.raise_for_status()

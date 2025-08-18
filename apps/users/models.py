@@ -16,7 +16,7 @@ class User(models.Model):
         FEMALE = 'female', _('Female')
         UNKNOWN = 'unknown', _('Unknown')
 
-    name = models.CharField(max_length=100)
+    name = models.CharField(_('Name'), max_length=100)
     gender = models.CharField(max_length=7, choices=Genders.choices, default=Genders.MALE)
     image = models.ImageField(upload_to='users', null=True, blank=True)
     ex_data = models.TextField(editable=False)
@@ -53,6 +53,9 @@ class Card(models.Model):
     def save(self, *args, **kwargs):
         if self.get_cards_count() >= 5:
             raise ValidationError(_('Limit of cards exceeded for user %s.') % self.user.name)
+        if self.pk:
+            card_post_delete(Card, Card.objects.get(pk=self.pk))
+        card_post_save(Card, self, not self.pk)
         super().save(*args, **kwargs)
 
 
@@ -104,11 +107,20 @@ def access_point_post_delete(sender, instance: AccessPoint, **kwargs):
     ).delete_user(instance)
 
 
-@receiver(post_save, sender=Card)
 def card_post_save(sender, instance: Card, created: bool, **kwargs):
     from devices.plugins import DS_K1T671MF
     for access_point in instance.user.access_points.all():
         DS_K1T671MF(
             access_point.device.ip_address, access_point.device.port,
             access_point.device.username, access_point.device.password
-        )
+        ).add_card(instance)
+
+
+@receiver(post_delete, sender=Card)
+def card_post_delete(sender, instance: Card, **kwargs):
+    from devices.plugins import DS_K1T671MF
+    for access_point in instance.user.access_points.all():
+        DS_K1T671MF(
+            access_point.device.ip_address, access_point.device.port,
+            access_point.device.username, access_point.device.password
+        ).remove_card(instance)
