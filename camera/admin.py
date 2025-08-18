@@ -4,7 +4,7 @@ from django.http import JsonResponse, HttpResponse
 from django.template.response import TemplateResponse
 from django.utils.html import format_html
 
-from orders.plugins.DS_K1T671MF.camera import create_user, delete_user, update_user
+from camera.plugins.DS_K1T671MF.camera import create_user, delete_user, update_user
 from .models import Employee, Order, UserType
 
 

@@ -1,6 +1,6 @@
 from django import forms
 
-from orders.models import Order
+from camera.models import Order
 
 
 class OrderForm(forms.Form):

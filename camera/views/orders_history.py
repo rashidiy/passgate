@@ -8,9 +8,9 @@ from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from orders.models import Employee, Order
-from orders.utils.redis_manager import RedisManager
-from orders.views.base import get_face_result
+from camera.models import Employee, Order
+from camera.utils.redis_manager import RedisManager
+from camera.views.base import get_face_result
 from root import settings
 
 redis = RedisManager()

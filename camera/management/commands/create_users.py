@@ -1,7 +1,7 @@
 from django.core.management import BaseCommand
 
-from orders.models import Employee
-from orders.plugins.DS_K1T671MF.camera import send_acs_request
+from camera.models import Employee
+from camera.plugins.DS_K1T671MF.camera import send_acs_request
 
 
 # class Command(BaseCommand):
