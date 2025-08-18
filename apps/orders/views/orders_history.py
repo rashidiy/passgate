@@ -8,9 +8,9 @@ from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from camera.models import Employee, Order
-from camera.utils.redis_manager import RedisManager
-from camera.views.base import get_face_result
+from orders.models import User, Order
+from orders.utils.redis_manager import RedisManager
+from orders.views.base import get_face_result
 from root import settings
 
 redis = RedisManager()
@@ -22,8 +22,8 @@ class GenerateToken(APIView):
         if isinstance(face_result, Response):
             return face_result
         try:
-            employee = Employee.objects.get(id=face_result)
-        except Employee.DoesNotExist:
+            employee = User.objects.get(id=face_result)
+        except User.DoesNotExist:
             message = 'Shaxs tizimga kiritilmagan'
             return Response({'success': False, 'message': message})
         token = ''.join([choice(string.ascii_letters + string.digits) for _ in range(32)])
@@ -45,8 +45,8 @@ class GetRecentOrderList(APIView):
         if not employee_id:
             return Response({'success': False, "message": "Token expired"}, status.HTTP_403_FORBIDDEN)
         try:
-            employee = Employee.objects.get(id=employee_id)
-        except Employee.DoesNotExist:
+            employee = User.objects.get(id=employee_id)
+        except User.DoesNotExist:
             message = 'Shaxs tizimga kiritilmagan'
             return Response({'success': False, 'message': message}, status.HTTP_503_SERVICE_UNAVAILABLE)
 

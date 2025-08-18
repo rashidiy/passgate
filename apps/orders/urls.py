@@ -2,8 +2,8 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.urls import path
 
-from camera.views import OrderFoodApi, GetRecentOrderList, OrderList
-from camera.views.orders_history import GenerateToken, CancelOrder
+from orders.views import OrderFoodApi, GetRecentOrderList, OrderList
+from orders.views.orders_history import GenerateToken, CancelOrder
 
 urlpatterns = (
         [

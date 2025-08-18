@@ -2,8 +2,8 @@ from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from camera.models import Employee, Order
-from camera.views.base import get_face_result
+from orders.models import User, Order
+from orders.views.base import get_face_result
 
 
 class OrderFoodApi(APIView):
@@ -22,8 +22,8 @@ class OrderFoodApi(APIView):
 
         if face_result:
             try:
-                employee = Employee.objects.get(id=face_result)
-            except Employee.DoesNotExist:
+                employee = User.objects.get(id=face_result)
+            except User.DoesNotExist:
                 message = 'Shaxs tizimga kiritilmagan'
                 return Response({'success': False, 'message': message})
             Order.objects.create(employee=employee, food_size=food_size)

@@ -1,9 +1,18 @@
 import os
+import sys
 from pathlib import Path
 
-BASE_DIR = Path(__file__).resolve().parent.parent
+from dotenv import load_dotenv
 
-SECRET_KEY = 'django-insecure-fbbix&n=niryr5#cf!&z^$ak4s977(w%7p0^%(#-(52jr%wh4t'
+from .jz_settings import *
+
+load_dotenv()
+
+BASE_DIR = Path(__file__).resolve().parent.parent
+sys.path.append(os.path.join(BASE_DIR, 'apps'))
+
+SECRET_KEY = os.getenv("SECRET_KEY")
+SALT_KEY = os.getenv("SALT_KEY").split(',')
 
 DEBUG = True
 
@@ -27,7 +36,10 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     'rest_framework',
-    'camera',
+
+    'devices',
+    'users',
+    'orders',
 ]
 
 MIDDLEWARE = [
@@ -45,8 +57,7 @@ ROOT_URLCONF = 'root.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': ['camera/templates']
-        ,
+        'DIRS': [BASE_DIR / 'templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -94,42 +105,10 @@ USE_TZ = True
 STATIC_URL = 'static/'
 STATIC_ROOT = BASE_DIR / 'static'
 
+MEDIA_URL = 'media/'
+MEDIA_ROOT = BASE_DIR / 'media'
+
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-
-JAZZMIN_SETTINGS = {
-    # Main branding
-    "site_title": "SKUD beta (0.0.12)",
-    "site_header": "SamyySoft",
-    "site_brand": "SamyySoft",
-    "welcome_sign": "Welcome to the SamyySoft Admin Portal",
-    "copyright": "OOO \"SamyySoft\"",
-
-    # Models & search
-    "search_model": "app1.Employee",
-
-    # Top menu links (with external and internal links)
-    "topmenu_links": [
-        {"name": "Home", "url": "admin:index", "permissions": ["auth.view_user"]},
-    ],
-
-    "show_sidebar": True,
-    "navigation_expanded": True,
-    "hide_apps": [],
-    "hide_models": [],
-    "order_with_respect_to": ["auth", "app1"],
-    "icons": {
-        "auth.Group": "fas fa-users",
-        "auth.User": "fas fa-user",
-        "app1.Employee": "fas fa-user-tie",
-        "app1.Order": "fas fa-box",
-        "app1.UserType": "fas fa-th-list",
-    },
-    "default_icon_parents": "fas fa-folder-open",
-    "default_icon_children": "fas fa-file-alt",
-    "custom_link_icons": {
-        "app1": "fas fa-beer",
-    },
-}
 
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': [

@@ -6,7 +6,7 @@ from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from camera.models import Order
+from orders.models import Order
 
 
 class OrderList(APIView):
@@ -31,12 +31,12 @@ class OrderList(APIView):
         for order in Order.objects.filter(updated_at__gt=timestamp):
             result.append({
                 "id": order.id,
-                "employee_name": order.employee.name,
+                "employee_name": order.user.name,
                 "food_size": Order.FoodSizeChoice(order.food_size).label,
                 "is_cancelled": order.is_cancelled,
                 "created_at": Order.format_time(order.created_at),
                 "updated_at": Order.format_time(order.updated_at),
-                "user_type": order.employee.user_type.name,
+                "user_type": order.user.user_type.name,
                 "is_created": (order.updated_at - order.created_at).total_seconds() < 5
             })
         return Response({
