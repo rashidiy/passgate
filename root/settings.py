@@ -118,6 +118,8 @@ REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework.authentication.SessionAuthentication',
     ],
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
+    'PAGE_SIZE': 20
 }
 
 REDIS_HOST = 'localhost'
@@ -127,3 +129,7 @@ REDIS_PASSWORD = None
 
 CANCEL_RESTRICT_BEGIN = "19:30"
 CANCEL_RESTRICT_END = "7:00"
+
+SWAGGER_SETTINGS = {
+    "DEFAULT_AUTO_SCHEMA_CLASS": "utils.swagger.TaggedAutoSchema",
+}

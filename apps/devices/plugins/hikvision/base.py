@@ -3,7 +3,10 @@ import time
 import xml.etree.ElementTree as ET
 
 import requests
+from django.core.exceptions import ValidationError
 from requests import Response, auth, ConnectTimeout
+
+from django.utils.translation import gettext_lazy as _
 
 
 class Capabilities:
@@ -50,11 +53,13 @@ class HikvisionWebLogin:
         try:
             response = self.session.get(self.url(path), params={'username': self.username}, timeout=5)
         except ConnectTimeout:
-            raise ConnectionError('Connection timed out')
-        if response.status_code == 200:
-            return Capabilities(response)
-        else:
-            response.raise_for_status()
+            raise ValidationError('Connection timed out')
+        match response.status_code:
+            case 200:
+                return Capabilities(response)
+            case 404:
+                raise ValidationError(_('Wrong username.'))
+        response.raise_for_status()
 
     @staticmethod
     def sha256(data):
@@ -131,7 +136,7 @@ class HikvisionWebLogin:
             'Sessiontag': session_tag
         }
 
-    def get_token(self) -> str:
+    def get_token(self):
         path = '/ISAPI/Security/token'
         params = {'format': 'json'}
         headers = self.get_web_session_and_tag()

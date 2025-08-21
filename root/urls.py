@@ -16,27 +16,13 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-from drf_yasg import openapi
-from drf_yasg.views import get_schema_view
-from rest_framework import permissions
 
-schema_view = get_schema_view(
-    openapi.Info(
-        title="SKUD API",
-        default_version='v1',
-        description="Documentation for integrated usage of skud",
-        terms_of_service='None',
-        contact=openapi.Contact(name='Telegram', url='https://t.me/samyy_soft_support'),
-        license=openapi.License(name='Copyright "OOO Samyy Soft"'),
-    ),
-    public=True,
-    permission_classes=(permissions.IsAuthenticatedOrReadOnly,),
-)
+from utils.swagger import schema_view
 
 urlpatterns = [
-    path('api/v1/', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
+    path('docs/', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
     path('admin/', admin.site.urls),
     path('', include("orders.urls")),
-    # path('', include("users.urls")),
-    path('', include("devices.urls")),
+    path('api/v1/users/', include("users.urls")),
+    path('api/v1/devices/', include("devices.urls")),
 ]

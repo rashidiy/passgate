@@ -9,7 +9,7 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from orders.models import User, Order
-from orders.utils.redis_manager import RedisManager
+from utils.redis_manager import RedisManager
 from orders.views.base import get_face_result
 from root import settings
 

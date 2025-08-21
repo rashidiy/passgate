@@ -1,11 +1,11 @@
 from django.urls import include, path
 from rest_framework.routers import DefaultRouter
 
-from devices.views.device_view import DeviceViewSet
+from devices.views.device_view import DeviceModelViewSet
 
 router = DefaultRouter()
-router.register('devices', DeviceViewSet)
+router.register('device', DeviceModelViewSet)
 
 urlpatterns = [
-    path('devices/', include(router.urls))
+    path('', include(router.urls))
 ]
