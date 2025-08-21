@@ -13,6 +13,9 @@ class AccessPointModelViewSet(viewsets.ModelViewSet):
     swagger_tags = ['Users']
 
     def get_queryset(self):
+        if getattr(self, "swagger_fake_view", False):
+            return AccessPoint.objects.none()
+
         return AccessPoint.objects.filter(user_id=self.kwargs['user_pk'])
 
     def get_serializer_class(self):

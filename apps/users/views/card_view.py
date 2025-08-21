@@ -14,6 +14,8 @@ class CardModelViewSet(mixins.ListModelMixin, mixins.CreateModelMixin, mixins.De
     lookup_value_regex = r"[^/]+"
 
     def get_queryset(self):
+        if getattr(self, "swagger_fake_view", False):
+            return Card.objects.none()
         return Card.objects.filter(user_id=self.kwargs['user_pk'])
 
     def perform_create(self, serializer):
