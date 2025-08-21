@@ -1,4 +1,5 @@
 from django.core.exceptions import ValidationError
+from django.core.validators import MinValueValidator, MaxValueValidator
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 from encrypted_fields import EncryptedTextField
@@ -19,7 +20,7 @@ class Device(models.Model):
     model = models.CharField(max_length=100, choices=DeviceModels.choices, default=DeviceModels.DS_K1T671MF,
                              editable=False)
     ip_address = models.GenericIPAddressField(_('IP'))
-    port = models.IntegerField()
+    port = models.IntegerField(validators=[MinValueValidator(0), MaxValueValidator(65535)])
     username = models.CharField(max_length=100)
     password_placeholder = models.CharField(_('Password'), max_length=16)
     encrypted_password = EncryptedTextField(editable=False)
@@ -33,6 +34,7 @@ class Device(models.Model):
     class Meta:
         verbose_name = _('Device')
         verbose_name_plural = _('Devices')
+        unique_together = ('ip_address', 'port')
 
     @property
     def password(self):
@@ -45,9 +47,6 @@ class Device(models.Model):
                 self.__old_pwd_placeholder, self.__old_username = old_values
 
     def check_model_type(self):
-        if self.type == Device.DeviceTypes.ORDER and Device.objects.filter(type=Device.DeviceTypes.ORDER).exists():
-            raise ValidationError(_('You cannot create order Device more than one. Contact administrator.'))
-
         device = DS_K1T671MF(self.ip_address, self.port, self.username, self.password_placeholder)
         try:
             device.check_model_match()
@@ -69,3 +68,14 @@ class Device(models.Model):
         elif self.__old_username != self.username:
             self.check_model_type()
         return super().clean()
+
+    def save(self, *args, **kwargs):
+        if not self.pk and self.type == Device.DeviceTypes.ORDER and Device.objects.filter(
+                type=Device.DeviceTypes.ORDER).exists():
+            raise ValidationError(_('You cannot create order Device more than one. Contact administrator.'))
+
+        super().save(*args, **kwargs)
+
+        if self.type == Device.DeviceTypes.ORDER:
+            from devices.plugins import OrderManager
+            OrderManager.switch_cam(False)

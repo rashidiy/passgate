@@ -3,7 +3,7 @@ import time
 import xml.etree.ElementTree as ET
 
 import requests
-from requests import Response, auth
+from requests import Response, auth, ConnectTimeout
 
 
 class Capabilities:
@@ -47,7 +47,10 @@ class HikvisionWebLogin:
 
     def get_capabilities(self) -> Capabilities | None:
         path = "/ISAPI/Security/sessionLogin/capabilities"
-        response = self.session.get(self.url(path), params={'username': self.username})
+        try:
+            response = self.session.get(self.url(path), params={'username': self.username}, timeout=5)
+        except ConnectTimeout:
+            raise ConnectionError('Connection timed out')
         if response.status_code == 200:
             return Capabilities(response)
         else:

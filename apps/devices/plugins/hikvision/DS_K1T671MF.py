@@ -7,6 +7,7 @@ from time import sleep
 from django.core.exceptions import ValidationError
 from django.utils.translation import gettext_lazy as _
 from requests import request, ConnectTimeout, Response, auth
+from rest_framework import exceptions as rex
 
 from users.models import AccessPoint, Card
 from .base import HikvisionWebLogin
@@ -81,7 +82,9 @@ class DS_K1T671MF(HikvisionWebLogin):  # noqa
                 "img": (file_name, image_file, f"image/{file_type}"),
             }
             try:
-                response = request('PUT', self.url(path), params=params, data=data, files=files, auth=self.auth)
+                response = request(
+                    'PUT', self.url(path), params=params, data=data, files=files, auth=self.auth, timeout=5
+                )
             except ConnectTimeout:
                 raise ValidationError(_('Unable to connect to device with given IP and Port'))
 
@@ -117,7 +120,7 @@ class DS_K1T671MF(HikvisionWebLogin):  # noqa
         params = {'format': 'json'}
         data = {"UserInfoDelCond": {"EmployeeNoList": [{"employeeNo": str(access_device.user.id)}]}}
         try:
-            response = request('PUT', self.url(path), params=params, json=data, auth=self.auth)
+            response = request('PUT', self.url(path), params=params, json=data, auth=self.auth, timeout=5)
         except ConnectTimeout:
             raise ValidationError(_('Unable to connect to device with given IP and Port'))
 
@@ -136,7 +139,7 @@ class DS_K1T671MF(HikvisionWebLogin):  # noqa
         params = {'format': 'json'}
         data = {"CardInfo": {"employeeNo": str(card.user_id), "cardNo": card.card_no, "cardType": "normalCard"}}
         try:
-            response = request('POST', self.url(path), params=params, json=data, auth=self.auth)
+            response = request('POST', self.url(path), params=params, json=data, auth=self.auth, timeout=5)
         except ConnectTimeout:
             raise ValidationError(_('Unable to connect to device with given IP and Port'))
 
@@ -155,7 +158,7 @@ class DS_K1T671MF(HikvisionWebLogin):  # noqa
         params = {'format': 'json'}
         data = {"CardInfoDelCond": {"CardNoList": [{"cardNo": card.card_no}]}}
         try:
-            response = request('PUT', self.url(path), params=params, json=data, auth=self.auth)
+            response = request('PUT', self.url(path), params=params, json=data, auth=self.auth, timeout=5)
         except ConnectTimeout:
             raise ValidationError(_('Unable to connect to device with given IP and Port'))
 
@@ -176,7 +179,10 @@ class OrderManager:
     @classmethod
     def get_device(cls):
         from devices.models import Device
-        return Device.objects.filter(type=Device.DeviceTypes.ORDER).first()
+        try:
+            return Device.objects.get(type=Device.DeviceTypes.ORDER)
+        except Device.DoesNotExist:
+            raise rex.ValidationError(detail=_("There is no order device."))
 
     @classmethod
     def get_url(cls, device, path):
@@ -228,8 +234,9 @@ class OrderManager:
         }
         device = cls.get_device()
         try:
-            response = request('PUT', cls.get_url(device, path), params=params, json=data,
-                               auth=cls.authenticate(device))
+            response = request(
+                'PUT', cls.get_url(device, path), params=params, json=data, auth=cls.authenticate(device), timeout=5
+            )
         except ConnectTimeout:
             raise ValidationError(_('Unable to connect to device with given IP and Port'))
 
@@ -262,8 +269,9 @@ class OrderManager:
         }
         device = cls.get_device()
         try:
-            response = request('POST', cls.get_url(device, path), params=params, json=data,
-                               auth=cls.authenticate(device))
+            response = request(
+                'POST', cls.get_url(device, path), params=params, json=data, auth=cls.authenticate(device), timeout=5
+            )
             print(response.text)
         except ConnectTimeout:
             raise ValidationError(_('Unable to connect to device with given IP and Port'))
