@@ -18,14 +18,6 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 
-JAZZMIN_SETTINGS = {
-    "topmenu_links": [
-        {"name": "Home", "url": "admin:index"},
-        {"name": "Employees", "model": "app1.Employee"},
-        {"name": "Orders", "model": "app1.Order"},
-    ]
-}
-
 INSTALLED_APPS = [
     'jazzmin',
     'django.contrib.admin',
