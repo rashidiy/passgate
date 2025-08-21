@@ -14,29 +14,30 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
+from django.conf import settings
+from django.conf.urls.static import static
 from django.contrib import admin
+from django.contrib.auth import logout
+from django.core.handlers.wsgi import WSGIRequest
+from django.http import HttpResponseRedirect
 from django.urls import path, include
-from drf_yasg import openapi
-from drf_yasg.views import get_schema_view
-from rest_framework import permissions
+from django.views import View
 
-schema_view = get_schema_view(
-    openapi.Info(
-        title="SKUD API",
-        default_version='v1',
-        description="Documentation for integrated usage of skud",
-        terms_of_service='None',
-        contact=openapi.Contact(name='Telegram', url='https://t.me/samyy_soft_support'),
-        license=openapi.License(name='Copyright "OOO Samyy Soft"'),
-    ),
-    public=True,
-    permission_classes=(permissions.IsAuthenticatedOrReadOnly,),
-)
+from utils.swagger import schema_view
+
+
+class LogoutView(View):
+    def get(self, request: WSGIRequest, *args, **kwargs):
+        next_ = request.GET.get('next')
+        logout(request)
+        return HttpResponseRedirect(next_)
+
 
 urlpatterns = [
-    path('api/v1/', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
-    path('admin/', admin.site.urls),
-    path('', include("orders.urls")),
-    # path('', include("users.urls")),
-    path('', include("devices.urls")),
-]
+                  path('docs/', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
+                  path('', include("orders.urls")),
+                  path('api/v1/users/', include("users.urls")),
+                  path('api/v1/devices/', include("devices.urls")),
+                  path('accounts/logout/', LogoutView.as_view(), name='logout'),
+                  path('', admin.site.urls),
+              ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

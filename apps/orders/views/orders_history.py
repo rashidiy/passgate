@@ -4,12 +4,13 @@ from random import choice
 
 import pytz
 from django.utils import timezone
+from drf_yasg.utils import swagger_auto_schema
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from orders.models import User, Order
-from orders.utils.redis_manager import RedisManager
+from utils.redis_manager import RedisManager
 from orders.views.base import get_face_result
 from root import settings
 
@@ -17,6 +18,7 @@ redis = RedisManager()
 
 
 class GenerateToken(APIView):
+    @swagger_auto_schema(auto_schema=None)  # noqa
     def get(self, request):
         face_result = get_face_result()
         if isinstance(face_result, Response):
@@ -34,6 +36,7 @@ class GenerateToken(APIView):
 
 
 class GetRecentOrderList(APIView):
+    @swagger_auto_schema(auto_schema=None)  # noqa
     def get(self, request):
         if not (token := request.GET.get('token')):
             return Response({'success': False, "message": "Missing \"token\""}, status.HTTP_400_BAD_REQUEST)
@@ -71,6 +74,7 @@ class GetRecentOrderList(APIView):
 
 
 class CancelOrder(APIView):
+    @swagger_auto_schema(auto_schema=None)  # noqa
     def get(self, request):
         if not (token := request.GET.get('token')):
             return Response({'success': False, "message": "Missing \"token\""}, status=status.HTTP_400_BAD_REQUEST)
