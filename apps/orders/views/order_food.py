@@ -1,3 +1,4 @@
+from drf_yasg.utils import swagger_auto_schema
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -7,6 +8,7 @@ from orders.views.base import get_face_result
 
 
 class OrderFoodApi(APIView):
+    @swagger_auto_schema(auto_schema=None)  # noqa
     def get(self, request):
         food_size = request.GET.get('food_size')
         if not food_size:
