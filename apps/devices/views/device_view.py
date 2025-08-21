@@ -8,4 +8,4 @@ class DeviceModelViewSet(viewsets.ModelViewSet):
     queryset = Device.objects.all()
     serializer_class = DeviceSerializer
     swagger_tags = ['Devices']
-    http_method_names = ['get', 'post', 'patch', 'delete']
+    http_method_names = ['get', 'post', 'patch', 'delete', 'head', 'options']

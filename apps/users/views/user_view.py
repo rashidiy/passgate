@@ -8,7 +8,7 @@ class UserModelViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all()
     swagger_tags = ['Users']
     parser_classes = (parsers.MultiPartParser, parsers.FormParser)
-    http_method_names = ['get', 'post', 'patch', 'delete']
+    http_method_names = ['get', 'post', 'patch', 'delete', 'head', 'options']
 
     def get_serializer_class(self):
         if self.action == 'create':
