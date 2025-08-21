@@ -133,3 +133,4 @@ CANCEL_RESTRICT_END = "7:00"
 SWAGGER_SETTINGS = {
     "DEFAULT_AUTO_SCHEMA_CLASS": "utils.swagger.TaggedAutoSchema",
 }
+LOGIN_URL = '/login/'

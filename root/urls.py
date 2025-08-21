@@ -17,14 +17,27 @@ Including another URLconf
 from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
+from django.contrib.auth import logout
+from django.core.handlers.wsgi import WSGIRequest
+from django.http import HttpResponseRedirect
 from django.urls import path, include
+from django.views import View
 
 from utils.swagger import schema_view
 
+
+class LogoutView(View):
+    def get(self, request: WSGIRequest, *args, **kwargs):
+        next_ = request.GET.get('next')
+        logout(request)
+        return HttpResponseRedirect(next_)
+
+
 urlpatterns = [
                   path('docs/', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
-                  path('admin/', admin.site.urls),
                   path('', include("orders.urls")),
                   path('api/v1/users/', include("users.urls")),
                   path('api/v1/devices/', include("devices.urls")),
+                  path('accounts/logout/', LogoutView.as_view(), name='logout'),
+                  path('', admin.site.urls),
               ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
