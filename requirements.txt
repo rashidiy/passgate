@@ -8,6 +8,7 @@ django-fernet-encrypted-fields==0.3.0
 django-jazzmin==3.0.1
 djangorestframework==3.15.2
 djangorestframework_simplejwt==5.5.0
+drf-nested-routers==0.94.2
 drf-yasg==1.21.10
 et_xmlfile==2.0.0
 idna==3.10
