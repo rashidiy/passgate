@@ -1,0 +1,15 @@
+/*#001f3f*/
+.main-header, .main-sidebar, .brand-link  {
+    background: #001f3f !important;
+}
+
+.main-header .nav-link {
+    color: #ffffff !important;
+}
+
+body {
+    overflow-x: hidden;
+}
+.pie-chart{
+
+}

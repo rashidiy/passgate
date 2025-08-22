@@ -26,7 +26,7 @@ class DeviceAdmin(admin.ModelAdmin):
             "fields": ("ip_address", "port"),
         }),
         (_("Credentials"), {
-            "fields": ("username", "password_placeholder", "encrypted_password"),
+            "fields": ("username", "password_placeholder"),
         }),
     )
 

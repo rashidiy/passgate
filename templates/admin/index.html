@@ -1,0 +1,246 @@
+{% extends "admin/base_site.html" %}
+{% load i18n static jazzmin %}
+{% get_jazzmin_ui_tweaks as jazzmin_ui %}
+{% block extrajs %}
+    <script src="{% static 'assets/js/chart.min.js' %}"></script>
+    <script src="{% static 'assets/js/dashboard3.js' %}"></script>
+{% endblock %}
+
+{% block page_content %}
+    <div class="row p-3">
+        <div class="col-lg-3 col-6">
+            <!-- small box -->
+            <div class="small-box bg-info">
+                <div class="inner">
+                    <h3>150</h3>
+
+                    <p>New Orders</p>
+                </div>
+                <div class="icon">
+                    <i class="ion ion-bag"></i>
+                </div>
+                <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+            </div>
+        </div>
+        <!-- ./col -->
+        <div class="col-lg-3 col-6">
+            <!-- small box -->
+            <div class="small-box bg-success">
+                <div class="inner">
+                    <h3>53<sup style="font-size: 20px">%</sup></h3>
+
+                    <p>Bounce Rate</p>
+                </div>
+                <div class="icon">
+                    <i class="ion ion-stats-bars"></i>
+                </div>
+                <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+            </div>
+        </div>
+        <!-- ./col -->
+        <div class="col-lg-3 col-6">
+
+            <!-- small box -->
+            <div class="small-box bg-warning">
+                <div class="inner">
+                    <h3>44</h3>
+
+                    <p>User Registrations</p>
+                </div>
+                <div class="icon">
+                    <i class="ion ion-person-add"></i>
+                </div>
+                <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+            </div>
+        </div>
+        <!-- ./col -->
+        <div class="col-lg-3 col-6">
+            <!-- small box -->
+            <div class="small-box bg-danger">
+                <div class="inner">
+                    <h3>65</h3>
+
+                    <p>Unique Visitors</p>
+                </div>
+                <div class="icon">
+                    <i class="ion ion-pie-graph"></i>
+                </div>
+                <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+            </div>
+        </div>
+    </div>
+    <div class="row p-3">
+        <div class="col-lg-8">
+            <div class="card">
+                <div class="card-header border-0">
+                    <div class="d-flex justify-content-between">
+                        <h3 class="card-title">Online Store Visitors</h3>
+                        <a href="javascript:void(0);">View Report</a>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="d-flex">
+                        <p class="d-flex flex-column">
+                            <span class="text-bold text-lg">820</span>
+                            <span>Visitors Over Time</span>
+                        </p>
+                        <p class="ml-auto d-flex flex-column text-right">
+                    <span class="text-success">
+                      <i class="fas fa-arrow-up"></i> 12.5%
+                    </span>
+                            <span class="text-muted">Since last week</span>
+                        </p>
+                    </div>
+                    <!-- /.d-flex -->
+
+                    <div class="position-relative mb-4">
+                        <div class="chartjs-size-monitor">
+                            <div class="chartjs-size-monitor-expand">
+                                <div class=""></div>
+                            </div>
+                            <div class="chartjs-size-monitor-shrink">
+                                <div class=""></div>
+                            </div>
+                        </div>
+                        <canvas id="visitors-chart" height="200" width="737"
+                                style="display: block; width: 737px; height: 250px;"
+                                class="chartjs-render-monitor"></canvas>
+                    </div>
+
+                    <div class="d-flex flex-row justify-content-end">
+                  <span class="mr-2">
+                    <i class="fas fa-square text-primary"></i> This Week
+                  </span>
+
+                        <span>
+                    <i class="fas fa-square text-gray"></i> Last Week
+                  </span>
+                    </div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-header border-0">
+                    <div class="d-flex justify-content-between">
+                        <h3 class="card-title">Sales</h3>
+                        <a href="javascript:void(0);">View Report</a>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="d-flex">
+                        <p class="d-flex flex-column">
+                            <span class="text-bold text-lg">$18,230.00</span>
+                            <span>Sales Over Time</span>
+                        </p>
+                        <p class="ml-auto d-flex flex-column text-right">
+                    <span class="text-success">
+                      <i class="fas fa-arrow-up"></i> 33.1%
+                    </span>
+                            <span class="text-muted">Since last month</span>
+                        </p>
+                    </div>
+                    <!-- /.d-flex -->
+
+                    <div class="position-relative mb-4">
+                        <div class="chartjs-size-monitor">
+                            <div class="chartjs-size-monitor-expand">
+                                <div class=""></div>
+                            </div>
+                            <div class="chartjs-size-monitor-shrink">
+                                <div class=""></div>
+                            </div>
+                        </div>
+                        <canvas id="sales-chart" height="200" width="737"
+                                style="display: block; width: 737px; height: 200px;"
+                                class="chartjs-render-monitor"></canvas>
+                    </div>
+
+                    <div class="d-flex flex-row justify-content-end">
+                  <span class="mr-2">
+                    <i class="fas fa-square text-primary"></i> This year
+                  </span>
+
+                        <span>
+                    <i class="fas fa-square text-gray"></i> Last year
+                  </span>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <div class="col-lg-4">
+            <div class="card">
+                <div class="card-body">
+                    <div class="d-flex align-items-start">
+{#                        <div id="pieLegend" style="margin-left:16px;"></div>#}
+                        <div class="position-relative" style="height:333px; width:333px;">
+                            <canvas id="pieChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="content-related">
+                <div class="module" id="recent-actions-module">
+                    <h4 class="mb-3">{% trans 'Recent actions' %}</h4>
+                    {% load log %}
+                    {% get_admin_log 6 as admin_log for_user user %}
+                    {% if not admin_log %}
+                        <p>{% trans 'None available' %}</p>
+                    {% else %}
+                        <div class="timeline">
+                            {% for entry in admin_log %}
+                                <div>
+                                    {% if entry.is_change %}
+                                        <i class="fas fa-edit bg-gray text-xs"></i>
+                                    {% elif entry.is_deletion %}
+                                        <i class="fas fa-trash bg-danger text-xs"></i>
+                                    {% elif entry.is_addition %}
+                                        <i class="fas fa-plus-circle bg-success text-xs"></i>
+                                    {% endif %}
+
+                                    <div class="timeline-item">
+                                                <span class="time"><i
+                                                        class="fas fa-clock"></i>
+                                                    {% blocktrans with timesince=entry.action_time|timesince %}
+                                                        {{ timesince }} ago{% endblocktrans %}</span>
+                                        <h3 class="timeline-header no-border">
+                                            {% if entry.is_deletion or not entry.get_admin_url %}
+                                                {{ entry.object_repr }}
+                                            {% else %}
+                                                <a href="{{ entry.get_admin_url }}">{{ entry.object_repr }}</a>
+                                            {% endif %}
+
+                                            {% if entry.model %}
+                                                <span class="mini quiet">
+                                                        {% filter capfirst %}
+                                                            {{ entry.model }}
+                                                        {% endfilter %}
+                                                    </span>
+                                            {% endif %}
+                                        </h3>
+                                        {% if not entry.is_deletion %}
+                                            <div class="timeline-body">
+                                                {% if entry.is_addition %}
+                                                    {{ entry }}
+                                                {% else %}
+                                                    <ul style="list-style: none; padding: 0;">
+                                                        {% action_message_to_list entry as action_message_list %}
+                                                        {% for action_message in action_message_list %}
+                                                            <li>{{ action_message.msg|style_bold_first_word }}</li>
+                                                        {% endfor %}
+                                                    </ul>
+                                                {% endif %}
+                                            </div>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            {% endfor %}
+                            <div>
+                                <i class="fa fa-clock bg-gray"></i>
+                            </div>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
