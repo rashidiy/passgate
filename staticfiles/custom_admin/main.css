@@ -1,5 +1,4 @@
-/*#001f3f*/
-.main-header, .main-sidebar, .brand-link  {
+.main-header, .main-sidebar, .brand-link {
     background: #001f3f !important;
 }
 
@@ -10,6 +9,15 @@
 body {
     overflow-x: hidden;
 }
-.pie-chart{
 
+.sidebar {
+    margin-top: 0 !important;
+    overflow-x: hidden !important;
+
+}
+
+.user-panel {
+    padding-top: .5rem !important;
+    padding-bottom: .5rem !important;
+    margin-top: 0 !important;
 }
