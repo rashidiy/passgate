@@ -1,6 +1,7 @@
+from typing import Any, Optional
+
 import redis
 from django.conf import settings
-from typing import Any, Optional
 
 
 class RedisManager:
@@ -16,7 +17,7 @@ class RedisManager:
                 port=settings.REDIS_PORT,
                 db=settings.REDIS_DB,
                 password=getattr(settings, 'REDIS_PASSWORD', None),
-                decode_responses=True  # Decode responses as strings
+                decode_responses=True
             )
             cls._instance.client = redis.Redis(connection_pool=pool)
         return cls._instance
