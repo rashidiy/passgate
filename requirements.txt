@@ -1,4 +1,5 @@
 asgiref==3.8.1
+Booktype==1.5
 certifi==2024.8.30
 cffi==1.17.1
 charset-normalizer==3.4.0
@@ -25,6 +26,8 @@ pytz==2025.1
 PyYAML==6.0.2
 redis==5.2.1
 requests==2.32.3
+setuptools==80.9.0
+simplejson==3.20.1
 six==1.17.0
 sqlparse==0.5.1
 uritemplate==4.2.0
