@@ -15,7 +15,7 @@ JAZZMIN_SETTINGS = {
         "auth.group": "fas fa-shield-alt",
         "devices.Device": "fas fa-camera",
         "orders.order": "fas fa-receipt",
-        "users.user": "fas fa-user",
+        "employees.employee": "fas fa-user-tie",
     },
     "default_icon_parents": "fas fa-chevron-circle-right",
     "default_icon_children": "fas fa-circle",

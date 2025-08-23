@@ -2,11 +2,12 @@ import hashlib
 import time
 import xml.etree.ElementTree as ET
 
+import aiohttp
 import requests
+from aiohttp import ClientResponse
 from django.core.exceptions import ValidationError
-from requests import Response, auth, ConnectTimeout
-
 from django.utils.translation import gettext_lazy as _
+from requests import Response, ConnectTimeout
 
 
 class Capabilities:
@@ -43,7 +44,7 @@ class HikvisionWebLogin:
         self.username = username
         self.password = password
         self.caps = self.get_capabilities()
-        self.auth = auth.HTTPDigestAuth(self.username, self.password)
+        self.digest_auth = aiohttp.DigestAuthMiddleware(self.username, self.password)
 
     def url(self, path):
         return 'http://{}:{}{}'.format(self.ip_address, self.port, path)
@@ -145,3 +146,22 @@ class HikvisionWebLogin:
             return response.json()['Token']['value']
         else:
             response.raise_for_status()
+
+    async def request(
+            self, method, path: str, *, params=None, data=None, json=None, headers=None, timeout=None, **kwargs
+    ) -> ClientResponse:
+        async with aiohttp.ClientSession(middlewares=(self.digest_auth,)) as session:
+            response = await session.request(
+                method, self.url(path), params=params, data=data, json=json, headers=headers, timeout=timeout, **kwargs
+            )
+
+            match response.status:
+                case 200:
+                    return response
+                case 401:
+                    raise ValidationError(_("Wrong username or password."))
+                case 400:
+                    if response.content_type == 'application/json' and (response_json := await response.json()):
+                        raise ValidationError(response_json.get('subStatusCode'))
+                    print(await response.text())
+            raise response.raise_for_status()

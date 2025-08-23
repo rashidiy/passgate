@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from users.models import AccessPoint
+from employees.models import AccessPoint
 
 
 class AccessPointSerializer(serializers.ModelSerializer):
@@ -8,7 +8,7 @@ class AccessPointSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = AccessPoint
-        exclude = ['user']
+        exclude = ['employee']
 
 
 class AccessPointUpdateSerializer(serializers.ModelSerializer):
@@ -16,4 +16,4 @@ class AccessPointUpdateSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = AccessPoint
-        exclude = ['user', 'device']
+        exclude = ['employee', 'device']

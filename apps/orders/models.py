@@ -2,7 +2,7 @@ from django.db import models
 from django.utils.timezone import localtime
 from django.utils.translation import gettext_lazy as _
 
-from users.models import User
+from employees.models import Employee
 
 
 class Order(models.Model):
@@ -11,7 +11,7 @@ class Order(models.Model):
         MEDIUM = "1", _('Medium')
         BIG = "1.5", _('Large')
 
-    user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, related_name='orders')
+    employee = models.ForeignKey(Employee, on_delete=models.SET_NULL, null=True, related_name='orders')
     name = models.CharField(_('Name'), max_length=225)
     food_size = models.CharField(_('Food size'), max_length=3, choices=FoodSizeChoice.choices)
     is_cancelled = models.BooleanField(_('Is cancelled'), default=False)

@@ -1,3 +1,3 @@
 from .ap_serializer import AccessPointSerializer, AccessPointUpdateSerializer
 from .card_serializer import CardSerializer
-from .user_serializer import UserCreateSerializer, UserUpdateSerializer
+from .user_serializer import EmployeeCreateSerializer, EmployeeUpdateSerializer

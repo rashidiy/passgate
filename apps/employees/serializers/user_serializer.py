@@ -1,17 +1,17 @@
 from rest_framework import serializers
 
-from users.models import User
+from employees.models import Employee
 
 
-class UserCreateSerializer(serializers.ModelSerializer):
+class EmployeeCreateSerializer(serializers.ModelSerializer):
     class Meta:
-        model = User
+        model = Employee
         fields = ['id', 'name', 'gender', 'image']
 
 
-class UserUpdateSerializer(serializers.ModelSerializer):
+class EmployeeUpdateSerializer(serializers.ModelSerializer):
     name = serializers.CharField(required=False)
 
     class Meta:
-        model = User
+        model = Employee
         fields = ['id', 'name', 'gender', 'image']

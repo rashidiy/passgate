@@ -2,7 +2,7 @@ from django.contrib import admin
 from django.utils.html import format_html
 from django.utils.translation import gettext_lazy as _
 
-from users.models import User, Card, AccessPoint
+from employees.models import Employee, Card, AccessPoint
 from ._atomic_create import AtomicAdminModelOverride
 
 
@@ -17,8 +17,8 @@ class AccessPointInline(admin.StackedInline):
     extra = 1
 
 
-@admin.register(User)
-class UserAdmin(AtomicAdminModelOverride):
+@admin.register(Employee)
+class EmployeeAdmin(AtomicAdminModelOverride):
     list_display = list_display_links = 'id', 'name', 'image_tag'
     list_filter = search_fields = 'id', 'name'
 

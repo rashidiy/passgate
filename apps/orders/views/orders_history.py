@@ -6,26 +6,29 @@ import pytz
 from django.utils import timezone
 from drf_yasg.utils import swagger_auto_schema
 from rest_framework import status
+from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from orders.models import User, Order
-from utils.redis_manager import RedisManager
+from orders.models import Employee, Order
 from orders.views.base import get_face_result
 from root import settings
+from utils.redis_manager import RedisManager
 
 redis = RedisManager()
 
 
 class GenerateToken(APIView):
+    permission_classes = [AllowAny]
+
     @swagger_auto_schema(auto_schema=None)  # noqa
     def get(self, request):
         face_result = get_face_result()
         if isinstance(face_result, Response):
             return face_result
         try:
-            employee = User.objects.get(id=face_result)
-        except User.DoesNotExist:
+            employee = Employee.objects.get(id=face_result)
+        except Employee.DoesNotExist:
             message = 'Shaxs tizimga kiritilmagan'
             return Response({'success': False, 'message': message})
         token = ''.join([choice(string.ascii_letters + string.digits) for _ in range(32)])
@@ -36,6 +39,8 @@ class GenerateToken(APIView):
 
 
 class GetRecentOrderList(APIView):
+    permission_classes = [AllowAny]
+
     @swagger_auto_schema(auto_schema=None)  # noqa
     def get(self, request):
         if not (token := request.GET.get('token')):
@@ -43,13 +48,13 @@ class GetRecentOrderList(APIView):
         if len(token) != 32:
             return Response({'success': False, "message": "Invalid \"token\""}, status.HTTP_400_BAD_REQUEST)
 
-        user_id = redis.get(f'token:{token}')
+        employee_id = redis.get(f'token:{token}')
 
-        if not user_id:
+        if not employee_id:
             return Response({'success': False, "message": "Token expired"}, status.HTTP_403_FORBIDDEN)
         try:
-            employee = User.objects.get(id=user_id)
-        except User.DoesNotExist:
+            employee = Employee.objects.get(id=employee_id)
+        except Employee.DoesNotExist:
             message = 'Shaxs tizimga kiritilmagan'
             return Response({'success': False, 'message': message}, status.HTTP_503_SERVICE_UNAVAILABLE)
 
@@ -74,6 +79,8 @@ class GetRecentOrderList(APIView):
 
 
 class CancelOrder(APIView):
+    permission_classes = [AllowAny]
+
     @swagger_auto_schema(auto_schema=None)  # noqa
     def get(self, request):
         if not (token := request.GET.get('token')):
@@ -83,8 +90,8 @@ class CancelOrder(APIView):
         if not (order_id := request.GET.get('order_id')):
             return Response({'success': False, "message": "Missing \"order_id\""}, status=status.HTTP_400_BAD_REQUEST)
 
-        user_id = redis.get(f'token:{token}')
-        if not user_id:
+        employee_id = redis.get(f'token:{token}')
+        if not employee_id:
             return Response({'success': False, "message": "Invalid or expired token"},
                             status=status.HTTP_401_UNAUTHORIZED)
 
@@ -107,7 +114,7 @@ class CancelOrder(APIView):
 
         try:
             distance = timezone.now() - timedelta(minutes=10)
-            order = Order.objects.get(id=order_id, user_id=user_id)
+            order = Order.objects.get(id=order_id, employee_id=employee_id)
             if order.created_at < distance:
                 message = 'Buyurtmani bekor qilish muddati tugagan. Iltimos administratorga murojaat qiling!'
                 return Response({'success': False, 'message': message}, status=status.HTTP_403_FORBIDDEN)

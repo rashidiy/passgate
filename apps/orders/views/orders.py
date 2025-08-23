@@ -4,6 +4,7 @@ from random import choice
 from django.utils import timezone
 from drf_yasg.utils import swagger_auto_schema
 from rest_framework import status
+from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
@@ -11,9 +12,11 @@ from orders.models import Order
 
 
 class OrderList(APIView):
+    permission_classes = [AllowAny]
+
     @swagger_auto_schema(auto_schema=None)  # noqa
     def get(self, request):
-        if not request.user.is_authenticated:
+        if not request.employee.is_authenticated:
             return Response(status=status.HTTP_401_UNAUTHORIZED)
 
         timestamp_str = request.GET.get('timestamp')

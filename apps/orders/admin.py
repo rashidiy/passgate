@@ -8,8 +8,8 @@ from .models import Order
 
 @admin.register(Order)
 class OrderAdmin(admin.ModelAdmin):
-    list_display = 'user', 'name', 'food_size', 'is_cancelled', 'created_at', 'updated_at'
-    search_fields = 'user', 'name', 'food_size'
+    list_display = 'employee', 'name', 'food_size', 'is_cancelled', 'created_at', 'updated_at'
+    search_fields = 'employee', 'name', 'food_size'
     change_list_template = 'custom_admin/orders.html'
     actions = ("export_to_excel",)
 
@@ -51,7 +51,7 @@ class OrderAdmin(admin.ModelAdmin):
         ws.append(headers)
 
         for order in queryset:
-            employee = order.user
+            employee = order.employee
             time_value = order.time.strftime('%Y-%m-%d %H:%M:%S') if order.time else ''
             ws.append([str(employee), order.name, order.food_size, time_value])
 

@@ -2,21 +2,21 @@ from django.core.exceptions import ValidationError
 from rest_framework import viewsets
 from rest_framework.exceptions import ValidationError as RestValidationError
 
-from users.models import AccessPoint
-from users.serializers import AccessPointSerializer, AccessPointUpdateSerializer
+from employees.models import AccessPoint
+from employees.serializers import AccessPointSerializer, AccessPointUpdateSerializer
 
 
 class AccessPointModelViewSet(viewsets.ModelViewSet):
     model = AccessPoint
     serializer_class = AccessPointSerializer
     http_method_names = ['get', 'post', 'patch', 'delete', 'head', 'options']
-    swagger_tags = ['Users']
+    swagger_tags = ['Employees']
 
     def get_queryset(self):
         if getattr(self, "swagger_fake_view", False):
             return AccessPoint.objects.none()
 
-        return AccessPoint.objects.filter(user_id=self.kwargs['user_pk'])
+        return AccessPoint.objects.filter(employee_id=self.kwargs['user_pk'])
 
     def get_serializer_class(self):
         if self.action == 'partial_update':
@@ -25,7 +25,7 @@ class AccessPointModelViewSet(viewsets.ModelViewSet):
 
     def perform_create(self, serializer):
         try:
-            serializer.save(user_id=self.kwargs['user_pk'])
+            serializer.save(employee_id=self.kwargs['user_pk'])
         except ValidationError as e:
             raise RestValidationError(*e)
 

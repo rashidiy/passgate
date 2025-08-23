@@ -1,13 +1,16 @@
 from drf_yasg.utils import swagger_auto_schema
 from rest_framework import status
+from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from orders.models import User, Order
+from orders.models import Employee, Order
 from orders.views.base import get_face_result
 
 
 class OrderFoodApi(APIView):
+    permission_classes = [AllowAny]
+
     @swagger_auto_schema(auto_schema=None)  # noqa
     def get(self, request):
         food_size = request.GET.get('food_size')
@@ -24,11 +27,11 @@ class OrderFoodApi(APIView):
 
         if face_result:
             try:
-                user = User.objects.get(id=face_result)
-            except User.DoesNotExist:
+                employee = Employee.objects.get(id=face_result)
+            except Employee.DoesNotExist:
                 message = 'Shaxs tizimga kiritilmagan'
                 return Response({'success': False, 'message': message})
-            Order.objects.create(user=user, food_size=food_size)
+            Order.objects.create(employee=employee, food_size=food_size)
 
             success_message = 'Buyurtma qabul qilindi!'
             return Response({'success': True, 'message': success_message})

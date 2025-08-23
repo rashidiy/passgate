@@ -36,7 +36,7 @@ class LogoutView(View):
 urlpatterns = static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT) + [
     path('docs/', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
     path('', include("orders.urls")),
-    path('api/v1/users/', include("users.urls")),
+    path('api/v1/users/', include("employees.urls")),
     path('api/v1/devices/', include("devices.urls")),
     path('accounts/logout/', LogoutView.as_view(), name='logout'),
     path('', admin.site.urls),
