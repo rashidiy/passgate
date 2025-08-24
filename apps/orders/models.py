@@ -20,7 +20,7 @@ class Order(models.Model):
 
     def save(self, *args, **kwargs):
         if not self.name:
-            self.name = self.user.name
+            self.name = self.employee.name
         super().save(*args, **kwargs)
 
     @staticmethod

@@ -36,7 +36,7 @@ class OrderList(APIView):
         for order in Order.objects.filter(updated_at__gt=timestamp):
             result.append({
                 "id": order.id,
-                "employee_name": order.user.name,
+                "employee_name": order.employee.name,
                 "food_size": Order.FoodSizeChoice(order.food_size).label,
                 "is_cancelled": order.is_cancelled,
                 "created_at": Order.format_time(order.created_at),
