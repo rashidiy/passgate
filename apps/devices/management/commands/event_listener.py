@@ -1,10 +1,29 @@
 import asyncio
+import logging
 
 from django.core.files.base import ContentFile
 from django.core.management import BaseCommand
 
 from devices.models import Device, Event
 from devices.plugins import DS_K1T671MF
+from employees.models import Employee
+
+logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s")
+
+
+class AccessEvent:
+    currentVerifyMode: str = None
+    minor: int = None
+    serialNo: int = None
+    time: str = None
+    pictureURL: str = None
+    employeeNoString: str = None
+    name: str = None
+    cardNo: str = None
+
+    def __init__(self, **kwargs):
+        for key, value in kwargs.items():
+            setattr(self, key, value)
 
 
 class EventListener:
@@ -24,43 +43,47 @@ class EventListener:
         acs_event = response.json.get('AcsEvent')
         device.last_event = device.last_event + acs_event.get('numOfMatches')
         if acs_event.get('numOfMatches'):
-            print(f'Found: {acs_event.get('numOfMatches')} events')
+            logging.info(f'Found {acs_event.get('numOfMatches')} events on device {device.id}.')
             for event in acs_event.get('InfoList'):
+                event = AccessEvent(**event)
                 try:
-                    if event.get('minor') not in cls.event_types.keys():
+                    if event.minor not in cls.event_types.keys():
+                        continue
+                    employee_exists = await Employee.objects.filter(id=event.employeeNoString).aexists()
+                    if event.employeeNoString and not employee_exists:
                         continue
                     image = None
-                    if event.get('minor') in (75, 76):
-                        image_path = event.get('pictureURL')[event.get('pictureURL').index('/LOCALS/'):]
-                        file_name = f"event_{event.get('serialNo')}.jpg"
+                    if event.minor in (75, 76):
+                        image_path = event.pictureURL[event.pictureURL.index('/LOCALS/'):]
+                        file_name = f"event_{event.serialNo}.jpg"
                         image_bytes = await plugin.get_image(image_path)
                         image = ContentFile(image_bytes, name=file_name)
                     await Event.objects.acreate(
-                        current_verify_mode=event.get('currentVerifyMode'),
-                        serial_no=event.get('serialNo'),
-                        type=cls.event_types[event.get('minor')],
-                        timestamp=event.get('time'),
+                        current_verify_mode=event.currentVerifyMode,
+                        serial_no=event.serialNo,
+                        type=cls.event_types[event.minor],
+                        timestamp=event.time,
                         device=device,
-                        employee_id=event.get('employeeNoString'),
-                        employee_no=event.get('employeeNoString'),
-                        employee_name=event.get('name'),
+                        employee_id=event.employeeNoString,
+                        employee_no=event.employeeNoString,
+                        employee_name=event.name,
                         picture=image,
-                        card_no=event.get('cardNo'),
+                        card_no=event.cardNo,
                     )
                 except Exception as _:
-                    continue
+                    logging.exception("Error creating event.")
         await device.asave()
 
     @classmethod
     async def main(cls):
-        print('Listening...')
+        logging.info('Listening for device events started.')
         while True:
             try:
                 tasks = [cls.listen(device) async for device in Device.objects.filter(type=Device.DeviceTypes.ACCESS)]
                 await asyncio.gather(*tasks)
                 await asyncio.sleep(1)
             except Exception as _:
-                continue
+                logging.exception("Error on device level.")
 
 
 class Command(BaseCommand):

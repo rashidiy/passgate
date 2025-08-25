@@ -10,7 +10,7 @@ class AccessPointModelViewSet(viewsets.ModelViewSet):
     model = AccessPoint
     serializer_class = AccessPointSerializer
     http_method_names = ['get', 'post', 'patch', 'delete', 'head', 'options']
-    swagger_tags = ['Employees']
+    swagger_tags = ['AccessPoints']
 
     def get_queryset(self):
         if getattr(self, "swagger_fake_view", False):

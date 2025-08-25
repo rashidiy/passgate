@@ -6,7 +6,7 @@ from django.core.exceptions import ValidationError
 from django.utils.html import format_html
 from django.utils.translation import gettext_lazy as _
 
-from devices.models import Device, Event
+from devices.models import Device, Event, Webhook
 
 
 @admin.register(Device)
@@ -82,8 +82,16 @@ class EventAdmin(admin.ModelAdmin):
         'id', 'type', 'timestamp', 'device', 'employee', 'employee_no', 'employee_name', 'picture', 'card_no'
     )
 
+    def has_add_permission(self, request, obj=None):
+        return False
+
     def has_change_permission(self, request, obj=None):
         return False
 
     def has_delete_permission(self, request, obj=None):
         return False
+
+
+@admin.register(Webhook)
+class WebhookAdmin(admin.ModelAdmin):
+    list_display = ('name', 'url')

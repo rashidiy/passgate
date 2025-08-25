@@ -8,7 +8,7 @@ class CardModelViewSet(mixins.ListModelMixin, mixins.CreateModelMixin, mixins.De
                        viewsets.GenericViewSet):
     http_method_names = ["get", "post", "delete", "head", "options"]
     serializer_class = CardSerializer
-    swagger_tags = ['Employees']
+    swagger_tags = ['Cards']
     lookup_field = "card_no"
     lookup_url_kwarg = "card_no"
     lookup_value_regex = r"[^/]+"

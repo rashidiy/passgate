@@ -16,6 +16,8 @@ JAZZMIN_SETTINGS = {
         "devices.Device": "fas fa-camera",
         "orders.order": "fas fa-receipt",
         "employees.employee": "fas fa-user-tie",
+        "devices.event": "fas fa-address-book",
+        "devices.webhook": "fas fa-globe",
     },
     "default_icon_parents": "fas fa-chevron-circle-right",
     "default_icon_children": "fas fa-circle",

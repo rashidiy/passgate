@@ -46,6 +46,7 @@ class Capabilities:
 
 class HikvisionWebLogin:
     session = requests.Session()
+    __token_cache = {}  # {url: (token, expire)}
 
     def __init__(self, ip_address, port, username, password):
         self.ip_address = ip_address
@@ -148,11 +149,17 @@ class HikvisionWebLogin:
 
     def get_token(self):
         path = '/ISAPI/Security/token'
+        cached_token, cached_token_exp = HikvisionWebLogin.__token_cache.get(self.url(path), (None, 0))
+        if cached_token and cached_token_exp > time.time():
+            return cached_token
+
         params = {'format': 'json'}
         headers = self.get_web_session_and_tag()
         response = self.session.get(self.url(path), params=params, headers=headers)
         if response.status_code == 200:
-            return response.json()['Token']['value']
+            token = response.json()['Token']['value']
+            HikvisionWebLogin.__token_cache[self.url(path)] = (token, time.time() + 300 - 5)
+            return token
         else:
             response.raise_for_status()
 
