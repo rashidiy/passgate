@@ -94,3 +94,23 @@ class DS_K1T671MF(HikvisionWebLogin):  # noqa
         await self.request('PUT', path, params=params, json=data, timeout=5)
         print('remove_card_finish')
         return True
+
+    async def get_acs_events(self, device):
+        path = '/ISAPI/AccessControl/AcsEvent'
+        params = {'format': 'json'}
+        data = {
+            "AcsEventCond": {
+                "searchID": "0",
+                "searchResultPosition": device.last_event,
+                "maxResults": 30,
+                "major": 5,
+                "minor": 0
+            }
+        }
+        response = await self.request('POST', path, params=params, json=data, timeout=5)
+        return response
+
+    async def get_image(self, path):
+        params = {'token': self.get_token()}
+        response = await self.request('GET', path, params=params, timeout=15)
+        return response.content

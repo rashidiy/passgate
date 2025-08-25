@@ -112,8 +112,12 @@ class Event(models.Model):
 
     current_verify_mode = models.CharField(max_length=50, editable=False)
     serial_no = models.IntegerField(editable=False)
-    type = models.CharField(max_length=20, choices=EventTypes)
+    type = models.CharField(max_length=20, choices=EventTypes.choices)
     timestamp = models.DateTimeField()
-    employee = models.ForeignKey('employees.Employee', on_delete=models.SET_NULL, related_name='events', null=True, blank=True)
-    picture_url = models.ImageField(upload_to='events/pictures', null=True, blank=True)
+    device = models.ForeignKey('devices.Device', related_name='events', on_delete=models.SET_NULL, null=True)
+    employee = models.ForeignKey('employees.Employee', on_delete=models.SET_NULL, related_name='events', null=True,
+                                 blank=True)
+    employee_no = models.CharField(max_length=255, null=True, blank=True)
+    employee_name = models.CharField(max_length=255, null=True, blank=True)
+    picture = models.ImageField(upload_to='events/pictures', null=True, blank=True)
     card_no = models.CharField(max_length=20, null=True, blank=True)

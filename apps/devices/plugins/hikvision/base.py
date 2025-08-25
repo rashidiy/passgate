@@ -1,13 +1,22 @@
 import hashlib
+import json as jsonlib
 import time
 import xml.etree.ElementTree as ET
 
 import aiohttp
 import requests
-from aiohttp import ClientResponse
 from django.core.exceptions import ValidationError
 from django.utils.translation import gettext_lazy as _
 from requests import Response, ConnectTimeout
+
+
+class ResponseWrapper:
+    def __init__(self, response, text=None, json_data=None, raw=None, content=None):
+        self.response = response
+        self.text = text
+        self.json = json_data
+        self.raw = raw
+        self.content = content
 
 
 class Capabilities:
@@ -149,7 +158,7 @@ class HikvisionWebLogin:
 
     async def request(
             self, method, path: str, *, params=None, data=None, json=None, headers=None, timeout=None, **kwargs
-    ) -> ClientResponse:
+    ) -> ResponseWrapper:
         async with aiohttp.ClientSession(middlewares=(self.digest_auth,)) as session:
             response = await session.request(
                 method, self.url(path), params=params, data=data, json=json, headers=headers, timeout=timeout, **kwargs
@@ -157,7 +166,19 @@ class HikvisionWebLogin:
 
             match response.status:
                 case 200:
-                    return response
+                    response_wrapper = ResponseWrapper(response)
+                    if response.content_type == 'application/json':
+                        try:
+                            response_wrapper.json = await response.json()
+                        except UnicodeDecodeError:
+                            raw = await response.read()
+                            try:
+                                response_wrapper.json = jsonlib.loads(raw.decode("utf-8"))
+                            except UnicodeDecodeError:
+                                response_wrapper.json = jsonlib.loads(raw.decode("gbk", errors="ignore"))
+                    if response.content_type == 'image/jpeg':
+                        response_wrapper.content = await response.read()
+                    return response_wrapper
                 case 401:
                     raise ValidationError(_("Wrong username or password."))
                 case 400:
