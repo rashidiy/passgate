@@ -19,9 +19,10 @@ from django.conf.urls.static import static
 from django.contrib import admin
 from django.contrib.auth import logout
 from django.core.handlers.wsgi import WSGIRequest
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, JsonResponse
 from django.urls import path, include
 from django.views import View
+from django.views.decorators.csrf import csrf_exempt
 
 from utils.swagger import schema_view
 
@@ -33,8 +34,15 @@ class LogoutView(View):
         return HttpResponseRedirect(next_)
 
 
+@csrf_exempt
+def get_test_webhooks(request: WSGIRequest, *args, **kwargs):
+    print(request.body)
+    return JsonResponse({'success': True})
+
+
 urlpatterns = static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT) + [
     path('docs/', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
+    path('webhook/', get_test_webhooks),
     path('', include("orders.urls")),
     path('api/v1/users/', include("employees.urls")),
     path('api/v1/devices/', include("devices.urls")),

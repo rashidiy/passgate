@@ -121,3 +121,6 @@ class Event(models.Model):
     employee_name = models.CharField(max_length=255, null=True, blank=True)
     picture = models.ImageField(upload_to='events/pictures', null=True, blank=True)
     card_no = models.CharField(max_length=20, null=True, blank=True)
+
+    class Meta:
+        ordering = ['-timestamp']

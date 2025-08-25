@@ -81,7 +81,7 @@ class EventListener:
             try:
                 tasks = [cls.listen(device) async for device in Device.objects.filter(type=Device.DeviceTypes.ACCESS)]
                 await asyncio.gather(*tasks)
-                await asyncio.sleep(1)
+                await asyncio.sleep(1.5)
             except Exception as _:
                 logging.exception("Error on device level.")
 

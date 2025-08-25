@@ -6,7 +6,7 @@ from django.core.exceptions import ValidationError
 from django.utils.html import format_html
 from django.utils.translation import gettext_lazy as _
 
-from devices.models import Device, Event, Webhook
+from devices.models import Device
 
 
 @admin.register(Device)
@@ -74,24 +74,3 @@ class DeviceAdmin(admin.ModelAdmin):
                 )
         if ok:
             self.message_user(request, _("%d device(s) reachable.") % ok, level=messages.SUCCESS)
-
-
-@admin.register(Event)
-class EventAdmin(admin.ModelAdmin):
-    list_display = (
-        'id', 'type', 'timestamp', 'device', 'employee', 'employee_no', 'employee_name', 'picture', 'card_no'
-    )
-
-    def has_add_permission(self, request, obj=None):
-        return False
-
-    def has_change_permission(self, request, obj=None):
-        return False
-
-    def has_delete_permission(self, request, obj=None):
-        return False
-
-
-@admin.register(Webhook)
-class WebhookAdmin(admin.ModelAdmin):
-    list_display = ('name', 'url')
