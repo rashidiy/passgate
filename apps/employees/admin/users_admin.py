@@ -1,3 +1,4 @@
+from django import forms
 from django.contrib import admin
 from django.utils.html import format_html
 from django.utils.translation import gettext_lazy as _
@@ -12,8 +13,20 @@ class CardInline(admin.TabularInline):
     max_num = 5
 
 
+class AccessPointForm(forms.ModelForm):
+    class Meta:
+        model = AccessPoint
+        fields = "__all__"
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        if self.instance and self.instance.pk:
+            self.fields['device'].disabled = True
+
+
 class AccessPointInline(admin.StackedInline):
     model = AccessPoint
+    form = AccessPointForm
     extra = 1
 
 
