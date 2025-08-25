@@ -55,9 +55,12 @@ class EventListener:
     async def main(cls):
         print('Listening...')
         while True:
-            tasks = [cls.listen(device) async for device in Device.objects.filter(type=Device.DeviceTypes.ACCESS)]
-            await asyncio.gather(*tasks)
-            await asyncio.sleep(1)
+            try:
+                tasks = [cls.listen(device) async for device in Device.objects.filter(type=Device.DeviceTypes.ACCESS)]
+                await asyncio.gather(*tasks)
+                await asyncio.sleep(1)
+            except Exception as _:
+                continue
 
 
 class Command(BaseCommand):
