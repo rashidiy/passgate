@@ -127,6 +127,6 @@ class Statistics:
 
 
 def context_manager(request: WSGIRequest):
-    if request.path == '/':
+    if request.path in ('/uz/', '/ru/', '/en/'):
         return Statistics.get_index_context(request)
     return {}

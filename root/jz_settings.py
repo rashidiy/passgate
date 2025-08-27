@@ -39,7 +39,7 @@ JAZZMIN_SETTINGS = {
     "use_google_fonts_cdn": True,
     "changeform_format": "horizontal_tabs",
     "changeform_format_overrides": {"auth.user": "collapsible", "auth.group": "vertical_tabs"},
-    "language_chooser": False,
+    "language_chooser": True,
 }
 
 JAZZMIN_UI_TWEAKS = {
