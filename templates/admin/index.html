@@ -2,182 +2,354 @@
 {% load i18n static jazzmin %}
 {% get_jazzmin_ui_tweaks as jazzmin_ui %}
 {% block extrajs %}
+    {#    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>#}
     <script src="{% static 'assets/js/chart.min.js' %}"></script>
     <script src="{% static 'assets/js/dashboard3.js' %}"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const counters = document.querySelectorAll('.count');
+            const speed = 30; // smaller = faster
+
+            counters.forEach(counter => {
+                const updateCount = () => {
+                    const target = +counter.getAttribute('data-target');
+                    const current = +counter.innerText;
+                    const increment = Math.ceil(target / speed);
+
+                    if (current < target) {
+                        counter.innerText = current + increment;
+                        setTimeout(updateCount, 20);
+                    } else {
+                        counter.innerText = target;
+                    }
+                };
+
+                updateCount();
+            });
+        });
+    </script>
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            var mode = 'index'
+            var ticksStyle = {
+                fontColor: '#495057',
+                fontStyle: 'bold'
+            }
+            var intersect = true
+            var $visitorsChart = $('#orders-weekly-chart')
+            new Chart($visitorsChart, {
+                data: {
+                    labels: [{% for label in orders_weekly_chart.labels %} '{{ label }}', {% endfor %}],
+                    datasets: [{
+                        type: 'line',
+                        data: [
+                            {% for orders_count in orders_weekly_chart.this_week %} {{ orders_count }}, {% endfor %}],
+                        backgroundColor: 'transparent',
+                        borderColor: '#28a745',
+                        pointBorderColor: '#28a745',
+                        pointBackgroundColor: '#28a745',
+                        fill: false
+                        // pointHoverBackgroundColor: '#007bff',
+                        // pointHoverBorderColor    : '#007bff'
+                    },
+                        {
+                            type: 'line',
+                            data: [
+                                {% for orders_count in orders_weekly_chart.last_week %} {{ orders_count }}, {% endfor %}],
+                            backgroundColor: 'tansparent',
+                            borderColor: '#ced4da',
+                            pointBorderColor: '#ced4da',
+                            pointBackgroundColor: '#ced4da',
+                            fill: false
+                            // pointHoverBackgroundColor: '#ced4da',
+                            // pointHoverBorderColor    : '#ced4da'
+                        }]
+                },
+                options: {
+                    maintainAspectRatio: false,
+                    tooltips: {
+                        mode: mode,
+                        intersect: intersect
+                    },
+                    hover: {
+                        mode: mode,
+                        intersect: intersect
+                    },
+                    legend: {
+                        display: false
+                    },
+                    scales: {
+                        yAxes: [{
+                            // display: false,
+                            gridLines: {
+                                display: true,
+                                lineWidth: '4px',
+                                color: 'rgba(0, 0, 0, .2)',
+                                zeroLineColor: 'transparent'
+                            },
+                            ticks: $.extend({
+                                beginAtZero: false,
+                            }, ticksStyle)
+                        }],
+                        xAxes: [{
+                            display: true,
+                            gridLines: {
+                                display: false
+                            },
+                            ticks: ticksStyle
+                        }]
+                    }
+                }
+            })
+        });
+    </script>
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            var ticksStyle = {
+                fontColor: '#495057',
+                fontStyle: 'bold'
+            }
+
+            var mode = 'index'
+            var intersect = true
+            var $salesChart = $('#orders-over-year')
+            new Chart($salesChart, {
+                type: 'bar',
+                data: {
+                    labels: [{% for label in orders_yearly_chart.labels %}'{{ label }}',{% endfor %}],
+                    datasets: [
+                        {
+                            backgroundColor: '#469751',
+                            borderColor: '#469751',
+                            data: [{% for month in orders_yearly_chart.yearly_orders %}{{ month }}, {% endfor %}],
+                            barPercentage: 0.6,
+                        }
+                    ]
+                },
+                options: {
+                    maintainAspectRatio: false,
+                    tooltips: {
+                        mode: mode,
+                        intersect: intersect
+                    },
+                    hover: {
+                        mode: mode,
+                        intersect: intersect
+                    },
+                    legend: {
+                        display: false
+                    },
+                    scales: {
+                        yAxes: [{
+                            // display: false,
+                            gridLines: {
+                                display: true,
+                                lineWidth: '4px',
+                                color: 'rgba(0, 0, 0, .2)',
+                                zeroLineColor: 'transparent'
+                            },
+                            ticks: $.extend({
+                                beginAtZero: true,
+                            }, ticksStyle)
+                        }],
+                        xAxes: [{
+                            display: true,
+                            gridLines: {
+                                display: false
+                            },
+                            ticks: ticksStyle
+                        }]
+                    }
+                }
+            })
+        });
+    </script>
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            var pieChartCanvas = $('#pieChart').get(0).getContext('2d')
+            var pieData = {
+                labels: [
+                    '{% trans 'Small' %}',
+                    '{% trans 'Middle' %}',
+                    '{% trans 'Big' %}',
+                ],
+                datasets: [
+                    {
+                        data: [{% for food_size in orders_food_size_consume %}{{ food_size }}, {% endfor %}
+                        ],
+                        backgroundColor: ['#51ca5d', '#50ac5d', '#40a506'],
+                    }
+                ]
+            };
+            var pieOptions = {
+                maintainAspectRatio: false,
+                responsive: true,
+            }
+            new Chart(pieChartCanvas, {
+                type: 'pie',
+                data: pieData,
+                options: pieOptions
+            })
+        });
+    </script>
 {% endblock %}
 
 {% block page_content %}
-    <div class="row p-3">
+    <div class="soon"></div>
+    <div class="row pt-3 pl-3 pr-3">
         <div class="col-lg-3 col-6">
-            <!-- small box -->
-            <div class="small-box bg-info">
-                <div class="inner">
-                    <h3>150</h3>
-
-                    <p>New Orders</p>
-                </div>
-                <div class="icon">
-                    <i class="ion ion-bag"></i>
-                </div>
-                <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
-            </div>
-        </div>
-        <!-- ./col -->
-        <div class="col-lg-3 col-6">
-            <!-- small box -->
             <div class="small-box bg-success">
                 <div class="inner">
-                    <h3>53<sup style="font-size: 20px">%</sup></h3>
+                    <h3 class="count" data-target="{{ employee_count }}">0</h3>
 
-                    <p>Bounce Rate</p>
+                    <p>{% trans "Employees" %}</p>
                 </div>
                 <div class="icon">
-                    <i class="ion ion-stats-bars"></i>
+                    <i class="fas fa-user-tie"></i>
                 </div>
-                <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+                <a href="{% url 'admin:employees_employee_changelist' %}" class="small-box-footer">More info <i
+                        class="fas fa-arrow-circle-right"></i></a>
             </div>
         </div>
-        <!-- ./col -->
         <div class="col-lg-3 col-6">
 
-            <!-- small box -->
             <div class="small-box bg-warning">
                 <div class="inner">
-                    <h3>44</h3>
+                    <h3 class="count" data-target="{{ entrance_count }}">0</h3>
 
-                    <p>User Registrations</p>
+                    <p>{% trans 'Entrance' %}</p>
                 </div>
                 <div class="icon">
-                    <i class="ion ion-person-add"></i>
+                    <i class="fas fa-door-closed"></i>
                 </div>
-                <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+                <a href="{% url 'admin:devices_event_changelist' %}" class="small-box-footer">More info <i
+                        class="fas fa-arrow-circle-right"></i></a>
             </div>
         </div>
-        <!-- ./col -->
         <div class="col-lg-3 col-6">
-            <!-- small box -->
-            <div class="small-box bg-danger">
+            <div class="small-box bg-info">
                 <div class="inner">
-                    <h3>65</h3>
+                    <h3 class="count" data-target="{{ daily_orders }}">0</h3>
 
-                    <p>Unique Visitors</p>
+                    <p>{% trans 'Daily Orders' %}</p>
                 </div>
                 <div class="icon">
-                    <i class="ion ion-pie-graph"></i>
+                    <i class="fas fa-utensils"></i>
                 </div>
-                <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+                <a href="{% url 'admin:orders_order_changelist' %}" class="small-box-footer">{% trans 'More info' %} <i
+                        class="fas fa-arrow-circle-right"></i></a>
+            </div>
+        </div>
+        <div class="col-lg-3 col-6">
+            <div class="small-box bg-danger">
+                <div class="inner">
+                    <h3 class="count" data-target="{{ daily_cancelled_orders }}">0</h3>
+                    <p>{% trans 'Cancelled Orders' %}</p>
+                </div>
+                <div class="icon">
+                    <i class="fas fa-ban"></i>
+                </div>
+                <a href="{% url 'admin:orders_order_changelist' %}" class="small-box-footer">{% trans 'More info' %} <i
+                        class="fas fa-arrow-circle-right"></i></a>
             </div>
         </div>
     </div>
-    <div class="row p-3">
+    <div class="row pl-3 pr-3">
         <div class="col-lg-8">
-            <div class="card">
-                <div class="card-header border-0">
-                    <div class="d-flex justify-content-between">
-                        <h3 class="card-title">Online Store Visitors</h3>
-                        <a href="javascript:void(0);">View Report</a>
-                    </div>
-                </div>
-                <div class="card-body">
-                    <div class="d-flex">
-                        <p class="d-flex flex-column">
-                            <span class="text-bold text-lg">820</span>
-                            <span>Visitors Over Time</span>
-                        </p>
-                        <p class="ml-auto d-flex flex-column text-right">
-                    <span class="text-success">
-                      <i class="fas fa-arrow-up"></i> 12.5%
-                    </span>
-                            <span class="text-muted">Since last week</span>
-                        </p>
-                    </div>
-                    <!-- /.d-flex -->
-
-                    <div class="position-relative mb-4">
-                        <div class="chartjs-size-monitor">
-                            <div class="chartjs-size-monitor-expand">
-                                <div class=""></div>
+            <div class="row">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="d-flex">
+                                <p class="d-flex flex-column">
+                                    <span class="text-bold text-lg">{{ orders_weekly_chart.sum }}</span>
+                                    <span>{% trans 'Orders Over Week' %}</span>
+                                </p>
+                                <p class="ml-auto d-flex flex-column text-right">
+                                    {% if orders_weekly_chart.difference < 0 %}
+                                        <span class="text-danger">
+                                    <i class="fas fa-arrow-down"></i> {{ orders_weekly_chart.difference }}%
+                                </span>
+                                    {% else %}
+                                        <span class="text-success">
+                                    <i class="fas fa-arrow-up"></i> {{ orders_weekly_chart.difference }}%
+                                </span>
+                                    {% endif %}
+                                    <span class="text-muted">{% trans 'Since last week' %}</span>
+                                </p>
                             </div>
-                            <div class="chartjs-size-monitor-shrink">
-                                <div class=""></div>
+                            <div class="position-relative">
+                                <canvas id="orders-weekly-chart"
+                                        style="display: block; width: 737px; height: 225px;"
+                                        class="chartjs-render-monitor"></canvas>
+                            </div>
+
+                            <div class="d-flex flex-row justify-content-end">
+                  <span class="mr-2">
+                    <i class="fas fa-square text-success"></i> {% trans 'This Week' %}
+                  </span>
+
+                                <span>
+                    <i class="fas fa-square text-gray"></i> {% trans 'Last Week' %}
+                  </span>
                             </div>
                         </div>
-                        <canvas id="visitors-chart" height="200" width="737"
-                                style="display: block; width: 737px; height: 250px;"
-                                class="chartjs-render-monitor"></canvas>
-                    </div>
-
-                    <div class="d-flex flex-row justify-content-end">
-                  <span class="mr-2">
-                    <i class="fas fa-square text-primary"></i> This Week
-                  </span>
-
-                        <span>
-                    <i class="fas fa-square text-gray"></i> Last Week
-                  </span>
                     </div>
                 </div>
             </div>
-            <div class="card">
-                <div class="card-header border-0">
-                    <div class="d-flex justify-content-between">
-                        <h3 class="card-title">Sales</h3>
-                        <a href="javascript:void(0);">View Report</a>
-                    </div>
-                </div>
-                <div class="card-body">
-                    <div class="d-flex">
-                        <p class="d-flex flex-column">
-                            <span class="text-bold text-lg">$18,230.00</span>
-                            <span>Sales Over Time</span>
-                        </p>
-                        <p class="ml-auto d-flex flex-column text-right">
-                    <span class="text-success">
-                      <i class="fas fa-arrow-up"></i> 33.1%
-                    </span>
-                            <span class="text-muted">Since last month</span>
-                        </p>
-                    </div>
-                    <!-- /.d-flex -->
-
-                    <div class="position-relative mb-4">
-                        <div class="chartjs-size-monitor">
-                            <div class="chartjs-size-monitor-expand">
-                                <div class=""></div>
+            <div class="row">
+                <div class="col-8">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="d-flex">
+                                <p class="d-flex flex-column">
+                                    <span class="text-bold text-lg">{{ orders_yearly_chart.sum }}</span>
+                                    <span>{% trans 'Orders over year' %}</span>
+                                </p>
+                                <p class="ml-auto d-flex flex-column text-right">
+                                    {% if orders_yearly_chart.difference < 0 %}
+                                        <span class="text-danger">
+                                    <i class="fas fa-arrow-down"></i> {{ orders_yearly_chart.difference }}%
+                                </span>
+                                    {% else %}
+                                        <span class="text-success">
+                                    <i class="fas fa-arrow-up"></i> {{ orders_yearly_chart.difference }}%
+                                </span>
+                                    {% endif %}
+                                    <span class="text-muted">Since last month</span>
+                                </p>
                             </div>
-                            <div class="chartjs-size-monitor-shrink">
-                                <div class=""></div>
+                            <!-- /.d-flex -->
+
+                            <div class="position-relative">
+                                <div class="chartjs-size-monitor">
+                                    <div class="chartjs-size-monitor-expand">
+                                        <div class=""></div>
+                                    </div>
+                                    <div class="chartjs-size-monitor-shrink">
+                                        <div class=""></div>
+                                    </div>
+                                </div>
+                                <canvas id="orders-over-year" height="200" width="737"
+                                        style="display: block; width: 737px; height: 200px;"
+                                        class="chartjs-render-monitor"></canvas>
                             </div>
                         </div>
-                        <canvas id="sales-chart" height="200" width="737"
-                                style="display: block; width: 737px; height: 200px;"
-                                class="chartjs-render-monitor"></canvas>
                     </div>
-
-                    <div class="d-flex flex-row justify-content-end">
-                  <span class="mr-2">
-                    <i class="fas fa-square text-primary"></i> This year
-                  </span>
-
-                        <span>
-                    <i class="fas fa-square text-gray"></i> Last year
-                  </span>
+                </div>
+                <div class="col-4">
+                    <div class="card">
+                        <div class="card-body">
+                            <canvas id="pieChart"
+                                    style="min-height: 246px; max-height: 246px; max-width: 100%; display: block; width: 765px;"
+                                    width="765" height="250" class="chartjs-render-monitor"></canvas>
+                            <p class="text-center mb-0">{% trans 'Monthly food size consume' %}</p>
+                        </div>
                     </div>
                 </div>
             </div>
-
         </div>
         <div class="col-lg-4">
-            <div class="card">
-                <div class="card-body">
-                    <div class="d-flex align-items-start">
-{#                        <div id="pieLegend" style="margin-left:16px;"></div>#}
-                        <div class="position-relative" style="height:333px; width:333px;">
-                            <canvas id="pieChart"></canvas>
-                        </div>
-                    </div>
-                </div>
-            </div>
             <div id="content-related">
                 <div class="module" id="recent-actions-module">
                     <h4 class="mb-3">{% trans 'Recent actions' %}</h4>
