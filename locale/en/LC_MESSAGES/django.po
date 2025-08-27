@@ -1,0 +1,479 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-08-28 02:39+0500\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: apps/devices/admin/device_admin.py:22
+msgid "General"
+msgstr ""
+
+#: apps/devices/admin/device_admin.py:25
+msgid "Network"
+msgstr ""
+
+#: apps/devices/admin/device_admin.py:28
+msgid "Credentials"
+msgstr ""
+
+#: apps/devices/admin/device_admin.py:35 apps/devices/models/device_model.py:19
+#: apps/employees/models/access_point_model.py:22
+msgid "Type"
+msgstr ""
+
+#: apps/devices/admin/device_admin.py:58
+msgid "Ping socket (IP:Port)"
+msgstr ""
+
+#: apps/devices/admin/device_admin.py:70
+msgid "[{}] {} @ {}:{} not reachable: {}"
+msgstr ""
+
+#: apps/devices/admin/device_admin.py:76
+#, python-format
+msgid "%d device(s) reachable."
+msgstr ""
+
+#: apps/devices/models/device_model.py:15
+msgid "Enter / Exit"
+msgstr ""
+
+#: apps/devices/models/device_model.py:16 apps/orders/models.py:51
+msgid "Order"
+msgstr ""
+
+#: apps/devices/models/device_model.py:18 apps/devices/models/webhook.py:6
+#: apps/employees/models/employee_model.py:20 apps/orders/models.py:14
+msgid "Name"
+msgstr ""
+
+#: apps/devices/models/device_model.py:21
+msgid "Model"
+msgstr ""
+
+#: apps/devices/models/device_model.py:22
+msgid "IP"
+msgstr ""
+
+#: apps/devices/models/device_model.py:23
+msgid "Port"
+msgstr ""
+
+#: apps/devices/models/device_model.py:24
+msgid "Username"
+msgstr ""
+
+#: apps/devices/models/device_model.py:25
+msgid "Password"
+msgstr ""
+
+#: apps/devices/models/device_model.py:36 apps/devices/models/event_model.py:19
+#: apps/employees/models/access_point_model.py:21
+msgid "Device"
+msgstr ""
+
+#: apps/devices/models/device_model.py:37
+msgid "Devices"
+msgstr ""
+
+#: apps/devices/models/device_model.py:76
+msgid "You cannot create order Device more than one. Contact administrator."
+msgstr ""
+
+#: apps/devices/models/event_model.py:7
+msgid "Authenticated via Card"
+msgstr ""
+
+#: apps/devices/models/event_model.py:8
+msgid "Authentication via Card Failed"
+msgstr ""
+
+#: apps/devices/models/event_model.py:9
+msgid "Authenticated via Face"
+msgstr ""
+
+#: apps/devices/models/event_model.py:10
+msgid "Authentication via Face Failed"
+msgstr ""
+
+#: apps/devices/models/event_model.py:11
+msgid "Authenticated via Fingerprint"
+msgstr ""
+
+#: apps/devices/models/event_model.py:12
+msgid "Authentication via Fingerprint Failed"
+msgstr ""
+
+#: apps/devices/models/event_model.py:14
+msgid "Current Verify Mode"
+msgstr ""
+
+#: apps/devices/models/event_model.py:15
+msgid "Serial Number"
+msgstr ""
+
+#: apps/devices/models/event_model.py:16
+msgid "Event Type"
+msgstr ""
+
+#: apps/devices/models/event_model.py:17
+msgid "Timestamp"
+msgstr ""
+
+#: apps/devices/models/event_model.py:21
+#: apps/employees/models/access_point_model.py:19
+#: apps/employees/models/card_model.py:9
+#: apps/employees/models/employee_model.py:26 apps/orders/models.py:13
+msgid "Employee"
+msgstr ""
+
+#: apps/devices/models/event_model.py:22
+msgid "Employee Number"
+msgstr ""
+
+#: apps/devices/models/event_model.py:23
+msgid "Employee Name"
+msgstr ""
+
+#: apps/devices/models/event_model.py:24
+msgid "Picture"
+msgstr ""
+
+#: apps/devices/models/event_model.py:25
+msgid "Card Number"
+msgstr ""
+
+#: apps/devices/models/event_model.py:29
+msgid "Event"
+msgstr ""
+
+#: apps/devices/models/event_model.py:30
+msgid "Events"
+msgstr ""
+
+#: apps/devices/models/webhook.py:7
+msgid "URL"
+msgstr ""
+
+#: apps/devices/models/webhook.py:8
+msgid "Is active"
+msgstr ""
+
+#: apps/devices/models/webhook.py:11
+msgid "Webhook"
+msgstr ""
+
+#: apps/devices/models/webhook.py:12
+msgid "Webhooks"
+msgstr ""
+
+#: apps/devices/plugins/hikvision/DS_K1T671MF.py:18
+msgid "Model is not DS-K1T671MF."
+msgstr ""
+
+#: apps/devices/plugins/hikvision/base.py:72
+msgid "Wrong username."
+msgstr ""
+
+#: apps/devices/plugins/hikvision/base.py:190
+#: apps/devices/plugins/hikvision/order_manager.py:79
+#: apps/devices/plugins/hikvision/order_manager.py:115
+msgid "Wrong username or password."
+msgstr ""
+
+#: apps/devices/plugins/hikvision/order_manager.py:19
+msgid "There is no order device."
+msgstr ""
+
+#: apps/devices/plugins/hikvision/order_manager.py:75
+#: apps/devices/plugins/hikvision/order_manager.py:111
+msgid "Unable to connect to device with given IP and Port"
+msgstr ""
+
+#: apps/employees/admin/_atomic_create.py:87
+msgid "Unable to detect face from image or invalid image."
+msgstr ""
+
+#: apps/employees/admin/_atomic_create.py:129
+#, python-format
+msgid "Add %s"
+msgstr ""
+
+#: apps/employees/admin/_atomic_create.py:131
+#, python-format
+msgid "Change %s"
+msgstr ""
+
+#: apps/employees/admin/_atomic_create.py:133
+#, python-format
+msgid "View %s"
+msgstr ""
+
+#: apps/employees/admin/users_admin.py:40
+#: apps/employees/models/employee_model.py:22
+msgid "Image"
+msgstr ""
+
+#: apps/employees/models/access_point_model.py:15
+msgid "Normal"
+msgstr ""
+
+#: apps/employees/models/access_point_model.py:16
+msgid "Visitor"
+msgstr ""
+
+#: apps/employees/models/access_point_model.py:23
+msgid "Validity start"
+msgstr ""
+
+#: apps/employees/models/access_point_model.py:24
+msgid "Validity end"
+msgstr ""
+
+#: apps/employees/models/access_point_model.py:25
+msgid "Visit time"
+msgstr ""
+
+#: apps/employees/models/access_point_model.py:33
+msgid "Visit time is required."
+msgstr ""
+
+#: apps/employees/models/access_point_model.py:38
+msgid "Access Point"
+msgstr ""
+
+#: apps/employees/models/access_point_model.py:39
+msgid "Access Points"
+msgstr ""
+
+#: apps/employees/models/card_model.py:7
+msgid "Card number"
+msgstr ""
+
+#: apps/employees/models/card_model.py:12
+msgid "Card"
+msgstr ""
+
+#: apps/employees/models/card_model.py:13
+msgid "Cards"
+msgstr ""
+
+#: apps/employees/models/card_model.py:22
+#, python-format
+msgid "Limit of cards exceeded for user %s."
+msgstr ""
+
+#: apps/employees/models/employee_model.py:11
+#, python-format
+msgid "Image size shouldnt exteed %s Kb."
+msgstr ""
+
+#: apps/employees/models/employee_model.py:16
+msgid "Male"
+msgstr ""
+
+#: apps/employees/models/employee_model.py:17
+msgid "Female"
+msgstr ""
+
+#: apps/employees/models/employee_model.py:18
+msgid "Unknown"
+msgstr ""
+
+#: apps/employees/models/employee_model.py:21
+msgid "Gender"
+msgstr ""
+
+#: apps/employees/models/employee_model.py:27 templates/admin/index.html:205
+msgid "Employees"
+msgstr ""
+
+#: apps/orders/admin.py:45
+msgid "Export Selected Orders to Excel"
+msgstr ""
+
+#: apps/orders/models.py:9 templates/admin/index.html:172
+msgid "Small"
+msgstr ""
+
+#: apps/orders/models.py:10 templates/admin/index.html:173
+msgid "Medium"
+msgstr ""
+
+#: apps/orders/models.py:11 templates/admin/index.html:174
+msgid "Large"
+msgstr ""
+
+#: apps/orders/models.py:15
+msgid "Food size"
+msgstr ""
+
+#: apps/orders/models.py:16
+msgid "Is cancelled"
+msgstr ""
+
+#: apps/orders/models.py:17
+msgid "Created at"
+msgstr ""
+
+#: apps/orders/models.py:18
+msgid "Updated at"
+msgstr ""
+
+#: apps/orders/models.py:28
+msgid "January"
+msgstr ""
+
+#: apps/orders/models.py:29
+msgid "February"
+msgstr ""
+
+#: apps/orders/models.py:30
+msgid "March"
+msgstr ""
+
+#: apps/orders/models.py:31
+msgid "April"
+msgstr ""
+
+#: apps/orders/models.py:32
+msgid "May"
+msgstr ""
+
+#: apps/orders/models.py:33
+msgid "June"
+msgstr ""
+
+#: apps/orders/models.py:34
+msgid "July"
+msgstr ""
+
+#: apps/orders/models.py:35
+msgid "August"
+msgstr ""
+
+#: apps/orders/models.py:36
+msgid "September"
+msgstr ""
+
+#: apps/orders/models.py:37
+msgid "October"
+msgstr ""
+
+#: apps/orders/models.py:38
+msgid "November"
+msgstr ""
+
+#: apps/orders/models.py:39
+msgid "December"
+msgstr ""
+
+#: apps/orders/models.py:40
+msgid "Year"
+msgstr ""
+
+#: apps/orders/models.py:52
+msgid "Orders"
+msgstr ""
+
+#: root/settings.py:104
+msgid "Uzbek"
+msgstr ""
+
+#: root/settings.py:105
+msgid "Russian"
+msgstr ""
+
+#: root/settings.py:106
+msgid "English"
+msgstr ""
+
+#: templates/admin/base.html:13
+msgid "Version"
+msgstr ""
+
+#: templates/admin/base.html:16
+msgid "Copyright"
+msgstr ""
+
+#: templates/admin/base.html:17
+msgid "All rights reserved."
+msgstr ""
+
+#: templates/admin/base.html:58
+msgid "Dashboard"
+msgstr ""
+
+#: templates/admin/index.html:210 templates/admin/index.html:225
+#: templates/admin/index.html:239 templates/admin/index.html:252
+msgid "More info"
+msgstr ""
+
+#: templates/admin/index.html:220
+msgid "Entrance"
+msgstr ""
+
+#: templates/admin/index.html:234
+msgid "Daily Orders"
+msgstr ""
+
+#: templates/admin/index.html:247
+msgid "Cancelled Orders"
+msgstr ""
+
+#: templates/admin/index.html:266
+msgid "Orders Over Week"
+msgstr ""
+
+#: templates/admin/index.html:278
+msgid "Since last week"
+msgstr ""
+
+#: templates/admin/index.html:289
+msgid "This Week"
+msgstr ""
+
+#: templates/admin/index.html:293
+msgid "Last Week"
+msgstr ""
+
+#: templates/admin/index.html:307
+msgid "Orders over year"
+msgstr ""
+
+#: templates/admin/index.html:319
+msgid "Since last month"
+msgstr ""
+
+#: templates/admin/index.html:346
+msgid "Monthly food size consume"
+msgstr ""
+
+#: templates/admin/index.html:355
+msgid "Recent actions"
+msgstr ""
+
+#: templates/admin/index.html:359
+msgid "None available"
+msgstr ""
+
+#: templates/admin/index.html:375
+#, python-format
+msgid ""
+"\n"
+"                                                        %(timesince)s ago"
+msgstr ""

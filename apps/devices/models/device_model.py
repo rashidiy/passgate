@@ -15,13 +15,13 @@ class Device(models.Model):
         ACCESS = 'access', _('Enter / Exit')
         ORDER = 'order', _('Order')
 
-    name = models.CharField(max_length=100)
-    type = models.CharField(max_length=100, choices=DeviceTypes.choices, default=DeviceTypes.ACCESS)
+    name = models.CharField(_('Name'), max_length=100)
+    type = models.CharField(_('Type'), max_length=100, choices=DeviceTypes.choices, default=DeviceTypes.ACCESS)
     model = models.CharField(max_length=100, choices=DeviceModels.choices, default=DeviceModels.DS_K1T671MF,
-                             editable=False)
+                             editable=False, verbose_name=_('Model'))
     ip_address = models.GenericIPAddressField(_('IP'))
-    port = models.IntegerField(validators=[MinValueValidator(0), MaxValueValidator(65535)])
-    username = models.CharField(max_length=100)
+    port = models.IntegerField(_('Port'), validators=[MinValueValidator(0), MaxValueValidator(65535)])
+    username = models.CharField(_('Username'), max_length=100)
     password_placeholder = models.CharField(_('Password'), max_length=16)
     encrypted_password = EncryptedTextField(editable=False)
     last_event = models.IntegerField(default=0, editable=False)

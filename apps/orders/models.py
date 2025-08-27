@@ -4,14 +4,13 @@ from django.utils.translation import gettext_lazy as _
 
 from employees.models import Employee
 
-
 class Order(models.Model):
     class FoodSizeChoice(models.TextChoices):
         SMALL = "0.5", _('Small')
         MEDIUM = "1", _('Medium')
         BIG = "1.5", _('Large')
 
-    employee = models.ForeignKey(Employee, on_delete=models.SET_NULL, null=True, related_name='orders')
+    employee = models.ForeignKey(Employee, on_delete=models.SET_NULL, null=True, related_name='orders', verbose_name=_('Employee'))
     name = models.CharField(_('Name'), max_length=225)
     food_size = models.CharField(_('Food size'), max_length=3, choices=FoodSizeChoice.choices)
     is_cancelled = models.BooleanField(_('Is cancelled'), default=False)

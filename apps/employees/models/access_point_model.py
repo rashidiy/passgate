@@ -15,12 +15,18 @@ class AccessPoint(models.Model):
         NORMAL = 'normal', _('Normal')
         VISITOR = 'visitor', _('Visitor')
 
-    employee = models.ForeignKey('employees.Employee', on_delete=models.CASCADE, related_name='access_points')
-    device = models.ForeignKey('devices.Device', on_delete=models.CASCADE, related_name='access_points')
-    type = models.CharField(max_length=7, choices=AccessTypes.choices, default=AccessTypes.NORMAL)
-    validity_start = models.DateTimeField(default=timezone.now)
-    validity_end = models.DateTimeField(default=default_validity_end)
-    visit_time = models.IntegerField(validators=[MinValueValidator(0), MaxValueValidator(255)], default=0)
+    employee = models.ForeignKey('employees.Employee', on_delete=models.CASCADE, related_name='access_points',
+                                 verbose_name=_('Employee'))
+    device = models.ForeignKey('devices.Device', on_delete=models.CASCADE, related_name='access_points',
+                               verbose_name=_('Device'))
+    type = models.CharField(_('Type'), max_length=7, choices=AccessTypes.choices, default=AccessTypes.NORMAL)
+    validity_start = models.DateTimeField(_('Validity start'), default=timezone.now)
+    validity_end = models.DateTimeField(_('Validity end'), default=default_validity_end)
+    visit_time = models.IntegerField(_('Visit time'), validators=[MinValueValidator(0), MaxValueValidator(255)],
+                                     default=0)
+
+    def __str__(self):
+        return self.device.name
 
     def clean(self):
         if self.type == self.AccessTypes.VISITOR and not self.visit_time:
@@ -29,3 +35,5 @@ class AccessPoint(models.Model):
 
     class Meta:
         unique_together = ('employee', 'device')
+        verbose_name = _('Access Point')
+        verbose_name_plural = _('Access Points')

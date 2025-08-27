@@ -31,7 +31,7 @@ urlpatterns = static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT) + [
     path('api/v1/users/', include("employees.urls")),
     path('api/v1/devices/', include("devices.urls")),
     path('accounts/logout/', LogoutView.as_view(), name='logout'),
-    path(r'^i18n/', include('django.conf.urls.i18n')),
+    path('i18n/', include('django.conf.urls.i18n')),
 ] + i18n_patterns(
     path('', admin.site.urls)
 )

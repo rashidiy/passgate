@@ -34,7 +34,7 @@
                     .then(response => response.json())
                     .then(data => {
                         if (data.success) {
-                            lastTimestamp = data.timestamp;
+                            lastTimestamp = new Date(new Date(data.timestamp).getTime() + 61).toISOString();;
                             updateTable(data.result);
                         } else {
                             console.error("Error:", data.message);

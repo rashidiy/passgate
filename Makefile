@@ -1,10 +1,10 @@
 mig:
-	django-admin makemigrations
-	django-admin migrate
+	python3 manage.py makemigrations
+	python3 manage.py migrate
 admin:
-	django-admin createsuperuser --email ''  --username 'admin'
+	python3 manage.py createsuperuser --email ''  --username 'admin'
 
 po:
-	django-admin makemessages --all --ignore=.venv
+	python3 manage.py makemessages --all
 mo:
-	django-admin compilemessages --ignore=.venv
+	python3 manage.py compilemessages --ignore=.venv

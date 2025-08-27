@@ -13,6 +13,7 @@ JAZZMIN_SETTINGS = {
     "order_with_respect_to": [
         "auth",
         "employees",
+        "orders",
         "devices",
 
         "auth.user",

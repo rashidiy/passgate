@@ -4,8 +4,13 @@ from django.utils.translation import gettext_lazy as _
 
 
 class Card(models.Model):
-    card_no = models.CharField(max_length=20, unique=True)
-    employee = models.ForeignKey('employees.Employee', on_delete=models.CASCADE, related_name='cards')
+    card_no = models.CharField(_('Card number'), max_length=20, unique=True)
+    employee = models.ForeignKey('employees.Employee', on_delete=models.CASCADE, related_name='cards',
+                                 verbose_name=_('Employee'))
+
+    class Meta:
+        verbose_name = _('Card')
+        verbose_name_plural = _('Cards')
 
     def get_cards_count(self):
         if self.employee.pk:

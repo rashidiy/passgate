@@ -18,9 +18,13 @@ class Employee(models.Model):
         UNKNOWN = 'unknown', _('Unknown')
 
     name = models.CharField(_('Name'), max_length=100)
-    gender = models.CharField(max_length=7, choices=Genders.choices, default=Genders.MALE)
-    image = models.ImageField(upload_to='users/', null=True, blank=True, validators=[validate_image_size])
+    gender = models.CharField(_('Gender'), max_length=7, choices=Genders.choices, default=Genders.MALE)
+    image = models.ImageField(_('Image'), upload_to='users/', null=True, blank=True, validators=[validate_image_size])
     ex_data = models.TextField(editable=False)
+
+    class Meta:
+        verbose_name = _('Employee')
+        verbose_name_plural = _('Employees')
 
     @property
     def data(self):

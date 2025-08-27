@@ -16,7 +16,7 @@ class OrderList(APIView):
 
     @swagger_auto_schema(auto_schema=None)  # noqa
     def get(self, request):
-        if not request.employee.is_authenticated:
+        if not request.user.is_authenticated:
             return Response(status=status.HTTP_401_UNAUTHORIZED)
 
         timestamp_str = request.GET.get('timestamp')

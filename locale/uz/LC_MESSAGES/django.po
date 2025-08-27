@@ -1,0 +1,1454 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGEʻS COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-08-28 02:39+0500\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: Uzbek <uz@li.org>\n"
+"Language: uz\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+#: templates/includes/carousel.html:4
+#: templates/includes/collapsible.html:2
+#: templates/includes/horizontal_tabs.html:2
+#: templates/includes/vertical_tabs.html:2
+#: apps/devices/admin/device_admin.py:22
+msgid "General"
+msgstr "Umumiy"
+
+#: apps/devices/admin/device_admin.py:25
+msgid "Network"
+msgstr "Tarmoq"
+
+#: apps/devices/admin/device_admin.py:28
+msgid "Credentials"
+msgstr "Hisob maʻlumotlari"
+
+#: apps/devices/admin/device_admin.py:35 apps/devices/models/device_model.py:19
+#: apps/employees/models/access_point_model.py:22
+msgid "Type"
+msgstr "Turi"
+
+#: apps/devices/admin/device_admin.py:58
+msgid "Ping socket (IP:Port)"
+msgstr "Ping soketi (IP:Port)"
+
+#: apps/devices/admin/device_admin.py:70
+msgid "[{}] {} @ {}:{} not reachable: {}"
+msgstr "[{}] {} @ {}:{} ulanmadi: {}"
+
+#: apps/devices/admin/device_admin.py:76
+#, python-format
+msgid "%d device(s) reachable."
+msgstr "%d qurilma(lar) ulanadi."
+
+#: apps/devices/models/device_model.py:15
+msgid "Enter / Exit"
+msgstr "Kirish / Chiqish"
+
+#: apps/devices/models/device_model.py:16 apps/orders/models.py:51
+msgid "Order"
+msgstr "Buyurtma"
+
+#: apps/devices/models/device_model.py:18 apps/devices/models/webhook.py:6
+#: apps/employees/models/employee_model.py:20 apps/orders/models.py:14
+msgid "Name"
+msgstr "Ism"
+
+#: apps/devices/models/device_model.py:21
+msgid "Model"
+msgstr "Model"
+
+#: apps/devices/models/device_model.py:22
+msgid "IP"
+msgstr "IP"
+
+#: apps/devices/models/device_model.py:23
+msgid "Port"
+msgstr "Port"
+
+#: apps/devices/models/device_model.py:24
+msgid "Username"
+msgstr "Foydalanuvchi nomi"
+
+#: apps/devices/models/device_model.py:25
+msgid "Password"
+msgstr "Parol"
+
+#: apps/devices/models/device_model.py:36 apps/devices/models/event_model.py:19
+#: apps/employees/models/access_point_model.py:21
+msgid "Device"
+msgstr "Qurilma"
+
+#: apps/devices/models/device_model.py:37
+msgid "Devices"
+msgstr "Qurilmalar"
+
+#: apps/devices/models/device_model.py:76
+msgid "You cannot create order Device more than one. Contact administrator."
+msgstr ""
+"Bitta buyurtma qurilmasidan ortiq yaratib boʻlmaydi. Administrator bilan "
+"bogʻlaning."
+
+#: apps/devices/models/event_model.py:7
+msgid "Authenticated via Card"
+msgstr "Karta orqali avtorizatsiya"
+
+#: apps/devices/models/event_model.py:8
+msgid "Authentication via Card Failed"
+msgstr "Karta orqali avtorizatsiya muvaffaqiyatsiz"
+
+#: apps/devices/models/event_model.py:9
+msgid "Authenticated via Face"
+msgstr "Yuz orqali avtorizatsiya"
+
+#: apps/devices/models/event_model.py:10
+msgid "Authentication via Face Failed"
+msgstr "Yuz orqali avtorizatsiya muvaffaqiyatsiz"
+
+#: apps/devices/models/event_model.py:11
+msgid "Authenticated via Fingerprint"
+msgstr "Barmoq izi orqali avtorizatsiya"
+
+#: apps/devices/models/event_model.py:12
+msgid "Authentication via Fingerprint Failed"
+msgstr "Barmoq izi orqali avtorizatsiya muvaffaqiyatsiz"
+
+#: apps/devices/models/event_model.py:14
+msgid "Current Verify Mode"
+msgstr "Joriy tekshirish usuli"
+
+#: apps/devices/models/event_model.py:15
+msgid "Serial Number"
+msgstr "Seriya raqami"
+
+#: apps/devices/models/event_model.py:16
+msgid "Event Type"
+msgstr "Hodisa turi"
+
+#: apps/devices/models/event_model.py:17
+msgid "Timestamp"
+msgstr "Vaqt belgisi"
+
+#: apps/devices/models/event_model.py:21
+#: apps/employees/models/access_point_model.py:19
+#: apps/employees/models/card_model.py:9
+#: apps/employees/models/employee_model.py:26 apps/orders/models.py:13
+msgid "Employee"
+msgstr "Xodim"
+
+#: apps/devices/models/event_model.py:22
+msgid "Employee Number"
+msgstr "Xodim raqami"
+
+#: apps/devices/models/event_model.py:23
+msgid "Employee Name"
+msgstr "Xodim ismi"
+
+#: apps/devices/models/event_model.py:24
+msgid "Picture"
+msgstr "Rasm"
+
+#: apps/devices/models/event_model.py:25
+msgid "Card Number"
+msgstr "Karta raqami"
+
+#: apps/devices/models/event_model.py:29
+msgid "Event"
+msgstr "Hodisa"
+
+#: apps/devices/models/event_model.py:30
+msgid "Events"
+msgstr "Hodisalar"
+
+#: apps/devices/models/webhook.py:7
+msgid "URL"
+msgstr "URL"
+
+#: apps/devices/models/webhook.py:8
+msgid "Is active"
+msgstr "Faol"
+
+#: apps/devices/models/webhook.py:11
+msgid "Webhook"
+msgstr "Vebhuk"
+
+#: apps/devices/models/webhook.py:12
+msgid "Webhooks"
+msgstr "Vebhuklar"
+
+#: apps/devices/plugins/hikvision/DS_K1T671MF.py:18
+msgid "Model is not DS-K1T671MF."
+msgstr "Model DS-K1T671MF emas."
+
+#: apps/devices/plugins/hikvision/base.py:72
+msgid "Wrong username."
+msgstr "Notoʻgʻri foydalanuvchi nomi."
+
+#: apps/devices/plugins/hikvision/base.py:190
+#: apps/devices/plugins/hikvision/order_manager.py:79
+#: apps/devices/plugins/hikvision/order_manager.py:115
+msgid "Wrong username or password."
+msgstr "Notoʻgʻri foydalanuvchi nomi yoki parol."
+
+#: apps/devices/plugins/hikvision/order_manager.py:19
+msgid "There is no order device."
+msgstr "Buyurtma qurilmasi yoʻq."
+
+#: apps/devices/plugins/hikvision/order_manager.py:75
+#: apps/devices/plugins/hikvision/order_manager.py:111
+msgid "Unable to connect to device with given IP and Port"
+msgstr "Berilgan IP va port bilan qurilmaga ulanib boʻlmadi"
+
+#: apps/employees/admin/_atomic_create.py:87
+msgid "Unable to detect face from image or invalid image."
+msgstr "Rasmdan yuzni aniqlab boʻlmadi yoki rasm notoʻgʻri."
+
+#: apps/employees/admin/_atomic_create.py:129
+#, python-format
+msgid "Add %s"
+msgstr "%s qoʻshish"
+
+#: apps/employees/admin/_atomic_create.py:131
+#, python-format
+msgid "Change %s"
+msgstr "%s oʻzgartirish"
+
+#: apps/employees/admin/_atomic_create.py:133
+#, python-format
+msgid "View %s"
+msgstr "%s koʻrish"
+
+#: apps/employees/admin/users_admin.py:40
+#: apps/employees/models/employee_model.py:22
+msgid "Image"
+msgstr "Rasm"
+
+#: apps/employees/models/access_point_model.py:15
+msgid "Normal"
+msgstr "Oddiy"
+
+#: apps/employees/models/access_point_model.py:16
+msgid "Visitor"
+msgstr "Mehmon"
+
+#: apps/employees/models/access_point_model.py:23
+msgid "Validity start"
+msgstr "Amal qilish boshlanishi"
+
+#: apps/employees/models/access_point_model.py:24
+msgid "Validity end"
+msgstr "Amal qilish tugashi"
+
+#: apps/employees/models/access_point_model.py:25
+msgid "Visit time"
+msgstr "Tashrif vaqti"
+
+#: apps/employees/models/access_point_model.py:33
+msgid "Visit time is required."
+msgstr "Tashrif vaqti talab qilinadi."
+
+#: apps/employees/models/access_point_model.py:38
+msgid "Access Point"
+msgstr "Kirish nuqtasi"
+
+#: apps/employees/models/access_point_model.py:39
+msgid "Access Points"
+msgstr "Kirish nuqtalari"
+
+#: apps/employees/models/card_model.py:7
+msgid "Card number"
+msgstr "Karta raqami"
+
+#: apps/employees/models/card_model.py:12
+msgid "Card"
+msgstr "Karta"
+
+#: apps/employees/models/card_model.py:13
+msgid "Cards"
+msgstr "Kartalar"
+
+#: apps/employees/models/card_model.py:22
+#, python-format
+msgid "Limit of cards exceeded for user %s."
+msgstr "Foydalanuvchi %s uchun kartalar soni chegarasi oshib ketdi."
+
+#: apps/employees/models/employee_model.py:11
+#, python-format
+msgid "Image size shouldnt exteed %s Kb."
+msgstr "Rasm hajmi %s KB dan oshmasligi kerak."
+
+#: apps/employees/models/employee_model.py:16
+msgid "Male"
+msgstr "Erkak"
+
+#: apps/employees/models/employee_model.py:17
+msgid "Female"
+msgstr "Ayol"
+
+#: apps/employees/models/employee_model.py:18
+msgid "Unknown"
+msgstr "Nomaʻlum"
+
+#: apps/employees/models/employee_model.py:21
+msgid "Gender"
+msgstr "Jins"
+
+#: apps/employees/models/employee_model.py:27 templates/admin/index.html:205
+msgid "Employees"
+msgstr "Xodimlar"
+
+#: apps/orders/admin.py:45
+msgid "Export Selected Orders to Excel"
+msgstr "Tanlangan buyurtmalarni Excelga eksport qilish"
+
+#: apps/orders/models.py:9 templates/admin/index.html:172
+msgid "Small"
+msgstr "Kichik"
+
+#: apps/orders/models.py:10 templates/admin/index.html:173
+msgid "Medium"
+msgstr "Oʻrta"
+
+#: apps/orders/models.py:11 templates/admin/index.html:174
+msgid "Large"
+msgstr "Katta"
+
+#: apps/orders/models.py:15
+msgid "Food size"
+msgstr "Taom hajmi"
+
+#: apps/orders/models.py:16
+msgid "Is cancelled"
+msgstr "Bekor qilingan"
+
+#: apps/orders/models.py:17
+msgid "Created at"
+msgstr "Yaratilgan vaqt"
+
+#: apps/orders/models.py:18
+msgid "Updated at"
+msgstr "Yangilangan vaqt"
+
+#: apps/orders/models.py:28
+msgid "January"
+msgstr "Yanvar"
+
+#: apps/orders/models.py:29
+msgid "February"
+msgstr "Fevral"
+
+#: apps/orders/models.py:30
+msgid "March"
+msgstr "Mart"
+
+#: apps/orders/models.py:31
+msgid "April"
+msgstr "Aprel"
+
+#: apps/orders/models.py:32
+msgid "May"
+msgstr "May"
+
+#: apps/orders/models.py:33
+msgid "June"
+msgstr "Iyun"
+
+#: apps/orders/models.py:34
+msgid "July"
+msgstr "Iyul"
+
+#: apps/orders/models.py:35
+msgid "August"
+msgstr "Avgust"
+
+#: apps/orders/models.py:36
+msgid "September"
+msgstr "Sentyabr"
+
+#: apps/orders/models.py:37
+msgid "October"
+msgstr "Oktyabr"
+
+#: apps/orders/models.py:38
+msgid "November"
+msgstr "Noyabr"
+
+#: apps/orders/models.py:39
+msgid "December"
+msgstr "Dekabr"
+
+#: apps/orders/models.py:40
+msgid "Year"
+msgstr "Yil"
+
+#: apps/orders/models.py:52
+msgid "Orders"
+msgstr "Buyurtmalar"
+
+#: root/settings.py:104
+msgid "Uzbek"
+msgstr "Oʻzbek"
+
+#: root/settings.py:105
+msgid "Russian"
+msgstr "Rus"
+
+#: root/settings.py:106
+msgid "English"
+msgstr "Ingliz"
+
+#: templates/admin/base.html:13
+msgid "Version"
+msgstr "Versiya"
+
+#: templates/admin/base.html:17
+msgid "All rights reserved."
+msgstr "Barcha huquqlar himoyalangan."
+
+#: templates/admin/index.html:210 templates/admin/index.html:225
+#: templates/admin/index.html:239 templates/admin/index.html:252
+msgid "More info"
+msgstr "Qoʻshimcha maʻlumot"
+
+#: templates/admin/index.html:220
+msgid "Entrance"
+msgstr "Kirish"
+
+#: templates/admin/index.html:234
+msgid "Daily Orders"
+msgstr "Kundalik buyurtmalar"
+
+#: templates/admin/index.html:247
+msgid "Cancelled Orders"
+msgstr "Bekor qilingan buyurtmalar"
+
+#: templates/admin/index.html:266
+msgid "Orders Over Week"
+msgstr "Haftalik buyurtmalar"
+
+#: templates/admin/index.html:278
+msgid "Since last week"
+msgstr "Oʻtgan haftadan beri"
+
+#: templates/admin/index.html:289
+msgid "This Week"
+msgstr "Bu hafta"
+
+#: templates/admin/index.html:293
+msgid "Last Week"
+msgstr "Oʻtgan hafta"
+
+#: templates/admin/index.html:307
+msgid "Orders over year"
+msgstr "Yillik buyurtmalar"
+
+#: templates/admin/index.html:319
+msgid "Since last month"
+msgstr "Oʻtgan oydan beri"
+
+#: templates/admin/index.html:346
+msgid "Monthly food size consume"
+msgstr "Oylik taom hajmi isteʼmoli"
+
+#: templates/admin/index.html:355
+msgid "Recent actions"
+msgstr "Soʻnggi harakatlar"
+
+#: templates/admin/index.html:359
+msgid "None available"
+msgstr "Hech narsa mavjud emas"
+
+#: templates/admin/index.html:375
+#, python-format
+msgid ""
+"\n"
+"                                                        %(timesince)s ago"
+msgstr ""
+"\n"
+"                                                        %(timesince)s oldin"
+#: templates/admin/auth/user/add_form.html:6
+msgid ""
+"First, enter a username and password. Then, you'll be able to edit more user"
+" options."
+msgstr ""
+"Avval foydalanuvchi nomi va parolni kiriting. Keyin boshqa foydalanuvchi sozlamalarini tahrirlashingiz mumkin."
+
+#: templates/admin/base.html:151
+msgid "Account"
+msgstr "Hisob"
+
+#: templates/admin/base.html:169
+msgid "See Profile"
+msgstr "Profilni ko'r"
+
+#: templates/admin/base.html:209 templates/admin/index.html:7
+#: templates/admin/index.html:12
+msgid "Dashboard"
+msgstr "Boshqaruv paneli"
+
+#: templates/admin/base.html:322
+msgid "Jazzmin version"
+msgstr "Jazzmin versiyasi"
+
+#: templates/admin/base.html:325
+msgid "Copyright"
+msgstr "Mualliflik huquqi"
+
+
+#: templates/admin/base.html:341
+msgid "UI Configuration"
+msgstr "Interfeys sozlamalari"
+
+#: templates/admin/base.html:345
+msgid "Copy this info your settings file to persist these UI changes"
+msgstr "Ushbu ma'lumotni sozlamalar faylingizga nusxalang, interfeys o'zgarishlarini saqlash uchun"
+
+#: templates/admin/edit_inline/stacked.html:30
+msgid "New"
+msgstr "Yangi"
+
+#: templates/admin/submit_line.html:9
+msgid "Actions"
+msgstr "Harakatlar"
+
+#: templates/admin/index.html:91
+#, fuzzy, python-format
+#| msgid "%(timesince)s ago"
+msgid "%(timesince)s ago"
+msgstr "%(timesince)s oldin"
+
+#: templates/admin/object_history.html:58
+msgid ""
+"This object doesn't have a change history. It probably wasn't added via this"
+" admin site."
+msgstr "Bu ob'ektda o'zgarishlar tarixi yo'q. Ehtimol, u ushbu admin paneli orqali qo'shilmagan."
+
+#: templates/admin/popup_response.html:5
+msgid "Popup closing..."
+msgstr "Qalqib chiquvchi oyna yopilmoqda..."
+
+#: templates/admin_doc/view_index.html:28
+#, python-format
+msgid "Views by namespace %(name)"
+msgstr "%(name) nom maydoni bo'yicha ko'rinishlar"
+
+#: templates/admin_doc/view_index.html:30
+#, python-format
+msgid "Views by empty namespace"
+msgstr "Bo'sh nom maydoni bo'yicha ko'rinishlar"
+
+#: templates/admin_doc/template_filter_index.html:37
+#: templates/admin_doc/view_index.html:49
+#, python-format
+msgid ""
+"View function: <code>%(full_name)s</code>. Name: <code>%(url_name)s</code>."
+msgstr "Ko'rinish funksiyasi: <code>%(full_name)s</code>. Nomi: <code>%(url_name)s</code>."
+
+#: templates/registration/password_change_form.html:28
+msgid ""
+"Please enter your old password, for security's sake, and then enter your new"
+" password twice so we can verify you typed it in correctly."
+msgstr ""
+"Xavfsizlik uchun eski parolingizni kiriting, so'ngra yangi parolni ikki marta kiriting, to'g'ri yozganingizni tekshirish uchun."
+
+#: templatetags/jazzmin.py:439
+#, python-brace-format
+msgid "Deleted “{object}”."
+msgstr "“{object}” o'chirildi."
+
+#: utils.py:74
+#, python-brace-format
+msgid "Could not reverse url from {instance}"
+msgstr "{instance} uchun teskari URL olish imkonsiz"
+
+#, python-format
+msgid "Delete selected %(verbose_name_plural)s"
+msgstr "%(verbose_name_plural)s larni o'chirish"
+
+#, python-format
+msgid "Successfully deleted %(count)d %(items)s."
+msgstr "%(count)d %(items)s muvaffaqiyatli o'chirildi."
+
+#, python-format
+msgid "Cannot delete %(name)s"
+msgstr "%(name)s o'chirib bo'lmadi"
+
+msgid "Are you sure?"
+msgstr "Ishonchingiz komilmi?"
+
+msgid "Administration"
+msgstr "Administratsiya"
+
+msgid "All"
+msgstr "Barchasi"
+
+msgid "Yes"
+msgstr "Ha"
+
+msgid "No"
+msgstr "Yo'q"
+
+msgid "Any date"
+msgstr "Istalgan kun"
+
+msgid "Today"
+msgstr "Bugun"
+
+msgid "Past 7 days"
+msgstr "O'tgan 7 kun"
+
+msgid "This month"
+msgstr "Shu oyda"
+
+msgid "This year"
+msgstr "Shu yilda"
+
+msgid "No date"
+msgstr "Sanasi yo'q"
+
+msgid "Has date"
+msgstr "Sanasi bor"
+
+msgid "Empty"
+msgstr "Bo'sh"
+
+msgid "Not empty"
+msgstr "Bo'sh emas"
+
+#, python-format
+msgid ""
+"Please enter the correct %(username)s and password for a staff account. Note "
+"that both fields may be case-sensitive."
+msgstr ""
+"Xodimlar akkaunti uchun to'g'ri %(username)s va parolni kiriting. E'tibor "
+"bering, har ikkala maydon ham harf katta-kichikligini hisobga olishi mumkin."
+
+msgid "Action:"
+msgstr "Harakat:"
+
+#, python-format
+msgid "Add another %(verbose_name)s"
+msgstr "Boshqa %(verbose_name)s qo‘shish"
+
+msgid "Remove"
+msgstr "O'chirish"
+
+msgid "Addition"
+msgstr "Qo'shish"
+
+msgid "Change"
+msgstr "O'zgartirish"
+
+msgid "Deletion"
+msgstr "O'chirish"
+
+msgid "action time"
+msgstr "harakat vaqti"
+
+msgid "user"
+msgstr "Foydalanuvchi"
+
+msgid "content type"
+msgstr "tarkib turi"
+
+msgid "object id"
+msgstr "obyekt identifikatori"
+
+#. Translators: 'repr' means representation
+#. (https://docs.python.org/library/functions.html#repr)
+msgid "object repr"
+msgstr "obyekt taqdimi"
+
+msgid "action flag"
+msgstr "harakat bayrog'i"
+
+msgid "change message"
+msgstr "xabarni o'zgartirish"
+
+msgid "log entry"
+msgstr "jurnal yozuvi"
+
+msgid "log entries"
+msgstr "jurnal yozuvlari"
+
+#, python-format
+msgid "Added “%(object)s”."
+msgstr "\"%(object)s\" qo'shildi."
+
+#, python-format
+msgid "Changed “%(object)s” — %(changes)s"
+msgstr "%(object)s dan %(changes)sga o'zgartirildi."
+
+#, python-format
+msgid "Deleted “%(object)s.”"
+msgstr "\"%(object)s\" o'chirildi."
+
+msgid "LogEntry Object"
+msgstr "LogEntry Obyekti"
+
+#, python-brace-format
+msgid "Added {name} “{object}”."
+msgstr "{name} “{object}” qo'shildi."
+
+msgid "Added."
+msgstr "Qo'shildi."
+
+msgid "and"
+msgstr "va"
+
+#, python-brace-format
+msgid "Changed {fields} for {name} “{object}”."
+msgstr "{name} “{object}” uchun {fields} o'zgartirildi."
+
+#, python-brace-format
+msgid "Changed {fields}."
+msgstr "{fields} o'zgartirildi."
+
+#, python-brace-format
+msgid "Deleted {name} “{object}”."
+msgstr "{name} “{object}” o'chirildi."
+
+msgid "No fields changed."
+msgstr "Maydonlar o'zgarmadi."
+
+msgid "None"
+msgstr "Bo'sh"
+
+msgid "Hold down “Control”, or “Command” on a Mac, to select more than one."
+msgstr "Bir nechta tanlash uchun “Control” tugmasini ushlab turing, Mac’da “Command” tugmasini bosing."
+
+msgid "Select this object for an action - {}"
+msgstr "Ushbu obyektni harakat uchun tanlang - {}"
+
+#, python-brace-format
+msgid "The {name} “{obj}” was added successfully."
+msgstr "{name} “{obj}” muvaffaqiyatli qo'shildi."
+
+msgid "You may edit it again below."
+msgstr "Uni quyida yana tahrirlashingiz mumkin."
+
+#, python-brace-format
+msgid ""
+"The {name} “{obj}” was added successfully. You may add another {name} below."
+msgstr "{name} “{obj}” muvaffaqiyatli qo'shildi. Quyida boshqa {name} qo'shishingiz mumkin."
+
+#, python-brace-format
+msgid ""
+"The {name} “{obj}” was changed successfully. You may edit it again below."
+msgstr "{name} “{obj}” muvaffaqiyatli o'zgartirildi. Quyida yana tahrirlashingiz mumkin."
+
+#, python-brace-format
+msgid "The {name} “{obj}” was added successfully. You may edit it again below."
+msgstr "{name} “{obj}” muvaffaqiyatli qo'shildi. Quyida yana tahrirlashingiz mumkin."
+
+#, python-brace-format
+msgid ""
+"The {name} “{obj}” was changed successfully. You may add another {name} "
+"below."
+msgstr "{name} “{obj}” muvaffaqiyatli o'zgartirildi. Quyida boshqa {name} qo'shishingiz mumkin."
+
+#, python-brace-format
+msgid "The {name} “{obj}” was changed successfully."
+msgstr "{name} “{obj}” muvaffaqiyatli o'zgartirildi."
+
+msgid ""
+"Items must be selected in order to perform actions on them. No items have "
+"been changed."
+msgstr "Harakatlarni bajarish uchun elementlar tanlanishi kerak. Hech narsa o'zgarmadi."
+
+msgid "No action selected."
+msgstr "Hech qanday harakat tanlanmadi."
+
+#, python-format
+msgid "The %(name)s “%(obj)s” was deleted successfully."
+msgstr "%(name)s “%(obj)s” muvaffaqiyatli o'chirildi"
+
+#, python-format
+msgid "%(name)s with ID “%(key)s” doesn’t exist. Perhaps it was deleted?"
+msgstr "%(name)s “%(key)s” mavjud emas. Ehtimol o'chirilgan."
+
+
+msgid "Database error"
+msgstr "Ma'lumotlar bazasi xatoligi yuz berdi"
+
+#, python-format
+msgid "%(count)s %(name)s was changed successfully."
+msgid_plural "%(count)s %(name)s were changed successfully."
+msgstr[0] "%(count)s %(name)s muvaffaqiyatli o'zgartirildi."
+
+#, python-format
+msgid "%(total_count)s selected"
+msgid_plural "All %(total_count)s selected"
+msgstr[0] "%(total_count)s tanlandi"
+
+#, python-format
+msgid "0 of %(cnt)s selected"
+msgstr "0 dan %(cnt)s tanlandi"
+
+#, python-format
+msgid "Change history: %s"
+msgstr "%s uchun o'zgarishlar tarixi"
+
+#. Translators: Model verbose name and instance
+#. representation, suitable to be an item in a
+#. list.
+#, python-format
+msgid "%(class_name)s %(instance)s"
+msgstr "%(class_name)s %(instance)s"
+
+#, python-format
+msgid ""
+"Deleting %(class_name)s %(instance)s would require deleting the following "
+"protected related objects: %(related_objects)s"
+msgstr "%(class_name)s %(instance)s ni o'chirish quyidagi himoyalangan bog'liq obyektlarni o'chirishni talab qiladi: %(related_objects)s"
+
+msgid "Django site admin"
+msgstr "Django sayt admini"
+
+msgid "Django administration"
+msgstr "Django boshqaruvi"
+
+msgid "Site administration"
+msgstr "Sayt boshqaruvi"
+
+msgid "Log in"
+msgstr "Kirish"
+
+#, python-format
+msgid "%(app)s administration"
+msgstr "%(app)s boshqaruvi"
+
+msgid "Page not found"
+msgstr "Sahifa topilmadi"
+
+msgid "We’re sorry, but the requested page could not be found."
+msgstr "Uzr, lekin so‘ralgan sahifa topilmadi."
+
+msgid "Home"
+msgstr "Bosh sahifa"
+
+msgid "Server error"
+msgstr "Server xatoligi"
+
+msgid "Server error (500)"
+msgstr "Server xatoligi (500)"
+
+msgid "Server Error <em>(500)</em>"
+msgstr "Server xatoligi <em>(500)</em>"
+
+msgid ""
+"There’s been an error. It’s been reported to the site administrators via "
+"email and should be fixed shortly. Thanks for your patience."
+msgstr "Xatolik yuz berdi. Bu sayt administratorlariga elektron pochta orqali xabar qilindi va tez orada tuzatiladi. Sabr uchun rahmat."
+
+msgid "Run the selected action"
+msgstr "Tanlangan harakatni bajarish"
+
+msgid "Go"
+msgstr "Borish"
+
+msgid "Click here to select the objects across all pages"
+msgstr "Barcha sahifalardagi obyektlarni tanlash uchun shu yerga bosing"
+
+#, python-format
+msgid "Select all %(total_count)s %(module_name)s"
+msgstr "Barcha %(total_count)s %(module_name)s ni tanlash"
+
+msgid "Clear selection"
+msgstr "Tanlovni tozalash"
+
+msgid "Breadcrumbs"
+msgstr "Yo'nalishlar"
+
+#, python-format
+msgid "Models in the %(name)s application"
+msgstr "%(name)s ilovasidagi modellar"
+
+msgid "Add"
+msgstr "Qo'shish"
+
+msgid "View"
+msgstr "Ko'rish"
+
+msgid "You don’t have permission to view or edit anything."
+msgstr "Hech narsani ko‘rish yoki tahrirlashga ruxsatingiz yo‘q."
+
+msgid ""
+"First, enter a username and password. Then, you’ll be able to edit more user "
+"options."
+msgstr "Avvalo, foydalanuvchi nomi va parolni kiriting. Shundan so'ng, ko'proq foydalanuvchi opsiyalarini tahrirlashingiz mumkin."
+
+msgid "Enter a username and password."
+msgstr "Foydalanuvchi nomi va parolni kiriting"
+
+msgid "Change password"
+msgstr "Parolni o'zgartirish"
+
+msgid "Please correct the error below."
+msgid_plural "Please correct the errors below."
+msgstr[0] "Iltimos, quyidagi xatoni to'g'rilang"
+
+msgid "Enter a new password for the user <strong>%(username)s</strong>."
+msgstr "<strong>%(username)s</strong> foydalanuvchisi uchun yangi parol kiriting"
+
+msgid "Skip to main content"
+msgstr "Asosiy mazmunga o'tish"
+
+msgid "Welcome,"
+msgstr "Xush kelibsiz,"
+
+msgid "View site"
+msgstr "Saytni ko'rish"
+
+msgid "Documentation"
+msgstr "Qo'llanma"
+
+msgid "Log out"
+msgstr "Chiqish"
+
+#, python-format
+msgid "Add %(name)s"
+msgstr "%(name)s qo'shish"
+
+msgid "History"
+msgstr "Tarix"
+
+msgid "View on site"
+msgstr "Saytda ko'rish"
+
+msgid "Filter"
+msgstr "Saralash"
+
+msgid "Hide counts"
+msgstr "Hisoblarni yashirish"
+
+msgid "Show counts"
+msgstr "Hisoblarni ko‘rsatish"
+
+msgid "Clear all filters"
+msgstr "Barcha filtrlarni tozalash"
+
+msgid "Remove from sorting"
+msgstr "Tartiblashdan chiqarish"
+
+#, python-format
+msgid "Sorting priority: %(priority_number)s"
+msgstr "Tartiblash ustuvorligi: %(priority_number)s"
+
+msgid "Toggle sorting"
+msgstr "Tartiblashni almashtirish"
+
+msgid "Toggle theme (current theme: auto)"
+msgstr "Mavzuni almashtirish (joriy mavzu: avtomatik)"
+
+msgid "Toggle theme (current theme: light)"
+msgstr "Mavzuni almashtirish (joriy mavzu: yorug‘)"
+
+msgid "Toggle theme (current theme: dark)"
+msgstr "Mavzuni almashtirish (joriy mavzu: qorong‘i)"
+
+msgid "Delete"
+msgstr "O'chirish"
+
+#, python-format
+msgid ""
+"Deleting the %(object_name)s '%(escaped_object)s' would result in deleting "
+"related objects, but your account doesn't have permission to delete the "
+"following types of objects:"
+msgstr "%(object_name)s '%(escaped_object)s' ni o‘chirish bog‘liq obyektlarni ham o‘chirishga olib keladi, lekin sizning akkauntingiz quyidagi obyekt turlarini o‘chirishga ruxsat bermaydi."
+
+#, python-format
+msgid ""
+"Deleting the %(object_name)s '%(escaped_object)s' would require deleting the "
+"following protected related objects:"
+msgstr "%(object_name)s '%(escaped_object)s' ni o‘chirish quyidagi himoyalangan bog‘liq obyektlarni ham o‘chirishni talab qiladi."
+
+#, python-format
+msgid ""
+"Are you sure you want to delete the %(object_name)s \"%(escaped_object)s\"? "
+"All of the following related items will be deleted:"
+msgstr "Siz %(object_name)s “%(escaped_object)s” ni o‘chirmoqchimisiz? Quyidagi barcha bog‘liq obyektlar ham o‘chiriladi:"
+
+msgid "Objects"
+msgstr "Obyektlar"
+
+msgid "Yes, I’m sure"
+msgstr "Ha, ishonchim komil"
+
+msgid "No, take me back"
+msgstr "Yo‘q, orqaga qaytish"
+
+msgid "Delete multiple objects"
+msgstr "Bir nechta obyektni o‘chirish"
+
+#, python-format
+msgid ""
+"Deleting the selected %(objects_name)s would result in deleting related "
+"objects, but your account doesn't have permission to delete the following "
+"types of objects:"
+msgstr "Tanlangan %(objects_name)s ni o‘chirish bog‘liq obyektlarni ham o‘chirishga olib keladi, lekin sizning akkauntingiz quyidagi obyekt turlarini o‘chirishga ruxsat bermaydi."
+
+#, python-format
+msgid ""
+"Deleting the selected %(objects_name)s would require deleting the following "
+"protected related objects:"
+msgstr "Tanlangan %(objects_name)s ni o‘chirish quyidagi himoyalangan bog‘liq obyektlarni ham o‘chirishni talab qiladi."
+
+#, python-format
+msgid ""
+"Are you sure you want to delete the selected %(objects_name)s? All of the "
+"following objects and their related items will be deleted:"
+msgstr "Tanlangan %(objects_name)s ni o‘chirmoqchimisiz? Quyidagi obyektlar va ularning bog‘liq obyektlari ham o‘chiriladi:"
+
+msgid "Delete?"
+msgstr "O‘chirasizmi?"
+
+#, python-format
+msgid " By %(filter_title)s "
+msgstr " %(filter_title)s orqali "
+
+msgid "Summary"
+msgstr "Xulosa"
+
+
+msgid "My actions"
+msgstr "Mening harakatlarim"
+
+
+msgid "Added:"
+msgstr "Qo‘shilgan:"
+
+msgid "Changed:"
+msgstr "O‘zgartirilgan:"
+
+msgid "Deleted:"
+msgstr "O‘chirilgan:"
+
+msgid "Unknown content"
+msgstr "Noma’lum mazmun"
+
+msgid ""
+"Something’s wrong with your database installation. Make sure the appropriate "
+"database tables have been created, and make sure the database is readable by "
+"the appropriate user."
+msgstr "Ma’lumotlar bazasi o‘rnatilishida muammo yuz berdi. Tegishli jadval yaratilganligini va bazaga kerakli foydalanuvchi tomonidan kirish mumkinligini tekshiring."
+
+#, python-format
+msgid ""
+"You are authenticated as %(username)s, but are not authorized to access this "
+"page. Would you like to login to a different account?"
+msgstr "%(username)s sifatida autentifikatsiyadan o‘tibsiz, lekin ushbu sahifaga kirish uchun ruxsatingiz yo‘q. Boshqa akkaunt bilan kirishni xohlaysizmi?"
+
+msgid "Forgotten your password or username?"
+msgstr "Parol yoki foydalanuvchi nomingizni unutdingizmi?"
+
+msgid "Toggle navigation"
+msgstr "Navigatsiyani almashtirish"
+
+msgid "Sidebar"
+msgstr "Yon panel"
+
+msgid "Start typing to filter…"
+msgstr "Filtrlash uchun yozishni boshlang…"
+
+msgid "Filter navigation items"
+msgstr "Navigatsiya elementlarini filtrlash"
+
+msgid "Date/time"
+msgstr "Sana/vaqt"
+
+msgid "User"
+msgstr "Foydalanuvchi"
+
+msgid "Action"
+msgstr "Harakat"
+
+msgid "entry"
+msgid_plural "entries"
+msgstr[0] "yozuv"
+msgstr[1] "yozuvlar"
+
+msgid ""
+"This object doesn’t have a change history. It probably wasn’t added via this "
+"admin site."
+msgstr "Ushbu obyekt o‘zgarishlar tarixiga ega emas. Ehtimol, u ushbu admin sayt orqali qo‘shilmagan."
+
+msgid "Show all"
+msgstr "Hammasini ko‘rsatish"
+
+msgid "Save"
+msgstr "Saqlash"
+
+msgid "Popup closing…"
+msgstr "Popup yopilmoqda…"
+
+msgid "Search"
+msgstr "Izlash"
+
+#, python-format
+msgid "%(counter)s result"
+msgid_plural "%(counter)s results"
+msgstr[0] "%(counter)s natija"
+msgstr[1] "%(counter)s natijalar"
+
+#, python-format
+msgid "%(full_result_count)s total"
+msgstr "Jami %(full_result_count)s"
+
+msgid "Save as new"
+msgstr "Yangi sifatida saqlash"
+
+msgid "Save and add another"
+msgstr "Saqlash va boshqasini qo‘shish"
+
+msgid "Save and continue editing"
+msgstr "Saqlash va tahrirlashni davom ettirish"
+
+msgid "Save and view"
+msgstr "Saqlash va ko‘rish"
+
+msgid "Close"
+msgstr "Yopish"
+
+#, python-format
+msgid "Change selected %(model)s"
+msgstr "Tanlangan %(model)s ni o‘zgartirish"
+
+#, python-format
+msgid "Add another %(model)s"
+msgstr "Boshqa %(model)s qo‘shish"
+
+#, python-format
+msgid "Delete selected %(model)s"
+msgstr "Tanlangan %(model)s ni o‘chirish"
+
+#, python-format
+msgid "View selected %(model)s"
+msgstr "Tanlangan %(model)sni ko‘rish"
+
+msgid "Thanks for spending some quality time with the web site today."
+msgstr "Bugun sayt bilan sifatli vaqt o‘tkazganingiz uchun rahmat."
+
+msgid "Log in again"
+msgstr "Qayta kirish"
+
+msgid "Password change"
+msgstr "Parolni o‘zgartirish"
+
+msgid "Your password was changed."
+msgstr "Sizning parolingiz o‘zgartirildi."
+
+msgid ""
+"Please enter your old password, for security’s sake, and then enter your new "
+"password twice so we can verify you typed it in correctly."
+msgstr "Xavfsizlik uchun eski parolingizni kiriting, keyin yangi parolni ikki marta kiriting, shunda biz to‘g‘ri yozganingizni tasdiqlay olamiz."
+
+msgid "Change my password"
+msgstr "Parolimni o‘zgartirish"
+
+msgid "Password reset"
+msgstr "Parolni tiklash"
+
+msgid "Your password has been set.  You may go ahead and log in now."
+msgstr "Sizning parolingiz o‘rnatildi. Endi tizimga kirishingiz mumkin."
+
+msgid "Password reset confirmation"
+msgstr "Parolni tiklashni tasdiqlash"
+
+msgid ""
+"Please enter your new password twice so we can verify you typed it in "
+"correctly."
+msgstr "Yangi parolni ikki marta kiriting, shunda biz to‘g‘ri yozganingizni tekshira olamiz."
+
+msgid "New password:"
+msgstr "Yangi parol:"
+
+msgid "Confirm password:"
+msgstr "Parolni tasdiqlang:"
+
+msgid ""
+"The password reset link was invalid, possibly because it has already been "
+"used.  Please request a new password reset."
+msgstr "Parol tiklash havolasi noto‘g‘ri, ehtimol u allaqachon ishlatilgan. Iltimos, yangi parol tiklashni so‘rang."
+
+msgid ""
+"We’ve emailed you instructions for setting your password, if an account "
+"exists with the email you entered. You should receive them shortly."
+msgstr "Agar kiritilgan elektron pochta bilan akkaunt mavjud bo‘lsa, sizga parolni o‘rnatish bo‘yicha ko‘rsatmalar elektron pochta orqali yuborildi. Tez orada olishingiz kerak."
+
+msgid ""
+"If you don’t receive an email, please make sure you’ve entered the address "
+"you registered with, and check your spam folder."
+msgstr "Agar elektron pochta olmasangiz, ro‘yxatdan o‘tgan manzilingizni kiritganingizga va spam papkasini tekshirganingizga ishonch hosil qiling."
+
+#, python-format
+msgid ""
+"You're receiving this email because you requested a password reset for your "
+"user account at %(site_name)s."
+msgstr "Siz %(site_name)s dagi akkauntingiz uchun parolni tiklashni so‘raganingiz sababli ushbu elektron pochtani olmoqdasiz."
+
+msgid "Please go to the following page and choose a new password:"
+msgstr "Iltimos, quyidagi sahifaga o‘ting va yangi parolni tanlang:"
+
+msgid "Your username, in case you’ve forgotten:"
+msgstr "Foydalanuvchi nomingiz, agar unutgan bo‘lsangiz:"
+
+msgid "Thanks for using our site!"
+msgstr "Saytdan foydalanganingiz uchun rahmat!"
+
+#, python-format
+msgid "The %(site_name)s team"
+msgstr "%(site_name)s jamoasi"
+
+msgid ""
+"Forgotten your password? Enter your email address below, and we’ll email "
+"instructions for setting a new one."
+msgstr "Parolingizni unutdingizmi? Quyida elektron pochtangizni kiriting, biz yangi parolni o‘rnatish bo‘yicha ko‘rsatmalarni yuboramiz."
+
+msgid "Email address:"
+msgstr "Elektron pochta manzili:"
+
+msgid "Reset my password"
+msgstr "Parolimni tiklash"
+
+msgid "Select all objects on this page for an action"
+msgstr "Harakat uchun ushbu sahifadagi barcha obyektlarni tanlash"
+
+msgid "All dates"
+msgstr "Barcha sanalar"
+
+#, python-format
+msgid "Select %s"
+msgstr "%s ni tanlash"
+
+#, python-format
+msgid "Select %s to change"
+msgstr "%s ni o‘zgartirish uchun tanlash"
+
+#, python-format
+msgid "Select %s to view"
+msgstr "%s ni ko‘rish uchun tanlash"
+
+msgid "Date:"
+msgstr "Sana:"
+
+msgid "Time:"
+msgstr "Vaqt:"
+
+msgid "Lookup"
+msgstr "Izlash"
+
+msgid "Currently:"
+msgstr "Hozirda:"
+
+msgid "Change:"
+msgstr "O‘zgartirish:"
+
+msgid "Old password"
+msgstr "Eski parol"
+
+msgid "Password (again)"
+msgstr "Parol (qayta)"
+
+msgid "algorithm"
+msgstr "algoritm"
+
+msgid "iterations"
+msgstr "takrorlashlar"
+
+msgid "salt"
+msgstr "tuz"
+
+msgid "hash"
+msgstr "hash"
+
+msgid "variety"
+msgstr "tur"
+
+msgid "version"
+msgstr "versiya"
+
+msgid "memory cost"
+msgstr "xotira sarfi"
+
+msgid "time cost"
+msgstr "vaqt sarfi"
+
+msgid "parallelism"
+msgstr "paralellik"
+
+msgid "work factor"
+msgstr "ish omili"
+
+msgid "checksum"
+msgstr "tekshiruv summasi"
+
+msgid "name"
+msgstr "ism"
+
+
+msgid "codename"
+msgstr "kod nomi"
+
+msgid "permission"
+msgstr "ruxsat"
+
+msgid "permissions"
+msgstr "ruxsatlar"
+
+msgid "group"
+msgstr "guruh"
+
+msgid "groups"
+msgstr "guruhlar"
+
+msgid "superuser status"
+msgstr "superfoydalanuvchi holati"
+
+msgid ""
+"Designates that this user has all permissions without explicitly assigning "
+"them."
+msgstr "Bu foydalanuvchiga barcha ruxsatlar berilganligini bildiradi, ularni alohida belgilash shart emas."
+
+msgid ""
+"The groups this user belongs to. A user will get all permissions granted to "
+"each of their groups."
+msgstr "Bu foydalanuvchi tegishli bo‘lgan guruhlar. Foydalanuvchi har bir guruhga berilgan barcha ruxsatlarni oladi."
+
+msgid "user permissions"
+msgstr "foydalanuvchi ruxsatlari"
+
+msgid "Specific permissions for this user."
+msgstr "Bu foydalanuvchi uchun maxsus ruxsatlar."
+
+msgid "username"
+msgstr "foydalanuvchi nomi"
+
+msgid "Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only."
+msgstr "Majburiy. 150 belgidan kam bo‘lishi kerak. Faqat harflar, raqamlar va @/./+/-/_ belgilar."
+
+msgid "A user with that username already exists."
+msgstr "Bunday foydalanuvchi nomi bilan foydalanuvchi mavjud."
+
+msgid "first name"
+msgstr "ism"
+
+msgid "last name"
+msgstr "familiya"
+
+msgid "email address"
+msgstr "elektron pochta manzili"
+
+msgid "staff status"
+msgstr "xodim holati"
+
+msgid "Designates whether the user can log into this admin site."
+msgstr "Foydalanuvchi ushbu admin saytga kira olishini belgilaydi."
+
+msgid "active"
+msgstr "faol"
+
+msgid ""
+"Designates whether this user should be treated as active. Unselect this "
+"instead of deleting accounts."
+msgstr "Bu foydalanuvchi faol deb hisoblanishini belgilaydi. Akkauntni o‘chirish o‘rniga belgini olib tashlang."
+
+msgid "date joined"
+msgstr "qo‘shilgan sana"
+
+msgid "users"
+msgstr "foydalanuvchilar"
+
+#, python-format
+msgid ""
+"This password is too short. It must contain at least %(min_length)d "
+"character."
+msgid_plural ""
+"This password is too short. It must contain at least %(min_length)d "
+"characters."
+msgstr[0] "Bu parol juda qisqa. Kamida %(min_length)d belgi bo‘lishi kerak."
+msgstr[1] "Bu parol juda qisqa. Kamida %(min_length)d belgidan iborat bo‘lishi kerak."
+
+#, python-format
+msgid "Your password must contain at least %(min_length)d character."
+msgid_plural "Your password must contain at least %(min_length)d characters."
+msgstr[0] "Parolingiz kamida %(min_length)d belgidan iborat bo‘lishi kerak."
+msgstr[1] "Parolingiz kamida %(min_length)d belgidan iborat bo‘lishi kerak."
+
+#, python-format
+msgid "The password is too similar to the %(verbose_name)s."
+msgstr "Parol %(verbose_name)s ga juda o‘xshash."
+
+msgid "Your password can’t be too similar to your other personal information."
+msgstr "Parolingiz boshqa shaxsiy ma’lumotlaringizga juda o‘xshash bo‘lmasligi kerak."
+
+msgid "This password is too common."
+msgstr "Bu parol juda umumiy."
+
+msgid "Your password can’t be a commonly used password."
+msgstr "Parolingiz keng tarqalgan parol bo‘lishi mumkin emas."
+
+msgid "This password is entirely numeric."
+msgstr "Bu parol faqat raqamlardan iborat."
+
+msgid "Your password can’t be entirely numeric."
+msgstr "Parolingiz faqat raqamlardan iborat bo‘lmasligi kerak."
+
+#, python-format
+msgid "Password reset on %(site_name)s"
+msgstr "%(site_name)s da parol tiklash"
+
+msgid ""
+"Enter a valid username. This value may contain only English letters, "
+"numbers, and @/./+/-/_ characters."
+msgstr "To‘g‘ri foydalanuvchi nomini kiriting. Bu qiymat faqat lotin harflari, raqamlar va @/./+/-/_ belgilarni o‘z ichiga olishi mumkin."
+
+msgid ""
+"Enter a valid username. This value may contain only letters, numbers, and "
+"@/./+/-/_ characters."
+msgstr "To‘g‘ri foydalanuvchi nomini kiriting. Bu qiymat faqat harflar, raqamlar va @/./+/-/_ belgilarni o‘z ichiga olishi mumkin."
+
+msgid "Logged out"
+msgstr "Tizimdan chiqildi"
+
+
+msgid "Password reset sent"
+msgstr "Parol tiklash xabari yuborildi"
+
+msgid "Enter new password"
+msgstr "Yangi parolni kiriting"
+
+msgid "Password reset unsuccessful"
+msgstr "Parol tiklash muvaffaqiyatsiz"
+
+msgid "Password reset complete"
+msgstr "Parol tiklash yakunlandi"
+
+
+msgid "Password change successful"
+msgstr "Parol muvaffaqiyatli o‘zgartirildi"
+
+msgid "Token"
+msgstr "Token"
+
+msgid "Tokens"
+msgstr "Tokenlar"
+
+
+msgid "Key"
+msgstr "Kalit"
+
+
+msgid "Created"
+msgstr "Yaratilgan"
