@@ -183,8 +183,10 @@ class HikvisionWebLogin:
                                 response_wrapper.json = jsonlib.loads(raw.decode("utf-8"))
                             except UnicodeDecodeError:
                                 response_wrapper.json = jsonlib.loads(raw.decode("gbk", errors="ignore"))
-                    if response.content_type == 'image/jpeg':
+                    elif response.content_type == 'image/jpeg':
                         response_wrapper.content = await response.read()
+                    else:
+                        response_wrapper.text = await response.text()
                     return response_wrapper
                 case 401:
                     raise ValidationError(_("Wrong username or password."))

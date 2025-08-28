@@ -2,13 +2,36 @@
 {% load i18n admin_urls static admin_list jazzmin %}
 {% block extrastyle %}
     <style>
-        .warning {
-            background-color: #af505a !important;
-            transition: 1s ease-in;
+        .success {
+            background-color: #28a745;
+            animation: bgc 10s ease-in;
         }
 
-        .warning td {
+        @keyframes bgc {
+            0% {
+                background-color: white;
+            }
+
+            20% {
+                background-color: #28a745;
+            }
+
+            100% {
+                background-color: #28a745;
+            }
+        }
+
+        .warning {
+            background-color: #af505a !important;
+            transition: 2s ease-out;
+        }
+
+        .warning td, .success td {
             color: white;
+        }
+
+        .warning a, .success a {
+            color: white !important;
         }
     </style>
     {{ block.super }}
@@ -30,11 +53,12 @@
             let lastTimestamp = new Date().toISOString();
 
             function fetchOrders() {
-                fetch(`/orders/all/?timestamp=${encodeURIComponent(lastTimestamp)}`)
+                fetch(`all/?timestamp=${encodeURIComponent(lastTimestamp)}`)
                     .then(response => response.json())
                     .then(data => {
                         if (data.success) {
-                            lastTimestamp = new Date(new Date(data.timestamp).getTime() + 61).toISOString();;
+                            lastTimestamp = new Date(new Date(data.timestamp).getTime() + 61).toISOString();
+                            ;
                             updateTable(data.result);
                         } else {
                             console.error("Error:", data.message);
@@ -53,9 +77,12 @@
 
                     if (order.is_created) {
                         let newRow = document.createElement("tr");
+                        newRow.classList.add('even')
+                        newRow.role = 'row'
                         newRow.innerHTML = `
                             <td class="action-checkbox"><input type="checkbox" name="_selected_action" value="${order.id}" class="action-select" aria-label="Select this object for an action - Order object (${order.id})"></td>
-                            <th class="field-employee nowrap"><a href="/admin/hik/order/${order.id}/change/">${order.employee_name}</a></th>
+                            <th class="field-id"><a href="/uz/orders/order/${order.id}/change/">${order.id}</a></th>
+                            <td class="field-employee_link"><a href="/uz/employees/employee/${order.employee_id}/change/">${order.employee_name}</a></td>
                             <td class="field-name">${order.employee_name}</td>
                             <td class="field-food_size">${order.food_size}</td>
                             <td class="field-is_cancelled"><img src="/static/admin/img/icon-${order.is_cancelled ? 'yes' : 'no'}.svg" alt="${order.is_cancelled}"></td>
@@ -63,11 +90,14 @@
                             <td class="field-updated_at nowrap">${order.updated_at}</td>
                         `;
                         tableBody.prepend(newRow);
+                        newRow.classList.add('success');
+                        setTimeout(() => newRow.classList.remove('success'), 10000);
                     } else if (existingRow) {
                         existingRow.classList.add('warning');
                         existingRow.innerHTML = `
                             <td class="action-checkbox"><input type="checkbox" name="_selected_action" value="${order.id}" class="action-select" aria-label="Select this object for an action - Order object (${order.id})"></td>
-                            <th class="field-employee nowrap"><a href="/admin/hik/order/${order.id}/change/">${order.employee_name}</a></th>
+                            <th class="field-id"><a href="/uz/orders/order/${order.id}/change/">${order.id}</a></th>
+                            <td class="field-employee_link"><a href="/uz/employees/employee/${order.employee_id}/change/">${order.employee_name}</a></td>
                             <td class="field-name">${order.employee_name}</td>
                             <td class="field-food_size">${order.food_size}</td>
                             <td class="field-is_cancelled"><img src="/static/admin/img/icon-${order.is_cancelled ? 'yes' : 'no'}.svg" alt="${order.is_cancelled}"></td>

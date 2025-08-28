@@ -10,6 +10,7 @@ class EventAdmin(admin.ModelAdmin):
     )
     list_filter = ('type', 'timestamp', 'device', 'employee', 'employee_no', 'employee_name', 'card_no')
     search_fields = ('id', 'type', 'timestamp', 'employee_no', 'employee_name', 'card_no')
+    ordering = ['-timestamp']
 
     def has_add_permission(self, request, obj=None):
         return False

@@ -106,7 +106,6 @@ class OrderManager:
             response = request(
                 'POST', cls.get_url(device, path), params=params, json=data, auth=cls.authenticate(device), timeout=5
             )
-            print(response.text)
         except ConnectTimeout:
             raise ValidationError(_('Unable to connect to device with given IP and Port'))
 

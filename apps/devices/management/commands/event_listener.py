@@ -38,15 +38,15 @@ class EventListener:
 
     @classmethod
     async def listen(cls, device: Device):
-        plugin = DS_K1T671MF(device.ip_address, device.port, device.username, device.password)
-        response = await plugin.get_acs_events(device)
-        acs_event = response.json.get('AcsEvent')
-        device.last_event = device.last_event + acs_event.get('numOfMatches')
-        if acs_event.get('numOfMatches'):
-            logging.info(f'Found {acs_event.get('numOfMatches')} events on device {device.id}.')
-            for event in acs_event.get('InfoList'):
-                event = AccessEvent(**event)
-                try:
+        try:
+            plugin = DS_K1T671MF(device.ip_address, device.port, device.username, device.password)
+            response = await plugin.get_acs_events(device)
+            acs_event = response.json.get('AcsEvent')
+            device.last_event = device.last_event + acs_event.get('numOfMatches')
+            if acs_event.get('numOfMatches'):
+                logging.info(f'Found {acs_event.get('numOfMatches')} events on device {device.id}.')
+                for event in acs_event.get('InfoList'):
+                    event = AccessEvent(**event)
                     if event.minor not in cls.event_types.keys():
                         continue
                     employee_exists = await Employee.objects.filter(id=event.employeeNoString).aexists()
@@ -70,20 +70,17 @@ class EventListener:
                         picture=image,
                         card_no=event.cardNo,
                     )
-                except Exception as _:
-                    logging.exception("Error creating event.")
-        await device.asave()
+                await device.asave()
+        except Exception as _:
+            logging.exception("Error creating event.")
 
     @classmethod
     async def main(cls):
         logging.info('Listening for device events started.')
         while True:
-            try:
-                tasks = [cls.listen(device) async for device in Device.objects.filter(type=Device.DeviceTypes.ACCESS)]
-                await asyncio.gather(*tasks)
-                await asyncio.sleep(1.5)
-            except Exception as _:
-                logging.exception("Error on device level.")
+            tasks = [cls.listen(device) async for device in Device.objects.filter(type=Device.DeviceTypes.ACCESS)]
+            await asyncio.gather(*tasks)
+            await asyncio.sleep(1.5)
 
 
 class Command(BaseCommand):

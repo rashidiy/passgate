@@ -1,3 +1,4 @@
+import asyncio
 import xml.etree.ElementTree as ET
 
 from django.core.exceptions import ValidationError
@@ -8,11 +9,14 @@ from .base import HikvisionWebLogin
 
 
 class DS_K1T671MF(HikvisionWebLogin):  # noqa
-    async def check_model_match(self):
+    def check_model_match(self):
+        return asyncio.run(self._check_model_match())
+
+    async def _check_model_match(self):
         path = '/ISAPI/System/deviceInfo'
         response = await self.request('GET', path, timeout=5)
         ns = {'ns': 'http://www.isapi.org/ver20/XMLSchema'}
-        root = ET.fromstring(await response.text())
+        root = ET.fromstring(response.text)
         model_value = root.find('ns:model', ns).text
         if model_value != 'DS-K1T671MF':
             raise ValidationError(_('Model is not DS-K1T671MF.'))

@@ -1,7 +1,7 @@
 from datetime import datetime
-from random import choice
 
 from django.utils import timezone
+from django.utils.translation import gettext_lazy as _
 from drf_yasg.utils import swagger_auto_schema
 from rest_framework import status
 from rest_framework.permissions import AllowAny
@@ -36,8 +36,9 @@ class OrderList(APIView):
         for order in Order.objects.filter(updated_at__gt=timestamp):
             result.append({
                 "id": order.id,
+                "employee_id": order.employee.id,
                 "employee_name": order.employee.name,
-                "food_size": Order.FoodSizeChoice(order.food_size).label,
+                "food_size": _(Order.FoodSizeChoice(order.food_size).label),
                 "is_cancelled": order.is_cancelled,
                 "created_at": Order.format_time(order.created_at),
                 "updated_at": Order.format_time(order.updated_at),

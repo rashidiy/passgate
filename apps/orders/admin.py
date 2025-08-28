@@ -1,6 +1,8 @@
 import openpyxl
 from django.contrib import admin
 from django.http import HttpResponse
+from django.urls import reverse
+from django.utils.html import format_html
 from django.utils.translation import gettext_lazy as _
 
 from .models import Order
@@ -8,10 +10,20 @@ from .models import Order
 
 @admin.register(Order)
 class OrderAdmin(admin.ModelAdmin):
-    list_display = 'employee', 'name', 'food_size', 'is_cancelled', 'created_at', 'updated_at'
+    list_display = 'id', 'employee_link', 'name', 'food_size', 'is_cancelled', 'created_at', 'updated_at'
     search_fields = 'employee', 'name', 'food_size'
     change_list_template = 'custom_admin/orders.html'
     actions = ("export_to_excel",)
+    ordering = ('-created_at',)
+
+    def employee_link(self, obj):
+        if obj.employee_id:
+            url = reverse("admin:employees_employee_change", args=[obj.employee_id])
+            return format_html('<a href="{}">{}</a>', url, obj.employee)
+        return "-"
+
+    employee_link.admin_order_field = 'employee'  # enables ordering by employee
+    employee_link.short_description = 'Employee'
 
     def _order_device_exists(self):  # noqa
         from devices.models import Device

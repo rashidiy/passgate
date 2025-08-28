@@ -30,7 +30,7 @@ class Device(models.Model):
     __old_pwd_placeholder = None
 
     def __str__(self):
-        return '[%s] %s' % (Device.DeviceTypes(self.type).label, self.name)
+        return self.name
 
     class Meta:
         verbose_name = _('Device')

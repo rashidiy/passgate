@@ -21,6 +21,7 @@ from django.contrib import admin
 from django.urls import path, include
 
 from general.views import get_test_webhooks, LogoutView, ObtainToken
+from orders.views import OrderList
 from utils.swagger import schema_view
 
 urlpatterns = static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT) + [
@@ -33,5 +34,6 @@ urlpatterns = static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT) + [
     path('accounts/logout/', LogoutView.as_view(), name='logout'),
     path('i18n/', include('django.conf.urls.i18n')),
 ] + i18n_patterns(
+    path('orders/order/all/', OrderList.as_view(), name='order-all'),
     path('', admin.site.urls)
 )

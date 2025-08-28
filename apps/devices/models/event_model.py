@@ -25,6 +25,5 @@ class Event(models.Model):
     card_no = models.CharField(_('Card Number'), max_length=20, null=True, blank=True)
 
     class Meta:
-        ordering = ['-timestamp']
         verbose_name = _('Event')
         verbose_name_plural = _('Events')
