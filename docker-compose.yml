@@ -1,0 +1,72 @@
+services:
+  nginx:
+    image: nginx:alpine
+    restart: always
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/conf.d/default.conf
+      - ./static:/app/static
+      - ./media:/app/media
+    depends_on:
+      - web
+  migrations:
+    build: .
+    env_file:
+      - .env
+    command: sh -c "python manage.py makemigrations && python manage.py migrate"
+    depends_on:
+      db:
+        condition: service_healthy
+    volumes:
+      - .:/app
+  web:
+    build: .
+    env_file:
+      - .env
+    command: uvicorn root.asgi:application --host 0.0.0.0 --port 8000 --reload
+    depends_on:
+      migrations:
+        condition: service_completed_successfully
+      db:
+        condition: service_healthy
+    entrypoint: [ './entrypoint.sh' ]
+    volumes:
+      - .:/app
+      - ./static:/app/static
+      - ./media:/app/media
+  event_listener:
+    build: .
+    env_file:
+      - .env
+    command: python manage.py event_listener
+    depends_on:
+      migrations:
+        condition: service_completed_successfully
+      web:
+        condition: service_started
+      db:
+        condition: service_healthy
+    volumes:
+      - .:/app
+  db:
+    image: postgres:17
+    environment:
+      - POSTGRES_USER=${DB_USER}
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
+      - POSTGRES_DB=${DB_NAME}
+      - POSTGRES_PORT=${DB_PORT}
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U ${DB_USER} -d ${DB_NAME}" ]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+  redis:
+    image: redis:latest
+    volumes:
+      - redis_data:/data
+volumes:
+  postgres_data:
+  redis_data:

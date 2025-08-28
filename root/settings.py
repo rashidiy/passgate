@@ -15,7 +15,7 @@ sys.path.append(os.path.join(BASE_DIR, 'apps'))
 SECRET_KEY = os.getenv("SECRET_KEY")
 SALT_KEY = os.getenv("SALT_KEY").split(',')
 
-DEBUG = True
+DEBUG = os.getenv("DEBUG", False)
 
 ALLOWED_HOSTS = ['*']
 
@@ -130,13 +130,14 @@ REST_FRAMEWORK = {
     'PAGE_SIZE': 20
 }
 
-REDIS_HOST = 'localhost'
-REDIS_PORT = 6379
-REDIS_DB = 0
-REDIS_PASSWORD = None
+REDIS_HOST = os.getenv('REDIS_HOST')
+REDIS_PORT = os.getenv('REDIS_PORT')
+REDIS_DB = os.getenv('REDIS_DB')
+REDIS_PASSWORD = os.getenv('REDIS_PASSWORD')
+print(REDIS_HOST, REDIS_PORT, REDIS_DB, REDIS_PASSWORD)
 
-CANCEL_RESTRICT_BEGIN = "19:30"
-CANCEL_RESTRICT_END = "7:00"
+CANCEL_RESTRICT_BEGIN = os.getenv('CANCEL_RESTRICT_BEGIN')
+CANCEL_RESTRICT_END = os.getenv('CANCEL_RESTRICT_END')
 
 SWAGGER_SETTINGS = {
     "DEFAULT_AUTO_SCHEMA_CLASS": "utils.swagger.TaggedAutoSchema",
