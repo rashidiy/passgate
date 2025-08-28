@@ -34,6 +34,7 @@ class AccessPointInline(admin.StackedInline):
 class EmployeeAdmin(AtomicAdminModelOverride):
     list_display = list_display_links = 'id', 'name', 'image_tag'
     list_filter = search_fields = 'id', 'name'
+    readonly_fields = ("image_tag",)
 
     inlines = [CardInline, AccessPointInline]
 
