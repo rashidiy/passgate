@@ -46,7 +46,7 @@ class Statistics:
         today = now().astimezone()
         start_date = today - timedelta(days=13)
         qs = (
-            Order.objects.filter(created_at__date__range=[start_date, today])
+            Order.objects.filter(created_at__date__range=[start_date, today], is_cancelled=False)
             .annotate(day=TruncDate("created_at"))
             .values("day")
             .annotate(count=Count("id"))
@@ -81,7 +81,7 @@ class Statistics:
         start_date = today.replace(day=1) - relativedelta(months=11)
 
         qs = (
-            Order.objects.filter(created_at__gte=start_date)
+            Order.objects.filter(created_at__gte=start_date, is_cancelled=False)
             .annotate(month=TruncMonth("created_at"))
             .values("month")
             .annotate(count=Count("id"))
@@ -102,7 +102,8 @@ class Statistics:
         qs = (
             Order.objects.filter(
                 created_at__year=today.year,
-                created_at__month=today.month
+                created_at__month=today.month,
+                is_cancelled=False,
             )
             .values("food_size")
             .annotate(count=Count("id"))
