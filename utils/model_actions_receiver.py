@@ -60,8 +60,6 @@ async def webhook_delete(instance):
 
 @receiver(post_save, sender=Employee)
 async def employee_post_save(sender, instance, created, **kwargs):
-    if kwargs.get('raw'): return
-
     await webhook_save(instance, created)
     await __employee_post_save(instance, created)
 
@@ -73,8 +71,6 @@ async def employee_post_delete(sender, instance, **kwargs):
 
 @receiver(post_save, sender=AccessPoint)
 async def access_point_post_save(sender, instance: AccessPoint, created: bool, **kwargs):
-    if kwargs.get('raw'): return
-
     await webhook_save(instance, created)
     await __access_point_post_save(instance, created)
 
@@ -87,8 +83,6 @@ async def access_point_post_delete(sender, instance: AccessPoint, **kwargs):
 
 @receiver(post_save, sender=Card)
 async def card_post_save(sender, instance: Card, created: bool, **kwargs):
-    if kwargs.get('raw'): return
-
     await webhook_save(instance, created)
     if not created:
         await card_post_delete(sender, instance, **kwargs)
@@ -112,8 +106,6 @@ async def card_post_delete(sender, instance: Card, **kwargs):
 
 @receiver(post_save, sender=Device)
 async def device_post_save(sender, instance: Device, created: bool, **kwargs):
-    if kwargs.get('raw'): return
-
     await webhook_save(instance, created)
 
 
@@ -124,8 +116,6 @@ async def device_post_delete(sender, instance: Device, **kwargs):
 
 @receiver(post_save, sender=Event)
 async def event_post_save(sender, instance: Event, created: bool, **kwargs):
-    if kwargs.get('raw'): return
-
     await webhook_save(instance, created)
 
 
