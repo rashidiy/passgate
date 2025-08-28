@@ -11,7 +11,6 @@ class Command(BaseCommand):
 
     async def sync(self):
         async for employee in Employee.objects.all():
-            await asyncio.sleep(0.2)
             async for device in Device.objects.all():
                 try:
                     await AccessPoint.objects.acreate(employee=employee, device=device)
