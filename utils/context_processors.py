@@ -21,7 +21,7 @@ class Statistics:
 
     @classmethod
     def get_entrance_count(cls):
-        return Event.objects.filter(type__startswith='valid', timestamp__day=now().day).count()
+        return Event.objects.filter(type__startswith='valid', timestamp__gt=now().replace(hour=0, minute=0)).count()
 
     @classmethod
     def get_employee_count(cls):
