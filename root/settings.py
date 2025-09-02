@@ -18,6 +18,10 @@ SALT_KEY = os.getenv("SALT_KEY").split(',')
 DEBUG = os.getenv("DEBUG", False)
 
 ALLOWED_HOSTS = ['*']
+CSRF_TRUSTED_ORIGINS = [
+    'http://localhost:8000',
+    'http://localhost:8000',
+]
 
 INSTALLED_APPS = [
     'daphne',
