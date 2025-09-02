@@ -12,11 +12,12 @@ class Device(models.Model):
         DS_K1T671MF = 'ds_k1t671mf', 'DS-K1T671MF'
 
     class DeviceTypes(models.TextChoices):
-        ACCESS = 'access', _('Enter / Exit')
+        ENTER = 'access_in', _('Enter')
+        EXIT = 'access_out', _('Exit')
         ORDER = 'order', _('Order')
 
     name = models.CharField(_('Name'), max_length=100)
-    type = models.CharField(_('Type'), max_length=100, choices=DeviceTypes.choices, default=DeviceTypes.ACCESS)
+    type = models.CharField(_('Type'), max_length=100, choices=DeviceTypes.choices)
     model = models.CharField(max_length=100, choices=DeviceModels.choices, default=DeviceModels.DS_K1T671MF,
                              editable=False, verbose_name=_('Model'))
     ip_address = models.GenericIPAddressField(_('IP'))

@@ -34,7 +34,7 @@ class DeviceAdmin(admin.ModelAdmin):
 
     @admin.display(description=_("Type"), ordering="type")
     def type_badge(self, obj: Device):
-        color = "#16a34a" if obj.type == Device.DeviceTypes.ACCESS else "#2563eb"
+        color = "#2563eb" if obj.type == Device.DeviceTypes.ORDER else "#16a34a"
         label = Device.DeviceTypes(obj.type).label
         return format_html(
             '<span style="display:inline-block;padding:.15rem .5rem;border-radius:.5rem;'

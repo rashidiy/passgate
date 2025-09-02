@@ -78,7 +78,8 @@ class EventListener:
     async def main(cls):
         logging.info('Listening for device events started.')
         while True:
-            tasks = [cls.listen(device) async for device in Device.objects.filter(type=Device.DeviceTypes.ACCESS)]
+            tasks = [cls.listen(device) async for device in
+                     Device.objects.filter(type__in=(Device.DeviceTypes.ENTER, Device.DeviceTypes.EXIT))]
             await asyncio.gather(*tasks)
             await asyncio.sleep(1.5)
 
