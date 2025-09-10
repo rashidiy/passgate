@@ -42,7 +42,6 @@ class EventListener:
             plugin = DS_K1T671MF(device.ip_address, device.port, device.username, device.password)
             response = await plugin.get_acs_events(device)
             acs_event = response.json.get('AcsEvent')
-            device.last_event = device.last_event + acs_event.get('numOfMatches')
             if acs_event.get('numOfMatches'):
                 logging.info(f'Found {acs_event.get('numOfMatches')} events on device {device.id}.')
                 for event in acs_event.get('InfoList'):
@@ -70,7 +69,6 @@ class EventListener:
                         picture=image,
                         card_no=event.cardNo,
                     )
-                await device.asave()
         except Exception as _:
             logging.exception("Error creating event.")
 

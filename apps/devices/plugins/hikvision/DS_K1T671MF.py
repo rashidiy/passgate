@@ -105,10 +105,13 @@ class DS_K1T671MF(HikvisionWebLogin):  # noqa
         data = {
             "AcsEventCond": {
                 "searchID": "0",
-                "searchResultPosition": device.last_event,
+                "searchResultPosition": 0,
                 "maxResults": 30,
                 "major": 5,
-                "minor": 0
+                "minor": 0,
+                "startTime": (
+                    await device.events.values_list('timestamp', flat=True).order_by('-timestamp').afirst()
+                ).isoformat(timespec="seconds")
             }
         }
         response = await self.request('POST', path, params=params, json=data, timeout=5)
