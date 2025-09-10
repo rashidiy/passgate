@@ -1,5 +1,6 @@
 import asyncio
 import logging
+from datetime import datetime
 
 from django.core.files.base import ContentFile
 from django.core.management import BaseCommand
@@ -73,7 +74,7 @@ class EventListener:
                     except Exception as _:
                         logging.exception("Error creating event.")
                 else:
-                    device.last_timestamp = event.time
+                    device.last_timestamp = datetime.strptime(event.time, "%Y-%m-%dT%H:%M:%S%z")
                     await device.asave()
         except Exception as _:
             logging.exception("Error while requesting events.")

@@ -1,5 +1,6 @@
 import asyncio
 import xml.etree.ElementTree as ET
+from datetime import timedelta
 
 from django.core.exceptions import ValidationError
 from django.utils.translation import gettext_lazy as _
@@ -109,7 +110,7 @@ class DS_K1T671MF(HikvisionWebLogin):  # noqa
                 "maxResults": 30,
                 "major": 5,
                 "minor": 0,
-                "startTime": device.last_timestamp,
+                "startTime": (device.last_timestamp + timedelta(seconds=1)).isoformat(timespec="seconds"),
             }
         }
         response = await self.request('POST', path, params=params, json=data, timeout=5)

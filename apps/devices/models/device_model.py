@@ -1,3 +1,5 @@
+from datetime import datetime, timedelta, timezone
+
 from django.core.exceptions import ValidationError
 from django.core.validators import MinValueValidator, MaxValueValidator
 from django.db import models
@@ -25,7 +27,7 @@ class Device(models.Model):
     username = models.CharField(_('Username'), max_length=100)
     password_placeholder = models.CharField(_('Password'), max_length=16)
     encrypted_password = EncryptedTextField(editable=False)
-    last_timestamp = models.CharField(max_length=125, default='2025-09-01T00:00:00+05:00')
+    last_timestamp = models.DateTimeField(default=datetime(2025, 9, 1, 0, 0, 0, tzinfo=timezone(timedelta(hours=5))))
 
     __old_username = None
     __old_pwd_placeholder = None
