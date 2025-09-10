@@ -13,6 +13,7 @@ schema_view = get_schema_view(
         license=openapi.License(name='Copyright "OOO Samyy Soft"'),
     ),
     public=True,
+    url='http://localhost:8000',
     permission_classes=(permissions.IsAuthenticatedOrReadOnly,),
 )
 

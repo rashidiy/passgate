@@ -143,6 +143,7 @@ CANCEL_RESTRICT_BEGIN = os.getenv('CANCEL_RESTRICT_BEGIN')
 CANCEL_RESTRICT_END = os.getenv('CANCEL_RESTRICT_END')
 
 SWAGGER_SETTINGS = {
+    "DEFAULT_API_URL": None, 
     "DEFAULT_AUTO_SCHEMA_CLASS": "utils.swagger.TaggedAutoSchema",
     'SECURITY_DEFINITIONS': {
         'Token': {
