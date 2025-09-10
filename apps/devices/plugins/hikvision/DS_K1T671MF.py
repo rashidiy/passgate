@@ -109,9 +109,7 @@ class DS_K1T671MF(HikvisionWebLogin):  # noqa
                 "maxResults": 30,
                 "major": 5,
                 "minor": 0,
-                "startTime": (
-                    await device.events.values_list('timestamp', flat=True).order_by('-timestamp').afirst()
-                ).isoformat(timespec="seconds")
+                "startTime": device.last_timestamp,
             }
         }
         response = await self.request('POST', path, params=params, json=data, timeout=5)

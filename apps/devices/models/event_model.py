@@ -27,3 +27,4 @@ class Event(models.Model):
     class Meta:
         verbose_name = _('Event')
         verbose_name_plural = _('Events')
+        unique_together = ('device', 'serial_no')

@@ -45,32 +45,38 @@ class EventListener:
             if acs_event.get('numOfMatches'):
                 logging.info(f'Found {acs_event.get('numOfMatches')} events on device {device.id}.')
                 for event in acs_event.get('InfoList'):
-                    event = AccessEvent(**event)
-                    if event.minor not in cls.event_types.keys():
-                        continue
-                    employee_exists = await Employee.objects.filter(id=event.employeeNoString).aexists()
-                    if event.employeeNoString and not employee_exists:
-                        continue
-                    image = None
-                    if event.minor in (75, 76):
-                        image_path = event.pictureURL[event.pictureURL.index('/LOCALS/'):]
-                        file_name = f"event_{event.serialNo}.jpg"
-                        image_bytes = await plugin.get_image(image_path)
-                        image = ContentFile(image_bytes, name=file_name)
-                    await Event.objects.acreate(
-                        current_verify_mode=event.currentVerifyMode,
-                        serial_no=event.serialNo,
-                        type=cls.event_types[event.minor],
-                        timestamp=event.time,
-                        device=device,
-                        employee_id=event.employeeNoString,
-                        employee_no=event.employeeNoString,
-                        employee_name=event.name,
-                        picture=image,
-                        card_no=event.cardNo,
-                    )
+                    try:
+                        event = AccessEvent(**event)
+                        if event.minor not in cls.event_types.keys():
+                            continue
+                        employee_exists = await Employee.objects.filter(id=event.employeeNoString).aexists()
+                        if event.employeeNoString and not employee_exists:
+                            continue
+                        image = None
+                        if event.minor in (75, 76):
+                            image_path = event.pictureURL[event.pictureURL.index('/LOCALS/'):]
+                            file_name = f"event_{event.serialNo}.jpg"
+                            image_bytes = await plugin.get_image(image_path)
+                            image = ContentFile(image_bytes, name=file_name)
+                        await Event.objects.acreate(
+                            current_verify_mode=event.currentVerifyMode,
+                            serial_no=event.serialNo,
+                            type=cls.event_types[event.minor],
+                            timestamp=event.time,
+                            device=device,
+                            employee_id=event.employeeNoString,
+                            employee_no=event.employeeNoString,
+                            employee_name=event.name,
+                            picture=image,
+                            card_no=event.cardNo,
+                        )
+                    except Exception as _:
+                        logging.exception("Error creating event.")
+                else:
+                    device.last_timestamp = event.time
+                    await device.asave()
         except Exception as _:
-            logging.exception("Error creating event.")
+            logging.exception("Error while requesting events.")
 
     @classmethod
     async def main(cls):
