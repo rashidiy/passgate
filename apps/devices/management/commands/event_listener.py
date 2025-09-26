@@ -45,6 +45,7 @@ class EventListener:
             acs_event = response.json.get('AcsEvent')
             if acs_event.get('numOfMatches'):
                 logging.info(f'Found {acs_event.get('numOfMatches')} events on device {device.id}.')
+                max_time = None
                 for event in acs_event.get('InfoList'):
                     try:
                         event = AccessEvent(**event)
@@ -71,11 +72,13 @@ class EventListener:
                             picture=image,
                             card_no=event.cardNo,
                         )
+                        max_time = event.time
                     except Exception as _:
                         logging.exception("Error creating event.")
                 else:
-                    device.last_timestamp = datetime.strptime(event.time, "%Y-%m-%dT%H:%M:%S%z")
-                    await device.asave()
+                    if max_time:
+                        device.last_timestamp = datetime.strptime(max_time, "%Y-%m-%dT%H:%M:%S%z")
+                        await device.asave()
         except Exception as _:
             logging.exception("Error while requesting events.")
 
