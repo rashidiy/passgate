@@ -59,7 +59,7 @@ class DS_K1T671MF(HikvisionWebLogin):  # noqa
             return True
 
     async def create_user(self, access_device: AccessPoint, replay_on_delete: bool = True):
-        print(f'[{access_device.id}] CreateUser {access_device.employee}')
+        print(f'[{access_device.device_id}:{access_device.id}] CreateUser {access_device.employee}')
         try:
             await self._record_user_data('POST', '/ISAPI/AccessControl/UserInfo/Record', access_device)
             if access_device.employee.image:
@@ -71,7 +71,7 @@ class DS_K1T671MF(HikvisionWebLogin):  # noqa
             raise e
 
     async def update_user(self, access_device: AccessPoint):
-        print(f'[{access_device.id}] ModifyUser {access_device.employee}')
+        print(f'[{access_device.device_id}:{access_device.id}] ModifyUser {access_device.employee}')
         try:
             await self._record_user_data('PUT', '/ISAPI/AccessControl/UserInfo/Modify', access_device)
             if access_device.employee.image:
@@ -81,7 +81,7 @@ class DS_K1T671MF(HikvisionWebLogin):  # noqa
                 await self.create_user(access_device)
 
     async def delete_user(self, access_device: AccessPoint):
-        print(f'[{access_device.id}] DeleteUser {access_device.employee}')
+        print(f'[{access_device.device_id}:{access_device.id}] DeleteUser {access_device.employee}')
         path = '/ISAPI/AccessControl/UserInfo/Delete'
         params = {'format': 'json'}
         data = {"UserInfoDelCond": {"EmployeeNoList": [{"employeeNo": str(access_device.employee_id)}]}}
