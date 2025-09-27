@@ -70,9 +70,13 @@ class DS_K1T671MF(HikvisionWebLogin):  # noqa
             raise e
 
     async def update_user(self, access_device: AccessPoint):
-        await self._record_user_data('PUT', '/ISAPI/AccessControl/UserInfo/Modify', access_device)
-        if access_device.employee.image:
-            await self._setup_face_id(access_device)
+        try:
+            await self._record_user_data('PUT', '/ISAPI/AccessControl/UserInfo/Modify', access_device)
+            if access_device.employee.image:
+                await self._setup_face_id(access_device)
+        except ValidationError as e:
+            if 'employeeNoNotExist' in str(e):
+                await self.create_user(access_device)
 
     async def delete_user(self, access_device: AccessPoint):
         print('delete user')
