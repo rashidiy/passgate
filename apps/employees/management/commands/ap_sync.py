@@ -11,7 +11,7 @@ class Command(BaseCommand):
     help = "no help text"
 
     async def sync(self):
-        devices = (device async for device in Device.objects.all())
+        devices = [device async for device in Device.objects.all()]
         async for employee in Employee.objects.all():
             await asyncio.sleep(0.2)
             for device in devices:
