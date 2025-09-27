@@ -18,6 +18,7 @@ class Command(BaseCommand):
                 try:
                     ap, created = await AccessPoint.objects.aget_or_create(employee=employee, device=device)
                     if not created:
+                        ap.employee = employee
                         await model_actions_receiver.access_point_post_save(None, ap, created)
                 except Exception as e:
                     print(f'Error occurred while creating access point: {e}.')
