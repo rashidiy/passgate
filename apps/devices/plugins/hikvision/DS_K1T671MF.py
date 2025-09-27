@@ -67,6 +67,7 @@ class DS_K1T671MF(HikvisionWebLogin):  # noqa
         except ValidationError as e:
             await self.delete_user(access_device)
             if replay_on_delete:
+                await asyncio.sleep(0.5)
                 await self.create_user(access_device, False)
             raise e
 
