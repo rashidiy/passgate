@@ -49,6 +49,7 @@ class EventListener:
                 for event in acs_event.get('InfoList'):
                     try:
                         event = AccessEvent(**event)
+                        max_time = event.time
                         if event.minor not in cls.event_types.keys():
                             continue
                         employee_exists = await Employee.objects.filter(id=event.employeeNoString).aexists()
@@ -72,7 +73,6 @@ class EventListener:
                             picture=image,
                             card_no=event.cardNo,
                         )
-                        max_time = event.time
                     except Exception as _:
                         logging.exception("Error creating event.")
                 else:
