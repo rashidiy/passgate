@@ -24,7 +24,6 @@ class DS_K1T671MF(HikvisionWebLogin):  # noqa
         return True
 
     async def _record_user_data(self, method, path, access_device: AccessPoint):
-        print('user_data')
         params = {'format': 'json'}
         data = {
             "UserInfo": {
@@ -49,7 +48,6 @@ class DS_K1T671MF(HikvisionWebLogin):  # noqa
         return True
 
     async def _setup_face_id(self, access_device: AccessPoint):
-        print('f_id')
         path = '/ISAPI/Intelligent/FDLib/FDSetUp'
         params = {'format': 'json'}
         with open(access_device.employee.image.path, 'rb') as image_file:
@@ -61,6 +59,7 @@ class DS_K1T671MF(HikvisionWebLogin):  # noqa
             return True
 
     async def create_user(self, access_device: AccessPoint, replay_on_delete: bool = True):
+        print(f'[{access_device.id}] CreateUser {access_device.employee}')
         try:
             await self._record_user_data('POST', '/ISAPI/AccessControl/UserInfo/Record', access_device)
             if access_device.employee.image:
@@ -72,6 +71,7 @@ class DS_K1T671MF(HikvisionWebLogin):  # noqa
             raise e
 
     async def update_user(self, access_device: AccessPoint):
+        print(f'[{access_device.id}] ModifyUser {access_device.employee}')
         try:
             await self._record_user_data('PUT', '/ISAPI/AccessControl/UserInfo/Modify', access_device)
             if access_device.employee.image:
@@ -81,7 +81,7 @@ class DS_K1T671MF(HikvisionWebLogin):  # noqa
                 await self.create_user(access_device)
 
     async def delete_user(self, access_device: AccessPoint):
-        print('delete user')
+        print(f'[{access_device.id}] DeleteUser {access_device.employee}')
         path = '/ISAPI/AccessControl/UserInfo/Delete'
         params = {'format': 'json'}
         data = {"UserInfoDelCond": {"EmployeeNoList": [{"employeeNo": str(access_device.employee_id)}]}}
@@ -89,21 +89,17 @@ class DS_K1T671MF(HikvisionWebLogin):  # noqa
         return True
 
     async def add_card(self, card: Card):
-        print('add_card')
         path = '/ISAPI/AccessControl/CardInfo/Record'
         params = {'format': 'json'}
         data = {"CardInfo": {"employeeNo": str(card.employee_id), "cardNo": card.card_no, "cardType": "normalCard"}}
         await self.request('POST', path, params=params, json=data, timeout=5)
-        print('add_card_finish')
         return True
 
     async def remove_card(self, card: Card):
-        print('remove_card')
         path = '/ISAPI/AccessControl/CardInfo/Delete'
         params = {'format': 'json'}
         data = {"CardInfoDelCond": {"CardNoList": [{"cardNo": card.card_no}]}}
         await self.request('PUT', path, params=params, json=data, timeout=5)
-        print('remove_card_finish')
         return True
 
     async def get_acs_events(self, device):
