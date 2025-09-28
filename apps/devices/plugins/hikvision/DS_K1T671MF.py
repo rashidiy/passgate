@@ -68,7 +68,9 @@ class DS_K1T671MF(HikvisionWebLogin):  # noqa
             await self.delete_user(access_device)
             if replay_on_delete:
                 await asyncio.sleep(1)
+                await asyncio.sleep(1)
                 await self.create_user(access_device, False)
+                return
             raise e
 
     async def update_user(self, access_device: AccessPoint):
