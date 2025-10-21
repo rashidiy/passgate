@@ -2,7 +2,7 @@ import asyncio
 import xml.etree.ElementTree as ET
 from datetime import timedelta
 
-from django.core.exceptions import ValidationError
+from django.core.exceptions import ValidationError, SynchronousOnlyOperation
 from django.utils.translation import gettext_lazy as _
 
 from devices.models import Device
@@ -15,6 +15,12 @@ class DS_K1T671MF(HikvisionWebLogin):  # noqa
 
     def check_model_match(self):
         return asyncio.run(self._check_model_match())
+
+    def log_info(self, action, ap: AccessPoint):
+        try:
+            print(f'{action} [Device: {ap.device_id}; AccessPoint: {ap.id}] {ap.employee_id}:{ap.employee.name}')
+        except SynchronousOnlyOperation:
+            return
 
     async def _check_model_match(self):
         path = '/ISAPI/System/deviceInfo'
@@ -62,7 +68,7 @@ class DS_K1T671MF(HikvisionWebLogin):  # noqa
             return True
 
     async def create_user(self, access_device: AccessPoint, replay_on_delete: bool = True):
-        print(f'[{access_device.device_id}:{access_device.id}] CreateUser {access_device.employee}')
+        self.log_info('CreateUser', access_device)
         try:
             await self._record_user_data('POST', '/ISAPI/AccessControl/UserInfo/Record', access_device)
             if access_device.employee.image:
@@ -76,7 +82,7 @@ class DS_K1T671MF(HikvisionWebLogin):  # noqa
             raise e
 
     async def update_user(self, access_device: AccessPoint):
-        print(f'[{access_device.device_id}:{access_device.id}] ModifyUser {access_device.employee}')
+        self.log_info('ModifyUser', access_device)
         try:
             await self._record_user_data('PUT', '/ISAPI/AccessControl/UserInfo/Modify', access_device)
             if access_device.employee.image:
@@ -87,7 +93,7 @@ class DS_K1T671MF(HikvisionWebLogin):  # noqa
                 return await self.create_user(access_device)
 
     async def delete_user(self, access_device: AccessPoint):
-        print(f'[{access_device.device_id}:{access_device.id}] DeleteUser {access_device.employee}')
+        self.log_info('DeleteUser', access_device)
         path = '/ISAPI/AccessControl/UserInfo/Delete'
         params = {'format': 'json'}
         data = {"UserInfoDelCond": {"EmployeeNoList": [{"employeeNo": str(access_device.employee_id)}]}}
