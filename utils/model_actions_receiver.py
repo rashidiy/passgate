@@ -5,15 +5,14 @@ from django.core.exceptions import SynchronousOnlyOperation
 from django.db.models.signals import post_delete, post_save
 from django.dispatch import receiver
 
-from devices.models import Device, Event, Webhook
+from devices.models import Device, Event
 from employees.models import AccessPoint, Card, Employee
 from utils.webhook import WebhookManager
 
 
 @sync_to_async()
 def get_plugin(instance: AccessPoint):
-    from devices.plugins import DS_K1T671MF
-    return DS_K1T671MF(
+    return instance.device.plugin(
         instance.device.ip_address, instance.device.port, instance.device.username, instance.device.password
     )
 

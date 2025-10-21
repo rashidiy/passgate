@@ -1,1 +1,1 @@
-from .hikvision import *
+from .base import PluginMixin

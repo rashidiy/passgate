@@ -6,13 +6,10 @@ from django.db import models
 from django.utils.translation import gettext_lazy as _
 from encrypted_fields import EncryptedTextField
 
-from devices.plugins.hikvision.DS_K1T671MF import DS_K1T671MF
+from devices.plugins import PluginMixin
 
 
-class Device(models.Model):
-    class DeviceModels(models.TextChoices):
-        DS_K1T671MF = 'ds_k1t671mf', 'DS-K1T671MF'
-
+class Device(models.Model, PluginMixin):
     class DeviceTypes(models.TextChoices):
         ENTER = 'access_in', _('Enter')
         EXIT = 'access_out', _('Exit')
@@ -20,8 +17,7 @@ class Device(models.Model):
 
     name = models.CharField(_('Name'), max_length=100)
     type = models.CharField(_('Type'), max_length=100, choices=DeviceTypes.choices)
-    model = models.CharField(max_length=100, choices=DeviceModels.choices, default=DeviceModels.DS_K1T671MF,
-                             editable=False, verbose_name=_('Model'))
+    model = models.CharField(_('Model'), max_length=100, choices=PluginMixin.DeviceModels.choices)
     ip_address = models.GenericIPAddressField(_('IP'))
     port = models.IntegerField(_('Port'), validators=[MinValueValidator(0), MaxValueValidator(65535)])
     username = models.CharField(_('Username'), max_length=100)
@@ -51,7 +47,7 @@ class Device(models.Model):
                 self.__old_pwd_placeholder, self.__old_username = old_values
 
     def check_model_type(self):
-        device = DS_K1T671MF(self.ip_address, self.port, self.username, self.password_placeholder)
+        device = self.plugin(self.ip_address, self.port, self.username, self.password_placeholder)
         try:
             device.check_model_match()
         except ValidationError as e:
@@ -81,5 +77,5 @@ class Device(models.Model):
         super().save(*args, **kwargs)
 
         if self.type == Device.DeviceTypes.ORDER:
-            from devices.plugins import OrderManager
+            from devices.plugins.hikvision import OrderManager
             OrderManager.switch_cam(False)

@@ -5,11 +5,14 @@ from datetime import timedelta
 from django.core.exceptions import ValidationError
 from django.utils.translation import gettext_lazy as _
 
+from devices.models import Device
 from employees.models import AccessPoint, Card
 from .base import HikvisionWebLogin
 
 
 class DS_K1T671MF(HikvisionWebLogin):  # noqa
+    device_model = Device.DeviceModels.DS_K1T671MF
+
     def check_model_match(self):
         return asyncio.run(self._check_model_match())
 
@@ -19,9 +22,9 @@ class DS_K1T671MF(HikvisionWebLogin):  # noqa
         ns = {'ns': 'http://www.isapi.org/ver20/XMLSchema'}
         root = ET.fromstring(response.text)
         model_value = root.find('ns:model', ns).text
-        if model_value != 'DS-K1T671MF':
-            raise ValidationError(_('Model is not DS-K1T671MF.'))
-        return True
+        if model_value != self.device_model.label:
+            raise ValidationError(_('Model is not %s.') % self.device_model)
+        return True, self.device_model
 
     async def _record_user_data(self, method, path, access_device: AccessPoint):
         params = {'format': 'json'}
@@ -64,13 +67,12 @@ class DS_K1T671MF(HikvisionWebLogin):  # noqa
             await self._record_user_data('POST', '/ISAPI/AccessControl/UserInfo/Record', access_device)
             if access_device.employee.image:
                 await self._setup_face_id(access_device)
+            return True
         except ValidationError as e:
             await self.delete_user(access_device)
             if replay_on_delete:
-                await asyncio.sleep(1)
-                await asyncio.sleep(1)
-                await self.create_user(access_device, False)
-                return
+                await asyncio.sleep(2)
+                return await self.create_user(access_device, False)
             raise e
 
     async def update_user(self, access_device: AccessPoint):
@@ -79,9 +81,10 @@ class DS_K1T671MF(HikvisionWebLogin):  # noqa
             await self._record_user_data('PUT', '/ISAPI/AccessControl/UserInfo/Modify', access_device)
             if access_device.employee.image:
                 await self._setup_face_id(access_device)
+            return True
         except ValidationError as e:
             if 'employeeNoNotExist' in str(e):
-                await self.create_user(access_device)
+                return await self.create_user(access_device)
 
     async def delete_user(self, access_device: AccessPoint):
         print(f'[{access_device.device_id}:{access_device.id}] DeleteUser {access_device.employee}')

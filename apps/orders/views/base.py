@@ -1,6 +1,6 @@
 from rest_framework.response import Response
 
-from devices.plugins import OrderManager
+from devices.plugins.hikvision import OrderManager
 
 
 def get_face_result():

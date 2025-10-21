@@ -17,7 +17,7 @@ class DeviceAdmin(admin.ModelAdmin):
     search_fields = ("name", "ip_address", "username")
     ordering = ("type", "name")
     list_per_page = 20
-    readonly_fields = ("model", "encrypted_password")
+    readonly_fields = ("encrypted_password",)
     fieldsets = (
         (_("General"), {
             "fields": ("name", "type", "model"),
