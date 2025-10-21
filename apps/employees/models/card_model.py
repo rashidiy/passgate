@@ -7,6 +7,7 @@ class Card(models.Model):
     card_no = models.CharField(_('Card number'), max_length=20, unique=True)
     employee = models.ForeignKey('employees.Employee', on_delete=models.CASCADE, related_name='cards',
                                  verbose_name=_('Employee'))
+    old_card = models.CharField(_('Card number'), max_length=20, editable=False)
 
     class Meta:
         verbose_name = _('Card')

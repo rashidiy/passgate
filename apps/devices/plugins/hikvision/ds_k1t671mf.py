@@ -110,8 +110,10 @@ class DS_K1T671MF(HikvisionWebLogin):  # noqa
     async def remove_card(self, card: Card):
         path = '/ISAPI/AccessControl/CardInfo/Delete'
         params = {'format': 'json'}
-        data = {"CardInfoDelCond": {"CardNoList": [{"cardNo": card.card_no}]}}
-        await self.request('PUT', path, params=params, json=data, timeout=5)
+        data = {"CardInfoDelCond": {"CardNoList": [{"cardNo": card.old_card}]}}
+        re = await self.request('PUT', path, params=params, json=data, timeout=5)
+        print(data)
+        print(re.json)
         return True
 
     async def get_acs_events(self, device):

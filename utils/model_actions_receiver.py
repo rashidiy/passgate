@@ -42,6 +42,8 @@ async def __access_point_post_delete(instance: AccessPoint):
 async def __card_post_save(card: Card, access_point: AccessPoint):
     plugin = await get_plugin(access_point)
     await plugin.add_card(card)
+    card.old_card = card.card_no
+    await card.asave()
 
 
 async def __card_post_delete(card: Card, access_point: AccessPoint):
@@ -87,6 +89,7 @@ async def access_point_post_delete(sender, instance: AccessPoint, **kwargs):
 @receiver(post_save, sender=Card)
 async def card_post_save(sender, instance: Card, created: bool, **kwargs):
     if kwargs.get('raw'): return  # loaddata
+    if instance.card_no == instance.old_card: return
 
     await webhook_save(instance, created)
     if not created:

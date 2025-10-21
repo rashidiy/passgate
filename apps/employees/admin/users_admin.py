@@ -13,6 +13,7 @@ class CardInline(admin.TabularInline):
     max_num = 5
 
 
+
 class AccessPointForm(forms.ModelForm):
     class Meta:
         model = AccessPoint
