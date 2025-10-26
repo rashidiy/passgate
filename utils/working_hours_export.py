@@ -19,23 +19,31 @@ from openpyxl.utils import get_column_letter
 from devices.models import Device, Event
 from employees.models import Employee, WorkingHourException
 
+
 # ──────────────────────────────────────────────────────────────────────────────
 # Config
 # ──────────────────────────────────────────────────────────────────────────────
-DAY_START = time(8, 0, 0)   # 08:00
+DAY_START = time(8, 0, 0)     # 08:00
 NIGHT_START = time(20, 0, 0)  # 20:00
 
 EXC_LABEL_LABOR  = _("Labor Leave")
 EXC_LABEL_UNPAID = _("Unpaid Leave")
 EXC_LABEL_TRIP   = _("Working Trip")
 
-# Two-letter control codes (DO NOT translate; used in Excel number formats)
+# Two-letter control codes (DO NOT translate; used in logic & hidden sheets)
 EXC_CODE_LABOR  = "LL"  # LaborLib
 EXC_CODE_UNPAID = "UL"  # UnpaidLib
-EXC_CODE_TRIP   = "WT"  # WorkingTribute (not shown in visible cells)
+EXC_CODE_TRIP   = "WT"  # WorkingTrip (not shown in visible cells)
+
+# Localized short labels to DISPLAY in cells (visible suffix only)
+EXC_I18N_MAP = {
+    EXC_CODE_LABOR:  _("ТО"),  # what to show for LL
+    EXC_CODE_UNPAID: _("НО"),  # what to show for UL
+}
 
 # Weekend fill (yellow) – use 8-digit ARGB for consistency
 WEEKEND_FILL = PatternFill(fill_type="solid", start_color="00FFFF00", end_color="00FFFF00")
+
 
 # ──────────────────────────────────────────────────────────────────────────────
 # Helpers
@@ -49,10 +57,16 @@ def _tz():
 def _aware(dt: datetime) -> datetime:
     return djtz.make_aware(dt, _tz()) if djtz.is_naive(dt) else dt.astimezone(_tz())
 
+def _i18n_codes(codes: List[str]) -> List[str]:
+    """Map ASCII control codes to localized short labels for visible cell suffix."""
+    return [s(EXC_I18N_MAP.get(c, c)) for c in codes]
+
+
 @dataclass(frozen=True)
 class Interval:
     start: datetime
     end: datetime
+
 
 def _overlap_seconds(a: Interval, b: Interval) -> float:
     start = max(a.start, b.start)
@@ -88,6 +102,7 @@ def _fmt_hhmm(seconds: int) -> str:
     minutes = int(round(seconds / 60))
     h, m = divmod(minutes, 60)
     return f"{h}:{m:02d}"
+
 
 # ──────────────────────────────────────────────────────────────────────────────
 # Interval utilities
@@ -143,6 +158,7 @@ def _merge_intervals(intervals: List[Interval]) -> List[Interval]:
     merged.append(cur)
     return merged
 
+
 # ──────────────────────────────────────────────────────────────────────────────
 # Exceptions flags
 # ──────────────────────────────────────────────────────────────────────────────
@@ -160,7 +176,7 @@ class DayExceptions:
         return out
 
     def display_codes(self) -> List[str]:
-        """Codes to DISPLAY in cells (WT excluded; WT contributes numeric time)."""
+        """Codes to DISPLAY (ASCII) in cells' suffix (WT excluded)."""
         codes: List[str] = []
         if self.has_labor:  codes.append(EXC_CODE_LABOR)
         if self.has_unpaid: codes.append(EXC_CODE_UNPAID)
@@ -192,6 +208,7 @@ def _exceptions_by_day(employee: Employee, year: int, month: int) -> Dict[int, D
             cur += timedelta(days=1)
     return by_day
 
+
 # ──────────────────────────────────────────────────────────────────────────────
 # Split presence into per-day Day/Night SECONDS
 # ──────────────────────────────────────────────────────────────────────────────
@@ -208,6 +225,7 @@ def _split_presence_seconds(pairs: List[Interval]) -> Dict[date, Tuple[int, int]
             prev_d, prev_n = result[d]
             result[d] = (prev_d + day_sec, prev_n + n1_sec + n2_sec)
     return result
+
 
 # ──────────────────────────────────────────────────────────────────────────────
 # Export API
@@ -244,7 +262,7 @@ def export_working_hours_to_excel(
 
     Rules:
       - Cells are NUMERIC hours (=seconds/3600).
-      - **LL/UL**: show initials but numeric value is **0** → excluded from totals.
+      - **LL/UL**: show localized initials, but numeric value is **0** → excluded from totals.
       - **WT**: contributes numeric time (no initials), comment shows “+ WT hh:mm”.
       - Weekends (Sat/Sun) highlighted yellow.
     """
@@ -429,22 +447,23 @@ def export_working_hours_to_excel(
                 if rowinfo.real is not None:
                     flags = exc_by_day.get(d)
                     if flags:
-                        # If LL or UL — treat as NON-working: force numeric 0, display initials
-                        display_codes = flags.display_codes()  # LL/UL only
+                        # If LL or UL — treat as NON-working: force numeric 0, display localized initials
+                        display_codes = flags.display_codes()  # LL/UL only (ASCII)
                         if flags.has_labor or flags.has_unpaid:
-                            # force zeros, still show codes
                             day_cell.value = 0
                             night_cell.value = 0
                             if display_codes:
-                                code_str = ",".join(display_codes)
-                                suffix = f' "{code_str}"'
+                                code_str = ",".join(display_codes)                 # ASCII for hidden flags
+                                shown    = ",".join(_i18n_codes(display_codes))   # localized for visible suffix
+                                suffix   = f' "{shown}"'
                                 day_cell.number_format   = "0.00" + suffix
                                 night_cell.number_format = "0.00" + suffix
                         else:
-                            # No LL/UL: if there ARE display codes (unlikely) just add suffix
+                            # No LL/UL: if any codes present (unlikely), just add localized suffix
                             if display_codes:
                                 code_str = ",".join(display_codes)
-                                suffix = f' "{code_str}"'
+                                shown    = ",".join(_i18n_codes(display_codes))
+                                suffix   = f' "{shown}"'
                                 day_cell.number_format   = "0.00" + suffix
                                 night_cell.number_format = "0.00" + suffix
 
@@ -465,7 +484,7 @@ def export_working_hours_to_excel(
                                     night_cell.comment = Comment(note_text, author)
 
                 # Hidden flags sheet:
-                #  - write LL/UL codes
+                #  - write LL/UL ASCII codes
                 #  - write WT seconds as WT=<seconds> (per cell) for scripting later
                 flags_month_ws.cell(row=r, column=c_day).value = code_str or ""
                 flags_month_ws.cell(row=r, column=c_nig).value = code_str or ""
