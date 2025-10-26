@@ -29,6 +29,7 @@ JAZZMIN_SETTINGS = {
         "devices.device": "fas fa-camera",
         "orders.order": "fas fa-receipt",
         "employees.employee": "fas fa-user-tie",
+        "employees.workinghourexception": "fas fa-clock",
         "devices.event": "fas fa-address-book",
         "devices.webhook": "fas fa-globe",
         "authtoken.tokenproxy": "fas fa-lock",

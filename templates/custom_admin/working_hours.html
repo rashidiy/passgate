@@ -1,0 +1,15 @@
+{% extends 'admin/change_list.html' %}
+{% load i18n admin_list %}
+{% block page_actions %}
+
+    <div class="col-12 col-md-auto d-flex align-items-center justify-content-end page-actions">
+        <a href="export_to_excel/" class="btn btn-primary float-right">
+            <i class="fa fa-file-excel"></i> &nbsp; {% trans 'Export to excel' %}
+        </a>
+        {% block object-tools %}
+            {% block object-tools-items %}
+                {% change_list_object_tools %}
+            {% endblock %}
+        {% endblock %}
+    </div>
+{% endblock %}

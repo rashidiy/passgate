@@ -1,0 +1,83 @@
+{# templates/custom_admin/export_interval_form.html #}
+{% extends "admin/base_site.html" %}
+{% load i18n static %}
+
+{% block extrahead %}
+  {{ block.super }}
+  <script src="{% url 'admin:jsi18n' %}"></script>
+  <script src="{% static 'admin/js/core.js' %}"></script>
+  {{ form.media }}  {# provides calendar.js + DateTimeShortcuts.js exactly once #}
+{% endblock %}
+
+{% block extrastyle %}
+  {{ block.super }}
+  <link rel="stylesheet" href="{% static 'admin/css/forms.css' %}">
+  <style>
+    .export-card{background:#fff;border:1px solid #e5e7eb;border-radius:12px;padding:24px;box-shadow:0 2px 12px rgba(0,0,0,.06);max-width:960px;}
+    .export-grid{display:grid;grid-template-columns:1fr 1fr;gap:24px;align-items:start;}
+    @media (max-width:900px){.export-grid{grid-template-columns:1fr;}}
+    .fieldset{border:1px dashed #e5e7eb;border-radius:10px;padding:16px;}
+    .legend{font-weight:700;margin-bottom:8px;}
+    .field{margin-bottom:12px;}
+    .helptext{color:#6b7280;font-size:12px;display:block;margin-top:2px;}
+    .submit-row{margin-top:20px;display:flex;gap:12px;align-items:center;}
+    .errorlist{margin:6px 0 0;}
+  </style>
+{% endblock %}
+
+{% block content %}
+  <div class="col-12">
+    <h1>{% trans "Export Working Hours" %}</h1>
+    <p class="helptext">{% trans "Use the admin calendar and clock widgets or Today/Now buttons to pick the interval." %}</p>
+    <hr>
+  </div>
+
+  <div class="export-card m-auto">
+    <form method="post" novalidate>
+      {% csrf_token %}
+
+      {% if form.non_field_errors %}
+        <ul class="errorlist nonfield">
+          {% for e in form.non_field_errors %}<li>{{ e }}</li>{% endfor %}
+        </ul>
+      {% endif %}
+
+      <div class="export-grid">
+        <fieldset class="fieldset">
+          <div class="legend">{{ form.start.label }}</div>
+          <div class="field">
+            {{ form.start }}
+            {% if form.start.errors %}
+              <ul class="errorlist">{% for e in form.start.errors %}<li>{{ e }}</li>{% endfor %}</ul>
+            {% endif %}
+            {% if form.start.help_text %}<span class="helptext">{{ form.start.help_text }}</span>{% endif %}
+          </div>
+        </fieldset>
+
+        <fieldset class="fieldset">
+          <div class="legend">{{ form.end.label }}</div>
+          <div class="field">
+            {{ form.end }}
+            {% if form.end.errors %}
+              <ul class="errorlist">{% for e in form.end.errors %}<li>{{ e }}</li>{% endfor %}</ul>
+            {% endif %}
+            {% if form.end.help_text %}<span class="helptext">{{ form.end.help_text }}</span>{% endif %}
+          </div>
+        </fieldset>
+      </div>
+
+      <div class="field" style="margin-top:12px">
+        <label for="{{ form.include_all_employees.id_for_label }}">{{ form.include_all_employees.label }}</label>
+        {{ form.include_all_employees }}
+        {% if form.include_all_employees.errors %}
+          <ul class="errorlist">{% for e in form.include_all_employees.errors %}<li>{{ e }}</li>{% endfor %}</ul>
+        {% endif %}
+      </div>
+
+      <div class="submit-row">
+        <button type="submit" class="btn btn-primary">{% trans "Export" %}</button>
+        <a href="../" class="btn btn-outline-secondary">{% trans "Cancel" %}</a>
+      </div>
+    </form>
+  </div>
+{% endblock %}

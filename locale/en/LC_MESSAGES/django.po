@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-08-28 02:39+0500\n"
+"POT-Creation-Date: 2025-10-27 00:28+0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -48,8 +48,12 @@ msgstr ""
 msgid "%d device(s) reachable."
 msgstr ""
 
+#: apps/devices/models/device_model.py:14
+msgid "Enter"
+msgstr ""
+
 #: apps/devices/models/device_model.py:15
-msgid "Enter / Exit"
+msgid "Exit"
 msgstr ""
 
 #: apps/devices/models/device_model.py:16 apps/orders/models.py:51
@@ -61,36 +65,36 @@ msgstr ""
 msgid "Name"
 msgstr ""
 
-#: apps/devices/models/device_model.py:21
+#: apps/devices/models/device_model.py:20
 msgid "Model"
 msgstr ""
 
-#: apps/devices/models/device_model.py:22
+#: apps/devices/models/device_model.py:21
 msgid "IP"
 msgstr ""
 
-#: apps/devices/models/device_model.py:23
+#: apps/devices/models/device_model.py:22
 msgid "Port"
 msgstr ""
 
-#: apps/devices/models/device_model.py:24
+#: apps/devices/models/device_model.py:23
 msgid "Username"
 msgstr ""
 
-#: apps/devices/models/device_model.py:25
+#: apps/devices/models/device_model.py:24
 msgid "Password"
 msgstr ""
 
-#: apps/devices/models/device_model.py:36 apps/devices/models/event_model.py:19
+#: apps/devices/models/device_model.py:35 apps/devices/models/event_model.py:19
 #: apps/employees/models/access_point_model.py:21
 msgid "Device"
 msgstr ""
 
-#: apps/devices/models/device_model.py:37
+#: apps/devices/models/device_model.py:36
 msgid "Devices"
 msgstr ""
 
-#: apps/devices/models/device_model.py:76
+#: apps/devices/models/device_model.py:75
 msgid "You cannot create order Device more than one. Contact administrator."
 msgstr ""
 
@@ -138,6 +142,7 @@ msgstr ""
 #: apps/employees/models/access_point_model.py:19
 #: apps/employees/models/card_model.py:9
 #: apps/employees/models/employee_model.py:26 apps/orders/models.py:13
+#: utils/working_hours_export.py:335
 msgid "Employee"
 msgstr ""
 
@@ -157,11 +162,11 @@ msgstr ""
 msgid "Card Number"
 msgstr ""
 
-#: apps/devices/models/event_model.py:29
+#: apps/devices/models/event_model.py:28
 msgid "Event"
 msgstr ""
 
-#: apps/devices/models/event_model.py:30
+#: apps/devices/models/event_model.py:29
 msgid "Events"
 msgstr ""
 
@@ -181,18 +186,19 @@ msgstr ""
 msgid "Webhooks"
 msgstr ""
 
-#: apps/devices/plugins/hikvision/DS_K1T671MF.py:18
-msgid "Model is not DS-K1T671MF."
-msgstr ""
-
 #: apps/devices/plugins/hikvision/base.py:72
 msgid "Wrong username."
 msgstr ""
 
-#: apps/devices/plugins/hikvision/base.py:190
+#: apps/devices/plugins/hikvision/base.py:192
 #: apps/devices/plugins/hikvision/order_manager.py:79
-#: apps/devices/plugins/hikvision/order_manager.py:115
+#: apps/devices/plugins/hikvision/order_manager.py:114
 msgid "Wrong username or password."
+msgstr ""
+
+#: apps/devices/plugins/hikvision/ds_k1t671mf.py:32
+#, python-format
+msgid "Model is not %s."
 msgstr ""
 
 #: apps/devices/plugins/hikvision/order_manager.py:19
@@ -200,7 +206,7 @@ msgid "There is no order device."
 msgstr ""
 
 #: apps/devices/plugins/hikvision/order_manager.py:75
-#: apps/devices/plugins/hikvision/order_manager.py:111
+#: apps/devices/plugins/hikvision/order_manager.py:110
 msgid "Unable to connect to device with given IP and Port"
 msgstr ""
 
@@ -223,9 +229,37 @@ msgstr ""
 msgid "View %s"
 msgstr ""
 
-#: apps/employees/admin/users_admin.py:40
+#: apps/employees/admin/forms.py:8
+msgid "From"
+msgstr ""
+
+#: apps/employees/admin/forms.py:11
+msgid "Start date and time"
+msgstr ""
+
+#: apps/employees/admin/forms.py:14
+msgid "To"
+msgstr ""
+
+#: apps/employees/admin/forms.py:17
+msgid "End date and time"
+msgstr ""
+
+#: apps/employees/admin/forms.py:20
+msgid "Include Employees Without Events"
+msgstr ""
+
+#: apps/employees/admin/forms.py:38
+msgid "End must be after start."
+msgstr ""
+
+#: apps/employees/admin/users_admin.py:42
 #: apps/employees/models/employee_model.py:22
 msgid "Image"
+msgstr ""
+
+#: apps/employees/admin/working_hours_admin.py:59
+msgid "Export Working Hours (Interval)"
 msgstr ""
 
 #: apps/employees/models/access_point_model.py:15
@@ -260,19 +294,19 @@ msgstr ""
 msgid "Access Points"
 msgstr ""
 
-#: apps/employees/models/card_model.py:7
+#: apps/employees/models/card_model.py:7 apps/employees/models/card_model.py:10
 msgid "Card number"
 msgstr ""
 
-#: apps/employees/models/card_model.py:12
+#: apps/employees/models/card_model.py:13
 msgid "Card"
 msgstr ""
 
-#: apps/employees/models/card_model.py:13
+#: apps/employees/models/card_model.py:14
 msgid "Cards"
 msgstr ""
 
-#: apps/employees/models/card_model.py:22
+#: apps/employees/models/card_model.py:23
 #, python-format
 msgid "Limit of cards exceeded for user %s."
 msgstr ""
@@ -302,7 +336,39 @@ msgstr ""
 msgid "Employees"
 msgstr ""
 
-#: apps/orders/admin.py:45
+#: apps/employees/models/working_hours.py:9
+msgid "LaborLeave"
+msgstr ""
+
+#: apps/employees/models/working_hours.py:10
+msgid "UnpaidLeave"
+msgstr ""
+
+#: apps/employees/models/working_hours.py:11
+msgid "WorkingTrip"
+msgstr ""
+
+#: apps/employees/models/working_hours.py:14
+msgid "Exception Type"
+msgstr ""
+
+#: apps/employees/models/working_hours.py:15
+msgid "Start Time"
+msgstr ""
+
+#: apps/employees/models/working_hours.py:16
+msgid "End Time"
+msgstr ""
+
+#: apps/employees/models/working_hours.py:19
+msgid "Exception"
+msgstr ""
+
+#: apps/employees/models/working_hours.py:20
+msgid "Working Hours"
+msgstr ""
+
+#: apps/orders/admin.py:57
 msgid "Export Selected Orders to Excel"
 msgstr ""
 
@@ -390,15 +456,15 @@ msgstr ""
 msgid "Orders"
 msgstr ""
 
-#: root/settings.py:104
+#: root/settings.py:108
 msgid "Uzbek"
 msgstr ""
 
-#: root/settings.py:105
+#: root/settings.py:109
 msgid "Russian"
 msgstr ""
 
-#: root/settings.py:106
+#: root/settings.py:110
 msgid "English"
 msgstr ""
 
@@ -476,4 +542,70 @@ msgstr ""
 msgid ""
 "\n"
 "                                                        %(timesince)s ago"
+msgstr ""
+
+#: templates/custom_admin/export_interval_form.html:30
+msgid "Export Working Hours"
+msgstr ""
+
+#: templates/custom_admin/export_interval_form.html:31
+msgid ""
+"Use the admin calendar and clock widgets or Today/Now buttons to pick the "
+"interval."
+msgstr ""
+
+#: templates/custom_admin/export_interval_form.html:78
+msgid "Export"
+msgstr ""
+
+#: templates/custom_admin/export_interval_form.html:79
+msgid "Cancel"
+msgstr ""
+
+#: templates/custom_admin/working_hours.html:7
+msgid "Export to excel"
+msgstr ""
+
+#: utils/working_hours_export.py:28
+msgid "Labor Leave"
+msgstr ""
+
+#: utils/working_hours_export.py:29
+msgid "Unpaid Leave"
+msgstr ""
+
+#: utils/working_hours_export.py:30
+msgid "Working Trip"
+msgstr ""
+
+#: utils/working_hours_export.py:335
+msgid "Employee ID"
+msgstr ""
+
+#: utils/working_hours_export.py:343
+msgid "Day"
+msgstr ""
+
+#: utils/working_hours_export.py:343
+msgid "Night"
+msgstr ""
+
+#: utils/working_hours_export.py:345
+msgid "Exceptions"
+msgstr ""
+
+#: utils/working_hours_export.py:346
+msgid "Day Total"
+msgstr ""
+
+#: utils/working_hours_export.py:346
+msgid "Night Total"
+msgstr ""
+
+#: utils/working_hours_export.py:346
+msgid "Total Hours"
+msgstr ""
+
+#: utils/working_hours_export.py:461
+msgid "System"
 msgstr ""

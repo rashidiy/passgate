@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-08-28 02:39+0500\n"
+"POT-Creation-Date: 2025-10-27 00:28+0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Russian <ru@li.org>\n"
@@ -50,9 +50,13 @@ msgstr "[{}] {} @ {}:{} недоступен: {}"
 msgid "%d device(s) reachable."
 msgstr "%d устройство(а) доступно."
 
+#: apps/devices/models/device_model.py:14
+msgid "Enter"
+msgstr "Вход"
+
 #: apps/devices/models/device_model.py:15
-msgid "Enter / Exit"
-msgstr "Вход / Выход"
+msgid "Exit"
+msgstr "Выход"
 
 #: apps/devices/models/device_model.py:16 apps/orders/models.py:51
 msgid "Order"
@@ -63,36 +67,36 @@ msgstr "Заказ"
 msgid "Name"
 msgstr "Имя"
 
-#: apps/devices/models/device_model.py:21
+#: apps/devices/models/device_model.py:20
 msgid "Model"
 msgstr "Модель"
 
-#: apps/devices/models/device_model.py:22
+#: apps/devices/models/device_model.py:21
 msgid "IP"
 msgstr "IP"
 
-#: apps/devices/models/device_model.py:23
+#: apps/devices/models/device_model.py:22
 msgid "Port"
 msgstr "Порт"
 
-#: apps/devices/models/device_model.py:24
+#: apps/devices/models/device_model.py:23
 msgid "Username"
 msgstr "Имя пользователя"
 
-#: apps/devices/models/device_model.py:25
+#: apps/devices/models/device_model.py:24
 msgid "Password"
 msgstr "Пароль"
 
-#: apps/devices/models/device_model.py:36 apps/devices/models/event_model.py:19
+#: apps/devices/models/device_model.py:35 apps/devices/models/event_model.py:19
 #: apps/employees/models/access_point_model.py:21
 msgid "Device"
 msgstr "Устройство"
 
-#: apps/devices/models/device_model.py:37
+#: apps/devices/models/device_model.py:36
 msgid "Devices"
 msgstr "Устройства"
 
-#: apps/devices/models/device_model.py:76
+#: apps/devices/models/device_model.py:75
 msgid "You cannot create order Device more than one. Contact administrator."
 msgstr ""
 "Нельзя создать более одного устройства для заказа. Обратитесь к "
@@ -142,6 +146,7 @@ msgstr "Временная метка"
 #: apps/employees/models/access_point_model.py:19
 #: apps/employees/models/card_model.py:9
 #: apps/employees/models/employee_model.py:26 apps/orders/models.py:13
+#: utils/working_hours_export.py:335
 msgid "Employee"
 msgstr "Сотрудник"
 
@@ -161,11 +166,11 @@ msgstr "Фотография"
 msgid "Card Number"
 msgstr "Номер карты"
 
-#: apps/devices/models/event_model.py:29
+#: apps/devices/models/event_model.py:28
 msgid "Event"
 msgstr "Событие"
 
-#: apps/devices/models/event_model.py:30
+#: apps/devices/models/event_model.py:29
 msgid "Events"
 msgstr "События"
 
@@ -185,26 +190,28 @@ msgstr "Вебхук"
 msgid "Webhooks"
 msgstr "Вебхуки"
 
-#: apps/devices/plugins/hikvision/DS_K1T671MF.py:18
-msgid "Model is not DS-K1T671MF."
-msgstr "Модель не DS-K1T671MF."
-
 #: apps/devices/plugins/hikvision/base.py:72
 msgid "Wrong username."
 msgstr "Неверное имя пользователя."
 
-#: apps/devices/plugins/hikvision/base.py:190
+#: apps/devices/plugins/hikvision/base.py:192
 #: apps/devices/plugins/hikvision/order_manager.py:79
-#: apps/devices/plugins/hikvision/order_manager.py:115
+#: apps/devices/plugins/hikvision/order_manager.py:114
 msgid "Wrong username or password."
 msgstr "Неверное имя пользователя или пароль."
+
+#: apps/devices/plugins/hikvision/ds_k1t671mf.py:32
+#, fuzzy, python-format
+#| msgid "Model is not DS-K1T671MF."
+msgid "Model is not %s."
+msgstr "Модель не DS-K1T671MF."
 
 #: apps/devices/plugins/hikvision/order_manager.py:19
 msgid "There is no order device."
 msgstr "Устройство для заказа отсутствует."
 
 #: apps/devices/plugins/hikvision/order_manager.py:75
-#: apps/devices/plugins/hikvision/order_manager.py:111
+#: apps/devices/plugins/hikvision/order_manager.py:110
 msgid "Unable to connect to device with given IP and Port"
 msgstr "Не удалось подключиться к устройству с указанным IP и портом"
 
@@ -228,10 +235,38 @@ msgstr "Изменить %s"
 msgid "View %s"
 msgstr "Просмотреть %s"
 
-#: apps/employees/admin/users_admin.py:40
+#: apps/employees/admin/forms.py:8
+msgid "From"
+msgstr "От"
+
+#: apps/employees/admin/forms.py:11
+msgid "Start date and time"
+msgstr "Дата и время начала"
+
+#: apps/employees/admin/forms.py:14
+msgid "To"
+msgstr "К"
+
+#: apps/employees/admin/forms.py:17
+msgid "End date and time"
+msgstr "Дата и время окончания"
+
+#: apps/employees/admin/forms.py:20
+msgid "Include Employees Without Events"
+msgstr "Включить сотрудников без событий"
+
+#: apps/employees/admin/forms.py:38
+msgid "End must be after start."
+msgstr "Конец должен быть после начала."
+
+#: apps/employees/admin/users_admin.py:42
 #: apps/employees/models/employee_model.py:22
 msgid "Image"
 msgstr "Изображение"
+
+#: apps/employees/admin/working_hours_admin.py:59
+msgid "Export Working Hours (Interval)"
+msgstr "Экспорт рабочих часов (интервал)"
 
 #: apps/employees/models/access_point_model.py:15
 msgid "Normal"
@@ -265,19 +300,19 @@ msgstr "Точка доступа"
 msgid "Access Points"
 msgstr "Точки доступа"
 
-#: apps/employees/models/card_model.py:7
+#: apps/employees/models/card_model.py:7 apps/employees/models/card_model.py:10
 msgid "Card number"
 msgstr "Номер карты"
 
-#: apps/employees/models/card_model.py:12
+#: apps/employees/models/card_model.py:13
 msgid "Card"
 msgstr "Карта"
 
-#: apps/employees/models/card_model.py:13
+#: apps/employees/models/card_model.py:14
 msgid "Cards"
 msgstr "Карты"
 
-#: apps/employees/models/card_model.py:22
+#: apps/employees/models/card_model.py:23
 #, python-format
 msgid "Limit of cards exceeded for user %s."
 msgstr "Превышен лимит карт для пользователя %s."
@@ -307,7 +342,39 @@ msgstr "Пол"
 msgid "Employees"
 msgstr "Сотрудники"
 
-#: apps/orders/admin.py:45
+#: apps/employees/models/working_hours.py:9
+msgid "LaborLeave"
+msgstr "Трудовой отпуск"
+
+#: apps/employees/models/working_hours.py:10
+msgid "UnpaidLeave"
+msgstr "Неоплачиваемый отпуск"
+
+#: apps/employees/models/working_hours.py:11
+msgid "WorkingTrip"
+msgstr "Рабочая поездка"
+
+#: apps/employees/models/working_hours.py:14
+msgid "Exception Type"
+msgstr "Тип исключения"
+
+#: apps/employees/models/working_hours.py:15
+msgid "Start Time"
+msgstr "Время начала"
+
+#: apps/employees/models/working_hours.py:16
+msgid "End Time"
+msgstr "Конец Времени"
+
+#: apps/employees/models/working_hours.py:19
+msgid "Exception"
+msgstr "Исключение"
+
+#: apps/employees/models/working_hours.py:20
+msgid "Working Hours"
+msgstr "Рабочие часы"
+
+#: apps/orders/admin.py:57
 msgid "Export Selected Orders to Excel"
 msgstr "Экспортировать выбранные заказы в Excel"
 
@@ -395,15 +462,15 @@ msgstr "Год"
 msgid "Orders"
 msgstr "Заказы"
 
-#: root/settings.py:104
+#: root/settings.py:108
 msgid "Uzbek"
 msgstr "Узбекский"
 
-#: root/settings.py:105
+#: root/settings.py:109
 msgid "Russian"
 msgstr "Русский"
 
-#: root/settings.py:106
+#: root/settings.py:110
 msgid "English"
 msgstr "Английский"
 
@@ -484,3 +551,72 @@ msgid ""
 msgstr ""
 "\n"
 "                                                        %(timesince)s назад"
+
+#: templates/custom_admin/export_interval_form.html:30
+msgid "Export Working Hours"
+msgstr "Рабочие часы экспорта"
+
+#: templates/custom_admin/export_interval_form.html:31
+msgid ""
+"Use the admin calendar and clock widgets or Today/Now buttons to pick the "
+"interval."
+msgstr ""
+
+#: templates/custom_admin/export_interval_form.html:78
+msgid "Export"
+msgstr "Экспорт"
+
+#: templates/custom_admin/export_interval_form.html:79
+msgid "Cancel"
+msgstr "Отмена"
+
+#: templates/custom_admin/working_hours.html:7
+msgid "Export to excel"
+msgstr "Экспорт в Excel"
+
+#: utils/working_hours_export.py:28
+msgid "Labor Leave"
+msgstr "Трудовой отпуск"
+
+#: utils/working_hours_export.py:29
+msgid "Unpaid Leave"
+msgstr "Неоплачиваемый отпуск"
+
+#: utils/working_hours_export.py:30
+msgid "Working Trip"
+msgstr "Рабочая поездка"
+
+#: utils/working_hours_export.py:335
+msgid "Employee ID"
+msgstr "№"
+
+#: utils/working_hours_export.py:343
+msgid "Day"
+msgstr "День"
+
+#: utils/working_hours_export.py:343
+msgid "Night"
+msgstr "Ночь"
+
+#: utils/working_hours_export.py:345
+msgid "Exceptions"
+msgstr "Исключения"
+
+#: utils/working_hours_export.py:346
+msgid "Day Total"
+msgstr "Всего за день"
+
+#: utils/working_hours_export.py:346
+msgid "Night Total"
+msgstr "Ночь Всего"
+
+#: utils/working_hours_export.py:346
+msgid "Total Hours"
+msgstr "Всего часов"
+
+#: utils/working_hours_export.py:461
+msgid "System"
+msgstr "Система"
+
+#~ msgid "Enter / Exit"
+#~ msgstr "Вход / Выход"
