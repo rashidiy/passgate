@@ -10,24 +10,12 @@ services:
       - ./media:/app/media
     depends_on:
       - web
-  migrations:
-    build: .
-    env_file:
-      - .env
-    command: sh -c "python manage.py makemigrations && python manage.py migrate"
-    depends_on:
-      db:
-        condition: service_healthy
-    volumes:
-      - .:/app
   web:
     build: .
     env_file:
       - .env
     command: uvicorn root.asgi:application --host 0.0.0.0 --port 8000 --reload
     depends_on:
-      migrations:
-        condition: service_completed_successfully
       db:
         condition: service_healthy
     entrypoint: [ './entrypoint.sh' ]
@@ -41,8 +29,6 @@ services:
       - .env
     command: python manage.py event_listener
     depends_on:
-      migrations:
-        condition: service_completed_successfully
       web:
         condition: service_started
       db:

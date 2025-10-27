@@ -6,7 +6,7 @@ from django.core.files.base import ContentFile
 from django.core.management import BaseCommand
 
 from devices.models import Device, Event
-from devices.plugins import DS_K1T671MF
+from devices.plugins.hikvision import DS_K1T671MF
 from employees.models import Employee
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s")

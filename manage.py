@@ -6,7 +6,7 @@ sys.path.append('apps')
 
 
 def switch_cam():
-    from devices.plugins import OrderManager
+    from devices.plugins.hikvision import OrderManager
     OrderManager.switch_cam(False)
 
 

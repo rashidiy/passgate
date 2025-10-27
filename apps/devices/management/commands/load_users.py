@@ -6,7 +6,7 @@ from django.core.exceptions import ValidationError
 from django.core.files.base import ContentFile
 from django.core.management.base import BaseCommand
 
-from devices.plugins import DS_K1T671MF
+from devices.plugins.hikvision import DS_K1T671MF
 from employees.models import Employee, Card
 
 
