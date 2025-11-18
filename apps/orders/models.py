@@ -6,9 +6,9 @@ from employees.models import Employee
 
 class Order(models.Model):
     class FoodSizeChoice(models.TextChoices):
-        SMALL = "0.5", _('Small')
-        MEDIUM = "1", _('Medium')
-        BIG = "1.5", _('Large')
+        SMALL = "0.5", _('Complex 1')
+        MEDIUM = "1", _('Complex 2')
+        BIG = "1.5", _('DP')
 
     employee = models.ForeignKey(Employee, on_delete=models.SET_NULL, null=True, related_name='orders', verbose_name=_('Employee'))
     name = models.CharField(_('Name'), max_length=225)

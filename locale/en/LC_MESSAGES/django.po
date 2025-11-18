@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-10-27 00:28+0500\n"
+"POT-Creation-Date: 2025-11-18 13:04+0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -141,8 +141,9 @@ msgstr ""
 #: apps/devices/models/event_model.py:21
 #: apps/employees/models/access_point_model.py:19
 #: apps/employees/models/card_model.py:9
-#: apps/employees/models/employee_model.py:26 apps/orders/models.py:13
-#: utils/working_hours_export.py:335
+#: apps/employees/models/employee_model.py:26
+#: apps/employees/models/working_hours.py:13 apps/orders/models.py:13
+#: utils/working_hours_export.py:353
 msgid "Employee"
 msgstr ""
 
@@ -372,16 +373,16 @@ msgstr ""
 msgid "Export Selected Orders to Excel"
 msgstr ""
 
-#: apps/orders/models.py:9 templates/admin/index.html:172
-msgid "Small"
+#: apps/orders/models.py:9
+msgid "Complex 1"
 msgstr ""
 
-#: apps/orders/models.py:10 templates/admin/index.html:173
-msgid "Medium"
+#: apps/orders/models.py:10
+msgid "Complex 2"
 msgstr ""
 
-#: apps/orders/models.py:11 templates/admin/index.html:174
-msgid "Large"
+#: apps/orders/models.py:11
+msgid "DP"
 msgstr ""
 
 #: apps/orders/models.py:15
@@ -484,6 +485,18 @@ msgstr ""
 msgid "Dashboard"
 msgstr ""
 
+#: templates/admin/index.html:172
+msgid "Small"
+msgstr ""
+
+#: templates/admin/index.html:173
+msgid "Medium"
+msgstr ""
+
+#: templates/admin/index.html:174
+msgid "Large"
+msgstr ""
+
 #: templates/admin/index.html:210 templates/admin/index.html:225
 #: templates/admin/index.html:239 templates/admin/index.html:252
 msgid "More info"
@@ -566,46 +579,54 @@ msgstr ""
 msgid "Export to excel"
 msgstr ""
 
-#: utils/working_hours_export.py:28
+#: utils/working_hours_export.py:29
 msgid "Labor Leave"
 msgstr ""
 
-#: utils/working_hours_export.py:29
+#: utils/working_hours_export.py:30
 msgid "Unpaid Leave"
 msgstr ""
 
-#: utils/working_hours_export.py:30
+#: utils/working_hours_export.py:31
 msgid "Working Trip"
 msgstr ""
 
-#: utils/working_hours_export.py:335
+#: utils/working_hours_export.py:40
+msgid "ТО"
+msgstr ""
+
+#: utils/working_hours_export.py:41
+msgid "НО"
+msgstr ""
+
+#: utils/working_hours_export.py:353
 msgid "Employee ID"
 msgstr ""
 
-#: utils/working_hours_export.py:343
+#: utils/working_hours_export.py:361
 msgid "Day"
 msgstr ""
 
-#: utils/working_hours_export.py:343
+#: utils/working_hours_export.py:361
 msgid "Night"
 msgstr ""
 
-#: utils/working_hours_export.py:345
+#: utils/working_hours_export.py:363
 msgid "Exceptions"
 msgstr ""
 
-#: utils/working_hours_export.py:346
+#: utils/working_hours_export.py:364
 msgid "Day Total"
 msgstr ""
 
-#: utils/working_hours_export.py:346
+#: utils/working_hours_export.py:364
 msgid "Night Total"
 msgstr ""
 
-#: utils/working_hours_export.py:346
+#: utils/working_hours_export.py:364
 msgid "Total Hours"
 msgstr ""
 
-#: utils/working_hours_export.py:461
+#: utils/working_hours_export.py:480
 msgid "System"
 msgstr ""
