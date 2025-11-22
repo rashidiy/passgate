@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-11-18 13:04+0500\n"
+"POT-Creation-Date: 2025-11-22 17:19+0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Uzbek <uz@li.org>\n"
@@ -50,11 +50,11 @@ msgstr "%d qurilma(lar) ulanadi."
 
 #: apps/devices/models/device_model.py:14
 msgid "Enter"
-msgstr ""
+msgstr "Kirish"
 
 #: apps/devices/models/device_model.py:15
 msgid "Exit"
-msgstr ""
+msgstr "Chiqish"
 
 #: apps/devices/models/device_model.py:16 apps/orders/models.py:51
 msgid "Order"
@@ -153,7 +153,7 @@ msgstr "Xodim"
 msgid "Employee Number"
 msgstr "Xodim raqami"
 
-#: apps/devices/models/event_model.py:23
+#: apps/devices/models/event_model.py:23 utils/orders_export.py:35
 msgid "Employee Name"
 msgstr "Xodim ismi"
 
@@ -200,10 +200,8 @@ msgid "Wrong username or password."
 msgstr "Notoʻgʻri foydalanuvchi nomi yoki parol."
 
 #: apps/devices/plugins/hikvision/ds_k1t671mf.py:32
-#, fuzzy, python-format
-#| msgid "Model is not DS-K1T671MF."
 msgid "Model is not %s."
-msgstr "Model DS-K1T671MF emas."
+msgstr "Model %s emas."
 
 #: apps/devices/plugins/hikvision/order_manager.py:19
 msgid "There is no order device."
@@ -235,31 +233,27 @@ msgstr "%s koʻrish"
 
 #: apps/employees/admin/forms.py:8
 msgid "From"
-msgstr ""
+msgstr "Dan"
 
 #: apps/employees/admin/forms.py:11
-#, fuzzy
-#| msgid "Save and view"
 msgid "Start date and time"
-msgstr "Saqlash va ko‘rish"
+msgstr "Boshlanish sanasi va vaqti"
 
 #: apps/employees/admin/forms.py:14
 msgid "To"
-msgstr ""
+msgstr "Gacha"
 
 #: apps/employees/admin/forms.py:17
-#, fuzzy
-#| msgid "Save and view"
 msgid "End date and time"
-msgstr "Saqlash va ko‘rish"
+msgstr "Tugash sanasi va vaqti"
 
 #: apps/employees/admin/forms.py:20
 msgid "Include Employees Without Events"
-msgstr ""
+msgstr "Hodisalarsiz xodimlarni qo‘shish"
 
 #: apps/employees/admin/forms.py:38
 msgid "End must be after start."
-msgstr ""
+msgstr "Tugash sanasi boshlanish sanasidan keyin bo‘lishi kerak."
 
 #: apps/employees/admin/users_admin.py:42
 #: apps/employees/models/employee_model.py:22
@@ -268,7 +262,7 @@ msgstr "Rasm"
 
 #: apps/employees/admin/working_hours_admin.py:59
 msgid "Export Working Hours (Interval)"
-msgstr ""
+msgstr "Ish soatlarini eksport qilish (oraliq)"
 
 #: apps/employees/models/access_point_model.py:15
 msgid "Normal"
@@ -346,45 +340,59 @@ msgstr "Xodimlar"
 
 #: apps/employees/models/working_hours.py:9
 msgid "LaborLeave"
-msgstr ""
+msgstr "Mehnat ta’tili"
 
 #: apps/employees/models/working_hours.py:10
 msgid "UnpaidLeave"
-msgstr ""
+msgstr "To‘lovi yo‘q ta’til"
 
 #: apps/employees/models/working_hours.py:11
 msgid "WorkingTrip"
-msgstr ""
+msgstr "Xizmat safari"
 
 #: apps/employees/models/working_hours.py:14
-#, fuzzy
-#| msgid "Event Type"
 msgid "Exception Type"
-msgstr "Hodisa turi"
+msgstr "Istisno turi"
 
 #: apps/employees/models/working_hours.py:15
 msgid "Start Time"
-msgstr ""
+msgstr "Boshlanish vaqti"
 
 #: apps/employees/models/working_hours.py:16
-#, fuzzy
-#| msgid "Time:"
 msgid "End Time"
-msgstr "Vaqt:"
+msgstr "Tugash vaqti"
 
 #: apps/employees/models/working_hours.py:19
-#, fuzzy
-#| msgid "Action"
 msgid "Exception"
-msgstr "Harakat"
+msgstr "Istisno"
 
 #: apps/employees/models/working_hours.py:20
 msgid "Working Hours"
-msgstr ""
+msgstr "Ish soatlari"
 
-#: apps/orders/admin.py:57
-msgid "Export Selected Orders to Excel"
-msgstr "Tanlangan buyurtmalarni Excelga eksport qilish"
+#: apps/orders/admin.py:99 templates/custom_admin/export_orders_form.html:90
+msgid "Export Orders (Interval)"
+msgstr "Buyurtmalarni eksport qilish (oraliq)"
+
+#: apps/orders/forms.py:23
+msgid "Start"
+msgstr "Boshlanishi"
+
+#: apps/orders/forms.py:25
+msgid "Select the start of the orders interval."
+msgstr "Buyurtmalar oraliqining boshlanishini tanlang."
+
+#: apps/orders/forms.py:29
+msgid "End"
+msgstr "Tugashi"
+
+#: apps/orders/forms.py:31
+msgid "Select the end of the orders interval."
+msgstr "Buyurtmalar oraliqining tugashini tanlang."
+
+#: apps/orders/forms.py:41
+msgid "The start date cannot be later than the end date."
+msgstr "Boshlanish sanasi tugash sanasidan keyin bo‘lishi mumkin emas."
 
 #: apps/orders/models.py:9
 msgid "Complex 1"
@@ -398,15 +406,15 @@ msgstr "Kompleks 2"
 msgid "DP"
 msgstr "DP"
 
-#: apps/orders/models.py:15
+#: apps/orders/models.py:15 utils/orders_export.py:36
 msgid "Food size"
 msgstr "Taom hajmi"
 
-#: apps/orders/models.py:16
+#: apps/orders/models.py:16 utils/orders_export.py:37
 msgid "Is cancelled"
 msgstr "Bekor qilingan"
 
-#: apps/orders/models.py:17
+#: apps/orders/models.py:17 utils/orders_export.py:33
 msgid "Created at"
 msgstr "Yaratilgan vaqt"
 
@@ -466,7 +474,7 @@ msgstr "Dekabr"
 msgid "Year"
 msgstr "Yil"
 
-#: apps/orders/models.py:52
+#: apps/orders/models.py:52 utils/orders_export.py:28
 msgid "Orders"
 msgstr "Buyurtmalar"
 
@@ -574,39 +582,66 @@ msgstr ""
 
 #: templates/custom_admin/export_interval_form.html:30
 msgid "Export Working Hours"
-msgstr ""
+msgstr "Ish soatlarini eksport qilish"
 
 #: templates/custom_admin/export_interval_form.html:31
 msgid ""
 "Use the admin calendar and clock widgets or Today/Now buttons to pick the "
 "interval."
-msgstr ""
+msgstr "Oraliqni tanlash uchun admin kalendar va soat vidjetlaridan yoki “Bugun” / “Hozir” tugmalaridan foydalaning."
 
 #: templates/custom_admin/export_interval_form.html:78
+#: templates/custom_admin/export_orders_form.html:138
 msgid "Export"
-msgstr ""
+msgstr "Eksport qilish"
 
 #: templates/custom_admin/export_interval_form.html:79
+#: templates/custom_admin/export_orders_form.html:139
 msgid "Cancel"
-msgstr ""
+msgstr "Bekor qilish"
 
+#: templates/custom_admin/export_orders_form.html:92
+msgid "Back to Orders"
+msgstr "Buyurtmalarga qaytish"
+
+#: templates/custom_admin/export_orders_form.html:96
+msgid ""
+"Choose an interval and export orders. Use the admin calendar/time widgets or "
+"the Today/Now buttons."
+msgstr "Oraliqni tanlang va buyurtmalarni eksport qiling. Oraliqni tanlash uchun admin kalendar/vaqt vidjetlaridan yoki ‘Bugun’/‘Hozir’ tugmalaridan foydalaning."
+
+#: templates/custom_admin/orders.html:44
 #: templates/custom_admin/working_hours.html:7
-#, fuzzy
-#| msgid "Export Selected Orders to Excel"
 msgid "Export to excel"
-msgstr "Tanlangan buyurtmalarni Excelga eksport qilish"
+msgstr "Excel’ga eksport qilish"
+
+#: utils/orders_export.py:32
+msgid "ID"
+msgstr "ID"
+
+#: utils/orders_export.py:34
+msgid "Employee (id)"
+msgstr "Xodim (ID)"
+
+#: utils/orders_export.py:52
+msgid "Yes"
+msgstr "Ha"
+
+#: utils/orders_export.py:52
+msgid "No"
+msgstr "Yo'q"
 
 #: utils/working_hours_export.py:29
 msgid "Labor Leave"
-msgstr ""
+msgstr "Mehnat ta’tili"
 
 #: utils/working_hours_export.py:30
 msgid "Unpaid Leave"
-msgstr ""
+msgstr "To‘lovi yo‘q ta’til"
 
 #: utils/working_hours_export.py:31
 msgid "Working Trip"
-msgstr ""
+msgstr "Xizmat safari"
 
 #: utils/working_hours_export.py:40
 msgid "ТО"
@@ -617,42 +652,36 @@ msgid "НО"
 msgstr ""
 
 #: utils/working_hours_export.py:353
-#, fuzzy
-#| msgid "Employee"
 msgid "Employee ID"
-msgstr "Xodim"
+msgstr "Xodim ID"
 
 #: utils/working_hours_export.py:361
-#, fuzzy
-#| msgid "May"
 msgid "Day"
-msgstr "May"
+msgstr "Kun"
 
 #: utils/working_hours_export.py:361
 msgid "Night"
-msgstr ""
+msgstr "Tun"
 
 #: utils/working_hours_export.py:363
-#, fuzzy
-#| msgid "Actions"
 msgid "Exceptions"
-msgstr "Harakatlar"
+msgstr "Istisnolar"
 
 #: utils/working_hours_export.py:364
 msgid "Day Total"
-msgstr ""
+msgstr "Kun bo‘yicha jami"
 
 #: utils/working_hours_export.py:364
 msgid "Night Total"
-msgstr ""
+msgstr "Tun bo‘yicha jami"
 
 #: utils/working_hours_export.py:364
 msgid "Total Hours"
-msgstr ""
+msgstr "Jami soatlar"
 
 #: utils/working_hours_export.py:480
 msgid "System"
-msgstr ""
+msgstr "Tizim"
 
 #~ msgid "Enter / Exit"
 #~ msgstr "Kirish / Chiqish"
@@ -750,12 +779,6 @@ msgstr ""
 
 #~ msgid "All"
 #~ msgstr "Barchasi"
-
-#~ msgid "Yes"
-#~ msgstr "Ha"
-
-#~ msgid "No"
-#~ msgstr "Yo'q"
 
 #~ msgid "Any date"
 #~ msgstr "Istalgan kun"
@@ -860,9 +883,6 @@ msgstr ""
 
 #~ msgid "Added."
 #~ msgstr "Qo'shildi."
-
-#~ msgid "and"
-#~ msgstr "va"
 
 #, python-brace-format
 #~ msgid "Changed {fields} for {name} “{object}”."

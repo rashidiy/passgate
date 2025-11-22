@@ -1,10 +1,13 @@
-import openpyxl
+from dateutil.relativedelta import relativedelta
 from django.contrib import admin
-from django.http import HttpResponse
-from django.urls import reverse
+from django.template.response import TemplateResponse
+from django.urls import reverse, path
+from django.utils import timezone as djtz
 from django.utils.html import format_html
 from django.utils.translation import gettext_lazy as _
 
+from utils.orders_export import _ensure_local_aware, export_orders_to_excel
+from .forms import ExportOrdersIntervalForm
 from .models import Order
 
 
@@ -54,25 +57,51 @@ class OrderAdmin(admin.ModelAdmin):
             return False
         return super().has_delete_permission(request, obj)
 
-    @admin.action(description=_("Export Selected Orders to Excel"))
-    def export_to_excel(self, model_admin, request, queryset):
-        wb = openpyxl.Workbook()
-        ws = wb.active
-        ws.title = "Orders"
-        headers = ['Employee', 'Name', 'Food Size', 'Time']
-        ws.append(headers)
-
-        for order in queryset:
-            employee = order.employee
-            time_value = order.time.strftime('%Y-%m-%d %H:%M:%S') if order.time else ''
-            ws.append([str(employee), order.name, order.food_size, time_value])
-
-        response = HttpResponse(content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
-        response['Content-Disposition'] = 'attachment; filename=orders.xlsx'
-        wb.save(response)
-        return response
-
     def get_readonly_fields(self, request, obj=None):
         if request.user.has_perm('orders.can_cancel_orders'):
             return 'created_at', 'updated_at'
         return 'created_at', 'updated_at', 'is_cancelled'
+
+    def get_urls(self):
+        return [
+            path(
+                'export_to_excel/',
+                self.admin_site.admin_view(self.export_to_excel_view),
+                name='orders_export_to_excel',
+            ),
+        ] + super().get_urls()
+
+    def export_to_excel_view(self, request):
+        if request.method == "POST":
+            form = ExportOrdersIntervalForm(request.POST)
+            if form.is_valid():
+                start = _ensure_local_aware(form.cleaned_data["start"])
+                end = _ensure_local_aware(form.cleaned_data["end"])
+                return export_orders_to_excel(
+                    start_dt=start,
+                    end_dt=end,
+                )
+        else:
+            now_local = djtz.localtime(djtz.now())
+            this_month_start = now_local.replace(day=1, hour=0, minute=0, second=0, microsecond=0)
+            this_month_end = (this_month_start + relativedelta(months=1, days=-1)).replace(
+                hour=23, minute=59, second=59, microsecond=999999
+            )
+
+            form = ExportOrdersIntervalForm(initial={
+                "start": this_month_start,
+                "end": this_month_end,
+                "include_all_employees": False,
+            })
+
+        context = dict(
+            self.admin_site.each_context(request),
+            title=_("Export Orders (Interval)"),
+            opts=self.model._meta,
+            form=form,
+        )
+        return TemplateResponse(
+            request,
+            "custom_admin/export_orders_form.html",
+            context
+        )

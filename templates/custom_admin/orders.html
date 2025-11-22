@@ -36,6 +36,20 @@
     </style>
     {{ block.super }}
 {% endblock %}
+
+{% block page_actions %}
+    <div class="col-12 col-md-auto d-flex align-items-center justify-content-end page-actions">
+        {% block object-tools %}
+        <a href="export_to_excel/" class="btn btn-primary float-right">
+            <i class="fa fa-file-excel"></i> &nbsp; {% trans 'Export to excel' %}
+        </a>
+            {% block object-tools-items %}
+                {% change_list_object_tools %}
+            {% endblock %}
+        {% endblock %}
+    </div>
+{% endblock %}
+
 {% block result_list %}
     <div class="change-list-actions row pb-3">
         <div class="col-12">

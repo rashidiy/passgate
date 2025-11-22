@@ -1,0 +1,143 @@
+{% extends "admin/base_site.html" %}
+{% load i18n static %}
+
+{# Export Orders (Interval) - matches the same visual style as your working-hours export #}
+
+{% block extrahead %}
+    {{ block.super }}
+    <script src="{% url 'admin:jsi18n' %}"></script>
+    <script src="{% static 'admin/js/core.js' %}"></script>
+    {{ form.media }}  {# ensures admin calendar/clock JS is included once #}
+{% endblock %}
+
+{% block extrastyle %}
+    {{ block.super }}
+    <link rel="stylesheet" href="{% static 'admin/css/forms.css' %}">
+    <style>
+        .export-card {
+            background: #fff;
+            border: 1px solid #e5e7eb;
+            border-radius: 12px;
+            padding: 24px;
+            box-shadow: 0 2px 12px rgba(0, 0, 0, .06);
+            max-width: 960px;
+        }
+
+        .export-grid {
+            display: grid;
+            grid-template-columns:1fr 1fr;
+            gap: 24px;
+            align-items: start;
+        }
+
+        @media (max-width: 900px) {
+            .export-grid {
+                grid-template-columns:1fr;
+            }
+        }
+
+        .fieldset {
+            border: 1px dashed #e5e7eb;
+            border-radius: 10px;
+            padding: 16px;
+        }
+
+        .legend {
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .field {
+            margin-bottom: 12px;
+        }
+
+        .helptext {
+            color: #6b7280;
+            font-size: 12px;
+            display: block;
+            margin-top: 2px;
+        }
+
+        .submit-row {
+            margin-top: 20px;
+            display: flex;
+            gap: 12px;
+            align-items: center;
+        }
+
+        .errorlist {
+            margin: 6px 0 0;
+            color: #b91c1c;
+        }
+
+        .toolbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+
+        .small-muted {
+            font-size: 13px;
+            color: #6b7280;
+        }
+    </style>
+{% endblock %}
+
+{% block content %}
+    <div class="col-12">
+        <div class="toolbar">
+            <h1>{% trans "Export Orders (Interval)" %}</h1>
+            <div>
+                <a href="../" class="btn btn-outline-secondary">{% trans "Back to Orders" %}</a>
+            </div>
+        </div>
+
+        <p class="small-muted">{% trans "Choose an interval and export orders. Use the admin calendar/time widgets or the Today/Now buttons." %}</p>
+        <hr>
+    </div>
+
+    <div class="export-card m-auto">
+        <form method="post" novalidate>
+            {% csrf_token %}
+
+            {% if form.non_field_errors %}
+                <ul class="errorlist nonfield">
+                    {% for e in form.non_field_errors %}
+                        <li>{{ e }}</li>{% endfor %}
+                </ul>
+            {% endif %}
+
+            <div class="export-grid">
+                <fieldset class="fieldset">
+                    <div class="legend">{{ form.start.label }}</div>
+                    <div class="field">
+                        {{ form.start }}
+                        {% if form.start.errors %}
+                            <ul class="errorlist">{% for e in form.start.errors %}
+                                <li>{{ e }}</li>{% endfor %}</ul>
+                        {% endif %}
+                        {% if form.start.help_text %}<span class="helptext">{{ form.start.help_text }}</span>{% endif %}
+                    </div>
+                </fieldset>
+
+                <fieldset class="fieldset">
+                    <div class="legend">{{ form.end.label }}</div>
+                    <div class="field">
+                        {{ form.end }}
+                        {% if form.end.errors %}
+                            <ul class="errorlist">{% for e in form.end.errors %}
+                                <li>{{ e }}</li>{% endfor %}</ul>
+                        {% endif %}
+                        {% if form.end.help_text %}<span class="helptext">{{ form.end.help_text }}</span>{% endif %}
+                    </div>
+                </fieldset>
+            </div>
+
+            <div class="submit-row">
+                <button type="submit" class="btn btn-primary">{% trans "Export" %}</button>
+                <a href="../" class="btn btn-outline-secondary">{% trans "Cancel" %}</a>
+            </div>
+        </form>
+    </div>
+{% endblock %}

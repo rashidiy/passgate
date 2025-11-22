@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-11-18 13:04+0500\n"
+"POT-Creation-Date: 2025-11-22 17:19+0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -151,7 +151,7 @@ msgstr ""
 msgid "Employee Number"
 msgstr ""
 
-#: apps/devices/models/event_model.py:23
+#: apps/devices/models/event_model.py:23 utils/orders_export.py:35
 msgid "Employee Name"
 msgstr ""
 
@@ -369,8 +369,28 @@ msgstr ""
 msgid "Working Hours"
 msgstr ""
 
-#: apps/orders/admin.py:57
-msgid "Export Selected Orders to Excel"
+#: apps/orders/admin.py:99 templates/custom_admin/export_orders_form.html:90
+msgid "Export Orders (Interval)"
+msgstr ""
+
+#: apps/orders/forms.py:23
+msgid "Start"
+msgstr ""
+
+#: apps/orders/forms.py:25
+msgid "Select the start of the orders interval."
+msgstr ""
+
+#: apps/orders/forms.py:29
+msgid "End"
+msgstr ""
+
+#: apps/orders/forms.py:31
+msgid "Select the end of the orders interval."
+msgstr ""
+
+#: apps/orders/forms.py:41
+msgid "The start date cannot be later than the end date."
 msgstr ""
 
 #: apps/orders/models.py:9
@@ -385,15 +405,15 @@ msgstr ""
 msgid "DP"
 msgstr ""
 
-#: apps/orders/models.py:15
+#: apps/orders/models.py:15 utils/orders_export.py:36
 msgid "Food size"
 msgstr ""
 
-#: apps/orders/models.py:16
+#: apps/orders/models.py:16 utils/orders_export.py:37
 msgid "Is cancelled"
 msgstr ""
 
-#: apps/orders/models.py:17
+#: apps/orders/models.py:17 utils/orders_export.py:33
 msgid "Created at"
 msgstr ""
 
@@ -453,7 +473,7 @@ msgstr ""
 msgid "Year"
 msgstr ""
 
-#: apps/orders/models.py:52
+#: apps/orders/models.py:52 utils/orders_export.py:28
 msgid "Orders"
 msgstr ""
 
@@ -568,15 +588,44 @@ msgid ""
 msgstr ""
 
 #: templates/custom_admin/export_interval_form.html:78
+#: templates/custom_admin/export_orders_form.html:138
 msgid "Export"
 msgstr ""
 
 #: templates/custom_admin/export_interval_form.html:79
+#: templates/custom_admin/export_orders_form.html:139
 msgid "Cancel"
 msgstr ""
 
+#: templates/custom_admin/export_orders_form.html:92
+msgid "Back to Orders"
+msgstr ""
+
+#: templates/custom_admin/export_orders_form.html:96
+msgid ""
+"Choose an interval and export orders. Use the admin calendar/time widgets or "
+"the Today/Now buttons."
+msgstr ""
+
+#: templates/custom_admin/orders.html:44
 #: templates/custom_admin/working_hours.html:7
 msgid "Export to excel"
+msgstr ""
+
+#: utils/orders_export.py:32
+msgid "ID"
+msgstr ""
+
+#: utils/orders_export.py:34
+msgid "Employee (id)"
+msgstr ""
+
+#: utils/orders_export.py:52
+msgid "Yes"
+msgstr ""
+
+#: utils/orders_export.py:52
+msgid "No"
 msgstr ""
 
 #: utils/working_hours_export.py:29
