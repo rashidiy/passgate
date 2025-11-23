@@ -33,16 +33,35 @@
         .warning a, .success a {
             color: white !important;
         }
+
+        #employee-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.7);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+        }
+
+        #employee-overlay img {
+            max-width: 500px;
+            width: 100%;
+            height: auto;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.8);
+            border-radius: 4px;
+        }
     </style>
     {{ block.super }}
 {% endblock %}
 
+
 {% block page_actions %}
     <div class="col-12 col-md-auto d-flex align-items-center justify-content-end page-actions">
         {% block object-tools %}
-        <a href="export_to_excel/" class="btn btn-primary float-right">
-            <i class="fa fa-file-excel"></i> &nbsp; {% trans 'Export to excel' %}
-        </a>
+            <a href="export_to_excel/" class="btn btn-primary float-right">
+                <i class="fa fa-file-excel"></i> &nbsp; {% trans 'Export to excel' %}
+            </a>
             {% block object-tools-items %}
                 {% change_list_object_tools %}
             {% endblock %}
@@ -62,6 +81,10 @@
         {% result_list cl %}
     </div>
 
+    <div id="employee-overlay">
+        <img id="employee-overlay-img" src="" alt="">
+    </div>
+
     <script>
         document.addEventListener("DOMContentLoaded", function () {
             let lastTimestamp = new Date().toISOString();
@@ -72,7 +95,6 @@
                     .then(data => {
                         if (data.success) {
                             lastTimestamp = new Date(new Date(data.timestamp).getTime() + 61).toISOString();
-                            ;
                             updateTable(data.result);
                         } else {
                             console.error("Error:", data.message);
@@ -81,27 +103,53 @@
                     .catch(error => console.error("Request failed:", error));
             }
 
+            // NEW: build employee image cell HTML
+            function getEmployeeImageCell(order) {
+                if (!order.employee_image_url) {
+                    return '-';
+                }
+                return `
+                    <div class="employee-image-cell" data-image-url="${order.employee_image_url}">
+                        <img src="${order.employee_image_url}" alt="${order.employee_name}"
+                             style="max-width:60px;max-height:60px;border-radius:4px;">
+                        <i class="fas fa-eye employee-eye" style="cursor:pointer;margin-left:8px;"></i>
+                    </div>
+                `;
+            }
+
             function updateTable(orders) {
                 let tableBody = document.querySelector("#result_list tbody");
 
                 orders.forEach(order => {
                     let checkbox = document.querySelector(`input[type="checkbox"][value="${order.id}"]`);
                     let existingRow = checkbox ? checkbox.closest("tr") : null;
-                    console.log(existingRow);
 
                     if (order.is_created) {
                         let newRow = document.createElement("tr");
-                        newRow.classList.add('even')
-                        newRow.role = 'row'
+                        newRow.classList.add('even');
+                        newRow.role = 'row';
                         newRow.innerHTML = `
-                            <td class="action-checkbox"><input type="checkbox" name="_selected_action" value="${order.id}" class="action-select" aria-label="Select this object for an action - Order object (${order.id})"></td>
-                            <th class="field-id"><a href="/uz/orders/order/${order.id}/change/">${order.id}</a></th>
-                            <td class="field-employee_link"><a href="/uz/employees/employee/${order.employee_id}/change/">${order.employee_name}</a></td>
+                            <td class="action-checkbox">
+                                <input type="checkbox" name="_selected_action" value="${order.id}"
+                                       class="action-select"
+                                       aria-label="Select this object for an action - Order object (${order.id})">
+                            </td>
+                            <th class="field-id">
+                                <a href="/uz/orders/order/${order.id}/change/">${order.id}</a>
+                            </th>
+                            <td class="field-employee_link">
+                                <a href="/uz/employees/employee/${order.employee_id}/change/">${order.employee_name}</a>
+                            </td>
                             <td class="field-name">${order.employee_name}</td>
                             <td class="field-food_size">${order.food_size}</td>
-                            <td class="field-is_cancelled"><img src="/static/admin/img/icon-${order.is_cancelled ? 'yes' : 'no'}.svg" alt="${order.is_cancelled}"></td>
+                            <td class="field-is_cancelled">
+                                <img src="/static/admin/img/icon-${order.is_cancelled ? 'yes' : 'no'}.svg"
+                                     alt="${order.is_cancelled}">
+                            </td>
+                            <td class="field-employee_image_column">
+                                ${getEmployeeImageCell(order)}
+                            </td>
                             <td class="field-created_at nowrap">${order.created_at}</td>
-                            <td class="field-updated_at nowrap">${order.updated_at}</td>
                         `;
                         tableBody.prepend(newRow);
                         newRow.classList.add('success');
@@ -109,19 +157,56 @@
                     } else if (existingRow) {
                         existingRow.classList.add('warning');
                         existingRow.innerHTML = `
-                            <td class="action-checkbox"><input type="checkbox" name="_selected_action" value="${order.id}" class="action-select" aria-label="Select this object for an action - Order object (${order.id})"></td>
-                            <th class="field-id"><a href="/uz/orders/order/${order.id}/change/">${order.id}</a></th>
-                            <td class="field-employee_link"><a href="/uz/employees/employee/${order.employee_id}/change/">${order.employee_name}</a></td>
+                            <td class="action-checkbox">
+                                <input type="checkbox" name="_selected_action" value="${order.id}"
+                                       class="action-select"
+                                       aria-label="Select this object for an action - Order object (${order.id})">
+                            </td>
+                            <th class="field-id">
+                                <a href="/uz/orders/order/${order.id}/change/">${order.id}</a>
+                            </th>
+                            <td class="field-employee_link">
+                                <a href="/uz/employees/employee/${order.employee_id}/change/">${order.employee_name}</a>
+                            </td>
                             <td class="field-name">${order.employee_name}</td>
                             <td class="field-food_size">${order.food_size}</td>
-                            <td class="field-is_cancelled"><img src="/static/admin/img/icon-${order.is_cancelled ? 'yes' : 'no'}.svg" alt="${order.is_cancelled}"></td>
+                            <td class="field-is_cancelled">
+                                <img src="/static/admin/img/icon-${order.is_cancelled ? 'yes' : 'no'}.svg"
+                                     alt="${order.is_cancelled}">
+                            </td>
+                            <td class="field-employee_image_column">
+                                ${getEmployeeImageCell(order)}
+                            </td>
                             <td class="field-created_at nowrap">${order.created_at}</td>
-                            <td class="field-updated_at nowrap">${order.updated_at}</td>
                         `;
                         setTimeout(() => existingRow.classList.remove('warning'), 100000);
                     }
                 });
             }
+
+            // NEW: overlay logic
+            const overlay = document.getElementById('employee-overlay');
+            const overlayImg = document.getElementById('employee-overlay-img');
+
+            // Event delegation for dynamically created rows
+            document.addEventListener('click', function (e) {
+                const eye = e.target.closest('.employee-eye');
+                if (eye) {
+                    const container = eye.closest('.employee-image-cell');
+                    const url = container ? container.getAttribute('data-image-url') : null;
+                    if (url) {
+                        overlayImg.src = url;
+                        overlay.style.display = 'flex';
+                    }
+                    return;
+                }
+
+                // close when clicking on transparent black area
+                if (e.target === overlay) {
+                    overlay.style.display = 'none';
+                    overlayImg.src = '';
+                }
+            });
 
             setInterval(fetchOrders, 1000);
         });

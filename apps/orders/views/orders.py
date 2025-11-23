@@ -42,6 +42,9 @@ class OrderList(APIView):
                 "is_cancelled": order.is_cancelled,
                 "created_at": Order.format_time(order.created_at),
                 "updated_at": Order.format_time(order.updated_at),
+                "employee_image_url": (
+                    order.employee.image.url if order.employee and order.employee.image else None
+                ),
                 "is_created": (order.updated_at - order.created_at).total_seconds() < 5
             })
         return Response({

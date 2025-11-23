@@ -13,20 +13,36 @@ from .models import Order
 
 @admin.register(Order)
 class OrderAdmin(admin.ModelAdmin):
-    list_display = 'id', 'employee_link', 'name', 'food_size', 'is_cancelled', 'created_at', 'updated_at'
+    list_display = (
+        'id', 'employee_link', 'name', 'food_size', 'is_cancelled', 'employee_image_column', 'created_at',
+    )
     search_fields = 'employee', 'name', 'food_size'
     change_list_template = 'custom_admin/orders.html'
     actions = ("export_to_excel",)
     ordering = ('-created_at',)
 
+    @admin.display(ordering='employee', description=_('Employee'))
     def employee_link(self, obj):
         if obj.employee_id:
             url = reverse("admin:employees_employee_change", args=[obj.employee_id])
             return format_html('<a href="{}">{}</a>', url, obj.employee)
         return "-"
 
-    employee_link.admin_order_field = 'employee'  # enables ordering by employee
-    employee_link.short_description = 'Employee'
+    @admin.display(description=_('Photo'))
+    def employee_image_column(self, obj):
+        if obj.employee and obj.employee.image:
+            return format_html(
+                '''
+                <div class="employee-image-cell" data-image-url="{url}">
+                    <img src="{url}" alt="{name}"
+                         style="max-width:60px;max-height:60px;border-radius:4px;">
+                    <i class="fas fa-eye employee-eye" style="cursor:pointer;margin-left:8px;"></i>
+                </div>
+                ''',
+                url=obj.employee.image.url,
+                name=obj.employee.name,
+            )
+        return "-"
 
     def _order_device_exists(self):  # noqa
         from devices.models import Device
