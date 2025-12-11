@@ -26,6 +26,12 @@ class OrderFoodApi(APIView):
             return face_result
 
         if face_result:
+            last_order = Order.objects.order_by('-created_at').first()
+            if last_order.employee_id == face_result and last_order.food_size == food_size:
+                print('Duplication of orders')
+                success_message = 'Buyurtma qabul qilindi!'
+                return Response({'success': True, 'message': success_message})
+
             try:
                 employee = Employee.objects.get(id=face_result)
             except Employee.DoesNotExist:
