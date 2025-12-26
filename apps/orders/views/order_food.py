@@ -1,3 +1,6 @@
+from datetime import timedelta
+
+from django.utils import timezone
 from drf_yasg.utils import swagger_auto_schema
 from rest_framework import status
 from rest_framework.permissions import AllowAny
@@ -26,11 +29,16 @@ class OrderFoodApi(APIView):
             return face_result
 
         if face_result:
-            # last_order = Order.objects.order_by('-created_at').first()
-            # if last_order and last_order.employee_id == int(face_result) and last_order.food_size == food_size:
-            #     print('Duplication of orders')
-            #     success_message = 'Buyurtma qabul qilindi!'
-            #     return Response({'success': True, 'message': success_message})
+            last_order = Order.objects.filter(employee_id=face_result, food_size=food_size).first()
+
+            if last_order and (now_ := timezone.now()) - last_order.created_at < timedelta(hours=8):
+                distance = ((last_order.created_at + timedelta(hours=8)) - now_).seconds
+                hours = distance // 3600
+                distance %= 3600
+                minutes = distance // 60
+                distance %= 60
+                success_message = f'{hours} soat {minutes} minut dan keyin qayta urining.'
+                return Response({'success': False, 'message': success_message})
 
             try:
                 employee = Employee.objects.get(id=face_result)

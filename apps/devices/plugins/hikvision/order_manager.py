@@ -1,6 +1,5 @@
 import time
 from datetime import datetime, timedelta, timezone
-from pprint import pprint
 from time import sleep
 
 from django.core.exceptions import ValidationError
@@ -128,7 +127,6 @@ class OrderManager:
 
                 json_response = response.json()
                 info_list = json_response.get("AcsEvent").get("InfoList")
-                pprint(info_list)
                 if info_list:
                     cls.last_search_date = info_list[0].get("time")
                     i = 0
