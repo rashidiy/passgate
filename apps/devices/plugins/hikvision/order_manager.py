@@ -104,7 +104,7 @@ class OrderManager:
         device = cls.get_device()
         try:
             response = request(
-                'POST', cls.get_url(device, path), params=params, json=data, auth=cls.authenticate(device), timeout=5
+                'POST', cls.get_url(device, path), params=params, json=data, auth=cls.authenticate(device), timeout=30
             )
         except ConnectTimeout:
             raise ValidationError(_('Unable to connect to device with given IP and Port'))
@@ -142,13 +142,13 @@ class OrderManager:
                     return 'timeout'
 
                 if total_matches != cls.last_search_total:
-                    cls.last_search_total = total_matches - 1
+                    cls.last_search_total = total_matches
                     json_response = response.json()
                     info_list = json_response.get("AcsEvent").get("InfoList")
                     if info_list:
-                        i = 1
+                        i = 0
                         while i < len(info_list):
-                            info = info_list[-i]
+                            info = info_list[i]
                             minor = info.get("minor")
                             if minor in [76, 9]:
                                 return 'unknown'
