@@ -1,3 +1,5 @@
+from time import sleep
+
 from rest_framework.response import Response
 
 from devices.plugins.hikvision import OrderManager

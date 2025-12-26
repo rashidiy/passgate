@@ -1,14 +1,16 @@
 import time
+from datetime import datetime, timedelta, timezone
+from pprint import pprint
 from time import sleep
 
 from django.core.exceptions import ValidationError
 from django.utils.translation import gettext_lazy as _
-from requests import Response, auth, ConnectTimeout, request
+from requests import auth, ConnectTimeout, request
 from rest_framework import exceptions as rex
 
 
 class OrderManager:
-    last_search_total = 0
+    last_search_date = datetime.now(timezone(timedelta(hours=5))).isoformat(timespec='seconds')
 
     @classmethod
     def get_device(cls):
@@ -20,7 +22,8 @@ class OrderManager:
 
     @classmethod
     def get_url(cls, device, path):
-        device = cls.get_device()
+        if not device:
+            device = cls.get_device()
         return 'http://{}:{}{}'.format(device.ip_address, device.port, path)
 
     @classmethod
@@ -34,34 +37,29 @@ class OrderManager:
         data = {
             "CardReaderCfg": {
                 "enable": onoff,
+                "cardReaderName": "",
                 "okLedPolarity": "anode",
                 "errorLedPolarity": "anode",
-                "swipeInterval": 0,
+                "swipeInterval": 6,
                 "enableFailAlarm": False,
                 "maxReadCardFailNum": 5,
                 "pressTimeout": 10,
                 "enableTamperCheck": True,
                 "offlineCheckTime": 0,
-                "fingerPrintCheckLevel": 5,
                 "faceMatchThresholdN": 90,
                 "faceRecogizeTimeOut": 3,
-                "faceRecogizeInterval": 2,
-                "cardReaderFunction": [
-                    "fingerPrint",
-                    "face"
-                ],
-                "cardReaderDescription": "DS-K1T343EFX",
+                "faceRecogizeInterval": 4,
+                "cardReaderFunction": ["face", "card"],
+                "cardReaderDescription": "DS-K1T343MWX",
                 "livingBodyDetect": True,
                 "faceMatchThreshold1": 90,
                 "liveDetLevelSet": "general",
                 "liveDetAntiAttackCntLimit": 100,
                 "enableLiveDetAntiAttack": True,
-                "fingerPrintCapacity": 3000,
-                "fingerPrintNum": 1,
-                "defaultVerifyMode": "faceOrFpOrCardOrPw",
+                "defaultVerifyMode": "cardOrfaceOrPw",
                 "faceRecogizeEnable": 1,
                 "enableReverseCardNo": False,
-                "independSwipeIntervals": 0,
+                "independSwipeIntervals": 6,
                 "maskFaceMatchThresholdN": 88,
                 "maskFaceMatchThreshold1": 88
             }
@@ -84,21 +82,21 @@ class OrderManager:
                 return response
         response.raise_for_status()
 
-    @staticmethod
-    def get_total_matches(response: Response) -> int:
-        return response.json().get("AcsEvent").get("totalMatches")
-
     @classmethod
-    def send_acs_request(cls, offset: int = 0, limit: int = 24):
+    def send_acs_request(cls, limit: int = 24):
         path = '/ISAPI/AccessControl/AcsEvent'
         params = {'format': 'json'}
         data = {
             "AcsEventCond": {
                 "searchID": "0",
-                "searchResultPosition": offset,
+                "startTime": (
+                        datetime.fromisoformat(cls.last_search_date) + timedelta(seconds=1)
+                ).isoformat(timespec="seconds"),
+                "searchResultPosition": 0,
                 "maxResults": limit,
                 "major": 5,
-                "minor": 0
+                "minor": 0,
+                "timeReverseOrder": True,
             }
         }
         device = cls.get_device()
@@ -120,41 +118,28 @@ class OrderManager:
         raise response.raise_for_status()
 
     @classmethod
-    def get_last_search_total(cls) -> int:
-        return cls.get_total_matches(cls.send_acs_request())
-
-    @staticmethod
-    def validate_minor(event_list):
-        for event in event_list:
-            if event.get('minor') in [75, 76, 1, 9]:
-                return True
-        return False
-
-    @classmethod
     def check_face(cls, timeout=10):
         start_time = time.time()
         try:
             while True:
-                response = cls.send_acs_request(cls.last_search_total)
-                total_matches = cls.get_total_matches(response)
-
+                response = cls.send_acs_request()
                 if time.time() - start_time > timeout:
                     return 'timeout'
 
-                if total_matches != cls.last_search_total:
-                    cls.last_search_total = total_matches
-                    json_response = response.json()
-                    info_list = json_response.get("AcsEvent").get("InfoList")
-                    if info_list:
-                        i = 0
-                        while i < len(info_list):
-                            info = info_list[i]
-                            minor = info.get("minor")
-                            if minor in [76, 9]:
-                                return 'unknown'
-                            if minor in [75, 1]:
-                                return info.get("employeeNoString")
-                            i += 1
+                json_response = response.json()
+                info_list = json_response.get("AcsEvent").get("InfoList")
+                pprint(info_list)
+                if info_list:
+                    cls.last_search_date = info_list[0].get("time")
+                    i = 0
+                    while i < len(info_list):
+                        info = info_list[i]
+                        minor = info.get("minor")
+                        if minor in [76, 9]:
+                            return 'unknown'
+                        if minor in [75, 1]:
+                            return info.get("employeeNoString")
+                        i += 1
                 sleep(1)
         except Exception:
             return 'error'
