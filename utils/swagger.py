@@ -5,9 +5,9 @@ from rest_framework import permissions
 
 schema_view = get_schema_view(
     openapi.Info(
-        title="SKUD API",
+        title="Passgate API",
         default_version='v1',
-        description="Documentation for integrated usage of skud",
+        description="Documentation for integrated usage of Passgate",
         terms_of_service='None',
         contact=openapi.Contact(name='Telegram', url='https://t.me/samyy_soft_support'),
         license=openapi.License(name='Copyright "OOO Samyy Soft"'),

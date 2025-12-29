@@ -1,8 +1,8 @@
-# skud
+# passgate
 
-Physical access control management system — tracks who enters which zone, enforces time-based access rules, integrates directly with Hikvision SKUD hardware, and logs every movement.
+Physical access control management system — tracks who enters which zone, enforces time-based access rules, integrates directly with Hikvision hardware, and logs every movement.
 
-Built for enterprise deployments where security staff manage dozens of devices and hundreds of employees. The HR team operates through Django admin; SKUD readers communicate through a DRF REST API.
+Built for enterprise deployments where security staff manage dozens of devices and hundreds of employees. The HR team operates through Django admin; access readers communicate through a DRF REST API.
 
 ## What it solves
 
@@ -10,7 +10,7 @@ In a facility with badge readers and face-recognition terminals, someone needs t
 - Maintain an employee roster and their assigned access zones
 - Push access rules to physical hardware when employees join, transfer, or leave
 - Log every entry/exit attempt (including failures)
-- Track orders from a food-ordering terminal tied to the SKUD system
+- Track orders from a food-ordering terminal tied to the access control system
 - Export payroll-relevant data (working hours, exceptions) to Excel
 
 This system handles all of that.
@@ -30,7 +30,7 @@ HR / Security staff
         ▼
   Django REST Framework
         │
-        ├── /devices/  ← SKUD hardware registers & polls events
+        ├── /devices/  ← access hardware registers & polls events
         ├── /employees/ ← badge/face data pushed to devices
         └── /orders/    ← food-order terminal integration
         │
@@ -48,7 +48,7 @@ Transport: Uvicorn (ASGI) behind Nginx. Swagger docs available at `/swagger/`.
 ## Key models
 
 ### Devices app
-- **Device** — a SKUD terminal (face reader, card reader, order kiosk). Stores encrypted credentials (`django-fernet-encrypted-fields`), hardware model, device type (`access_in` / `access_out` / `order`). Plugin-based: each hardware model has its own sync/event-polling logic.
+- **Device** — an access terminal (face reader, card reader, order kiosk). Stores encrypted credentials (`django-fernet-encrypted-fields`), hardware model, device type (`access_in` / `access_out` / `order`). Plugin-based: each hardware model has its own sync/event-polling logic.
 - **Event** — every entry/exit attempt. Linked to employee + device, stores face image, card number, timestamp, success flag.
 - **Webhook** — external endpoints to receive event notifications via Redis async broadcast.
 
