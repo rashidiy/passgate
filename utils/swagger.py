@@ -1,3 +1,5 @@
+import os
+
 from drf_yasg import openapi
 from drf_yasg.inspectors import SwaggerAutoSchema
 from drf_yasg.views import get_schema_view
@@ -13,7 +15,7 @@ schema_view = get_schema_view(
         license=openapi.License(name='Copyright "OOO Samyy Soft"'),
     ),
     public=True,
-    url='http://localhost:8000',
+    url=os.getenv('SWAGGER_API_URL', 'http://localhost:8000'),
     permission_classes=(permissions.IsAuthenticatedOrReadOnly,),
 )
 
