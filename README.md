@@ -10,6 +10,29 @@ Live demo: [passgate.rashidiy.dev](https://passgate.rashidiy.dev) (login: `admin
   <img src=".github/screenshots/dashboard.png" alt="Passgate Dashboard" width="800">
 </p>
 
+## Pipeline
+
+```mermaid
+flowchart TD
+    subgraph Access Control
+        A[Employee] -->|face/card| B[Hikvision Reader]
+        B --> C{Recognized?}
+        C -->|yes| D[Entry Logged]
+        C -->|no| E[Denied]
+    end
+
+    subgraph Food Ordering
+        A -->|selects meal| F[Tablet]
+        F -->|activates| G[Camera]
+        G -->|face match| H[Order Created]
+        H --> I[Kitchen Dashboard]
+    end
+
+    D --> J[Admin Panel]
+    H --> J
+    J --> K[Payroll & Reports]
+```
+
 ## What it solves
 
 In a facility with badge readers and face-recognition terminals, someone needs to:
