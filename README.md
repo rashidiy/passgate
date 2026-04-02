@@ -4,6 +4,12 @@ Physical access control management system — tracks who enters which zone, enfo
 
 Built for enterprise deployments where security staff manage dozens of devices and hundreds of employees. The HR team operates through Django admin; access readers communicate through a DRF REST API.
 
+Live demo: [passgate.rashidiy.dev](https://passgate.rashidiy.dev) (login: `admin` / `1`)
+
+<p align="center">
+  <img src=".github/screenshots/dashboard.png" alt="Passgate Dashboard" width="800">
+</p>
+
 ## What it solves
 
 In a facility with badge readers and face-recognition terminals, someone needs to:
@@ -97,15 +103,22 @@ The `event_listener` management command runs as a separate Docker service, polli
 
 ## Screenshots
 
-> Screenshots are taken from a live deployment. Add your own by placing images in `docs/screenshots/`.
+<details>
+<summary>View screenshots</summary>
 
-| Screen | File |
-|---|---|
-| Admin overview | `docs/screenshots/admin-overview.png` |
-| Device list | `docs/screenshots/devices.png` |
-| Employee + access points | `docs/screenshots/employees.png` |
-| Event log | `docs/screenshots/events.png` |
-| Order export UI | `docs/screenshots/order-export.png` |
+### Employees
+<img src=".github/screenshots/employees.png" alt="Employee List" width="800">
+
+### Devices
+<img src=".github/screenshots/devices.png" alt="Device List" width="800">
+
+### Events
+<img src=".github/screenshots/events.png" alt="Event Log" width="800">
+
+### Orders
+<img src=".github/screenshots/orders.png" alt="Orders" width="800">
+
+</details>
 
 ---
 
