@@ -10,6 +10,25 @@ Live demo: [passgate.rashidiy.dev](https://passgate.rashidiy.dev) (login: `admin
   <img src=".github/screenshots/dashboard.png" alt="Passgate Dashboard" width="800">
 </p>
 
+## How it works
+
+```mermaid
+flowchart LR
+    A[👤 Employee\nwalks up] --> B[📷 Hikvision\nFace Reader]
+    B -->|face recognized| C[✅ Entry\nLogged]
+    B -->|denied| D[❌ Access\nDenied]
+    C --> E[🍽️ Food\nTerminal]
+    E -->|selects meal| F[📋 Order\ncreated]
+    F --> G[👨‍🍳 Kitchen\nsees order]
+    G --> H[🔔 Food\nready]
+
+    C --> I[📊 Dashboard]
+    F --> I
+    I --> J[📈 Working Hours\nPayroll Export]
+```
+
+**The full cycle:** Employee badges in with face/card → system logs entry → employee orders food at terminal → kitchen gets the order → everything tracked in dashboard → HR exports working hours for payroll.
+
 ## What it solves
 
 In a facility with badge readers and face-recognition terminals, someone needs to:
